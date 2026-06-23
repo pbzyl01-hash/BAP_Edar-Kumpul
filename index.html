@@ -78,13 +78,14 @@
       100% { filter: brightness(1.15); transform: scale(1.01); }
     }
 
-    /* A4 Visual Page System (Simulates a PDF viewer) */
+    /* A4 Visual Page System - FIXED HEIGHT ISSUES RESOLVED */
     .a4-page {
       font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
       font-size: 11pt;
       line-height: 1.5;
       width: 210mm;
-      height: 297mm;
+      min-height: 297mm; /* Set as min-height instead of strict height to prevent clipping */
+      height: auto;      /* Let page scale gracefully if content is large */
       padding: 18mm 15mm 15mm 15mm;
       margin: 0 auto 25px auto;
       background: #ffffff !important;
@@ -92,10 +93,9 @@
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
       position: relative;
       box-sizing: border-box;
-      overflow: hidden; /* Simulates cutoff when content overflows */
     }
 
-    /* PDF Page Badge helper */
+    /* PDF Page Badge helper - Hidden during printing */
     .a4-page::after {
       content: attr(data-page-label);
       position: absolute;
@@ -158,7 +158,7 @@
       margin: 0 auto;
     }
 
-    /* Printing styles */
+    /* Printing styles (Hiding app wrappers and removing print page-cut clipping) */
     @media print {
       body {
         background: #ffffff !important;
@@ -170,6 +170,14 @@
       .preview-container, .preview-container * {
         visibility: visible;
       }
+      .preview-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+      }
       .a4-page {
         margin: 0 !important;
         box-shadow: none !important;
@@ -177,12 +185,14 @@
         page-break-after: always !important;
         break-after: page !important;
         position: relative !important;
+        min-height: 297mm !important;
+        height: auto !important;
       }
       .no-print {
         display: none !important;
       }
       .a4-page::after {
-        display: none !important; /* Hide page numbers footer inside printed documents if necessary */
+        display: none !important; /* Hide page markers during actual PDF compilation */
       }
     }
 
@@ -206,7 +216,7 @@
         </div>
       </div>
 
-      <!-- Live Clock -->
+      <!-- Live Clock Widget -->
       <div class="hidden md:flex items-center space-x-4">
         <div class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-900 px-4 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
           <i class="fa-regular fa-calendar text-emerald-500 text-sm animate-bounce"></i>
@@ -220,7 +230,7 @@
           <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
         </button>
 
-        <!-- Template Load Button -->
+        <!-- Template Load Button (CV Karisma Alam) -->
         <button onclick="loadSampleKarisma()" class="px-4 py-2 border border-emerald-500/50 hover:border-emerald-400 bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1726] dark:hover:bg-[#15233a] text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 text-xs font-bold rounded-xl transition flex items-center gap-2">
           <i class="fa-solid fa-cloud-arrow-down"></i> Muat Karisma Alam
         </button>
@@ -262,27 +272,27 @@
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nomor BAP</label>
-                <input type="text" id="bap-nomor" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="bap-nomor" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nama Perusahaan</label>
-                <input type="text" id="bap-perusahaan" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="bap-perusahaan" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Status Permohonan</label>
-                <input type="text" id="bap-status" oninput="updateLivePreview()" placeholder="Baru" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="bap-status" oninput="updateLivePreview()" placeholder="Baru" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Taksa Utama</label>
-                <input type="text" id="bap-taksa" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="bap-taksa" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Lokasi Pemeriksaan</label>
-                <input type="text" id="bap-lokasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="bap-lokasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Tanggal Pemeriksaan</label>
-                <input type="text" id="bap-tanggal" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="bap-tanggal" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
             </div>
           </div>
@@ -312,27 +322,27 @@
             <div class="grid grid-cols-2 gap-3">
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nama Pemilik</label>
-                <input type="text" id="pi-pemilik" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="pi-pemilik" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Tanggal Pendirian</label>
-                <input type="text" id="pi-tgl-pendirian" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="pi-tgl-pendirian" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nomor Telp/Fax</label>
-                <input type="text" id="pi-telp" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="pi-telp" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Email</label>
-                <input type="email" id="pi-email" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="email" id="pi-email" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Alamat Kantor</label>
-                <textarea id="pi-alamat-kantor" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
+                <textarea id="pi-alamat-kantor" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Alamat Penampungan</label>
-                <textarea id="pi-alamat-gudang" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
+                <textarea id="pi-alamat-gudang" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
               </div>
             </div>
           </div>
@@ -345,7 +355,7 @@
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-dokumen" class="p-4 space-y-4 hidden">
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
+            <div class="p-3 bg-slate-50 dark:bg-slate-955 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Akta Pendirian Perusahaan</h4>
               <div class="grid grid-cols-2 gap-2">
                 <input type="text" id="dok-akta-no" oninput="updateLivePreview()" placeholder="No. Akta" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-900 dark:text-white">
@@ -354,7 +364,7 @@
               </div>
             </div>
 
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
+            <div class="p-3 bg-slate-50 dark:bg-slate-955 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Nomor Induk Berusaha (NIB)</h4>
               <div class="grid grid-cols-3 gap-2">
                 <input type="text" id="dok-nib-no" oninput="updateLivePreview()" placeholder="No. NIB" class="col-span-2 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-900 dark:text-white">
@@ -363,7 +373,7 @@
               </div>
             </div>
 
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
+            <div class="p-3 bg-slate-50 dark:bg-slate-955 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Tata Ruang & NPWP</h4>
               <div class="grid grid-cols-2 gap-2">
                 <input type="text" id="dok-ruang-tgl" oninput="updateLivePreview()" placeholder="Tgl Kesesuaian Ruang" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-900 dark:text-white">
@@ -372,7 +382,7 @@
               </div>
             </div>
 
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
+            <div class="p-3 bg-slate-50 dark:bg-slate-955 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Pakta Integritas</h4>
               <input type="text" id="dok-pakta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit Pakta" class="w-full px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-900 dark:text-white">
             </div>
@@ -401,7 +411,7 @@
           </button>
           <div id="acc-specimen" class="p-4 space-y-4 hidden">
             <!-- BAB IV Taksa & Rincian Jenis -->
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg space-y-3 border border-slate-200 dark:border-slate-800">
+            <div class="p-3 bg-slate-50 dark:bg-slate-955 rounded-lg space-y-3 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">IV. Taksa & Rincian Jenis</h4>
               <div>
                 <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 mb-1">Taksa Terpilih</label>
@@ -425,14 +435,14 @@
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">V. Status Lindungan</label>
-                <select id="spec-lindung" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <select id="spec-lindung" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
                   <option value="Dilindungi">Dilindungi</option>
                   <option value="Tidak dilindungi">Tidak dilindungi</option>
                 </select>
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">VI. Status CITES</label>
-                <select id="spec-cites" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <select id="spec-cites" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
                   <option value="Appendiks I">Appendiks I</option>
                   <option value="Appendiks II">Appendiks II</option>
                   <option value="Appendiks III">Appendiks III</option>
@@ -441,7 +451,7 @@
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">VII. Sumber Spesimen</label>
-                <select id="spec-sumber" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <select id="spec-sumber" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
                   <option value="Tangkapan alam">Tangkapan alam</option>
                   <option value="Hasil penangkaran/budidaya/transplantasi">Hasil penangkaran/budidaya/transplantasi</option>
                   <option value="Luar negeri (impor)">Luar negeri (impor)</option>
@@ -450,11 +460,11 @@
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Keterangan Sumber (VII)</label>
-              <input type="text" id="spec-sumber-ket" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+              <input type="text" id="spec-sumber-ket" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
             </div>
 
             <!-- VIII. Bentuk Spesimen (Multi-Select Checklist) -->
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 space-y-1.5">
+            <div class="p-3 bg-slate-50 dark:bg-slate-955 rounded-lg border border-slate-200 dark:border-slate-800 space-y-1.5">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">VIII. Bentuk Spesimen</h4>
               <div id="bentuk-spesimen-checklist" class="space-y-1.5 max-h-48 overflow-y-auto text-xs text-slate-800 dark:text-white"></div>
             </div>
@@ -485,9 +495,9 @@
           <div id="acc-saham" class="p-4 space-y-3 hidden">
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Total Investasi (Rupiah)</label>
-              <input type="text" id="nar-investasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+              <input type="text" id="nar-investasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
             </div>
-            <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2">
+            <div class="p-3 bg-slate-50 dark:bg-slate-955 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">Pemegang Saham</h4>
               <div id="saham-inputs-container" class="space-y-2"></div>
               <button onclick="addSahamRow()" class="w-full py-1 text-[10px] text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 rounded border border-emerald-200 dark:border-emerald-800 font-semibold transition">
@@ -506,19 +516,19 @@
           <div id="acc-teknis" class="p-4 space-y-3 hidden">
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">IX. Teknis Pelaksanaan Penampungan</label>
-              <textarea id="nar-penampungan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
+              <textarea id="nar-penampungan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">X. Teknis Pelaksanaan Pengangkutan</label>
-              <textarea id="nar-pengangkutan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
+              <textarea id="nar-pengangkutan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">XI. Sistem Pembuangan Limbah</label>
-              <textarea id="nar-limbah" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
+              <textarea id="nar-limbah" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</label>
-              <textarea id="nar-pembinaan" oninput="updateLivePreview()" rows="3" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
+              <textarea id="nar-pembinaan" oninput="updateLivePreview()" rows="3" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"></textarea>
             </div>
           </div>
         </div>
@@ -543,23 +553,23 @@
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nama Kasi</label>
-                <input type="text" id="kasi-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="kasi-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">NIP Kasi</label>
-                <input type="text" id="kasi-nip" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="kasi-nip" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Jabatan Mengetahui (Kiri)</label>
-                <input type="text" id="kasi-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="kasi-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nama Direktur (Kanan)</label>
-                <input type="text" id="dir-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="dir-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Jabatan Direktur</label>
-                <input type="text" id="dir-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
+                <input type="text" id="dir-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white">
               </div>
             </div>
           </div>
@@ -574,7 +584,7 @@
           <div id="acc-images" class="p-4 space-y-3 hidden">
             <p class="text-[9px] text-slate-500 dark:text-slate-400 font-semibold mb-2">Anda dapat menambah, mengedit, mengunggah file, atau menghapus item gambar untuk pratinjau lampiran.</p>
             <div id="images-inputs-container" class="space-y-3 max-h-96 overflow-y-auto"></div>
-            <button onclick="addNewImageSlot()" class="w-full py-1.5 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 rounded border border-emerald-200 dark:border-emerald-800 font-semibold transition">
+            <button onclick="addNewImageSlot()" class="w-full py-1.5 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-955/40 rounded border border-emerald-200 dark:border-emerald-800 font-semibold transition">
               <i class="fa-solid fa-plus mr-1"></i> Tambah Lampiran Foto Baru
             </button>
           </div>
@@ -593,7 +603,7 @@
       </div>
 
       <!-- TAB 2: RIWAYAT BAP -->
-      <div id="tab-history-container" class="hidden flex-1 overflow-y-auto p-4 space-y-3 bg-slate-100 dark:bg-slate-950">
+      <div id="tab-history-container" class="hidden flex-1 overflow-y-auto p-4 space-y-3 bg-slate-100 dark:bg-slate-955">
         <div class="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-800">
           <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Riwayat BAP Tersimpan</h3>
           <button onclick="clearAllHistory()" class="text-xs text-rose-500 hover:text-rose-600 font-semibold">
@@ -1036,7 +1046,7 @@
           <h4 class="text-center font-bold text-[11pt] uppercase tracking-wider mb-2 border-b pb-1">PHOTO ATAU GAMBAR-GAMBAR PEMERIKSAAN</h4>
           
           <!-- Photos visual grid representation -->
-          <div class="grid grid-cols-2 gap-2 mt-2 max-h-[220mm] overflow-hidden" id="view-images-grid"></div>
+          <div class="grid grid-cols-2 gap-2 mt-2" id="view-images-grid"></div>
         </div>
       </div>
 
@@ -1360,7 +1370,7 @@
         container.innerHTML += `
           <div class="flex items-start gap-2 bg-slate-50 dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800">
             <span class="text-xs font-bold text-slate-500 mt-2">${idx + 1}.</span>
-            <textarea oninput="editDasarRule(${idx}, this.value)" class="flex-1 px-2 py-1 text-xs border border-slate-200 dark:border-slate-800 rounded bg-white dark:bg-slate-950 outline-none resize-none text-slate-900 dark:text-white" rows="2">${rule}</textarea>
+            <textarea oninput="editDasarRule(${idx}, this.value)" class="flex-1 px-2 py-1 text-xs border border-slate-200 dark:border-slate-800 rounded bg-white dark:bg-slate-955 outline-none resize-none text-slate-900 dark:text-white" rows="2">${rule}</textarea>
             <button onclick="deleteDasarRule(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
@@ -1375,10 +1385,10 @@
       bapData.sarpras.forEach((item, idx) => {
         container.innerHTML += `
           <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-850 text-xs">
-            <input type="text" value="${item.name}" oninput="editSarpras(${idx}, 'name', this.value)" placeholder="Nama Alat" class="flex-1 min-w-[80px] px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px] text-slate-900 dark:text-white">
-            <input type="text" value="${item.size}" oninput="editSarpras(${idx}, 'size', this.value)" placeholder="Ukuran" class="w-16 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-900 dark:text-white">
-            <input type="text" value="${item.qty}" oninput="editSarpras(${idx}, 'qty', this.value)" placeholder="Qty" class="w-12 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-900 dark:text-white">
-            <input type="text" value="${item.unit}" oninput="editSarpras(${idx}, 'unit', this.value)" placeholder="Satuan" class="w-14 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-900 dark:text-white">
+            <input type="text" value="${item.name}" oninput="editSarpras(${idx}, 'name', this.value)" placeholder="Nama Alat" class="flex-1 min-w-[80px] px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-[10px] text-slate-900 dark:text-white">
+            <input type="text" value="${item.size}" oninput="editSarpras(${idx}, 'size', this.value)" placeholder="Ukuran" class="w-16 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-center text-[10px] text-slate-900 dark:text-white">
+            <input type="text" value="${item.qty}" oninput="editSarpras(${idx}, 'qty', this.value)" placeholder="Qty" class="w-12 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-center text-[10px] text-slate-900 dark:text-white">
+            <input type="text" value="${item.unit}" oninput="editSarpras(${idx}, 'unit', this.value)" placeholder="Satuan" class="w-14 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-center text-[10px] text-slate-900 dark:text-white">
             <button onclick="deleteSarpras(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
@@ -1407,8 +1417,8 @@
       bapData.karyawan.forEach((item, idx) => {
         container.innerHTML += `
           <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-850 text-xs">
-            <input type="text" value="${item.role}" oninput="editKaryawan(${idx}, 'role', this.value)" placeholder="Jabatan" class="flex-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px] text-slate-900 dark:text-white">
-            <input type="text" value="${item.count}" oninput="editKaryawan(${idx}, 'count', this.value)" placeholder="Jumlah" class="w-16 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-900 dark:text-white">
+            <input type="text" value="${item.role}" oninput="editKaryawan(${idx}, 'role', this.value)" placeholder="Jabatan" class="flex-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-[10px] text-slate-900 dark:text-white">
+            <input type="text" value="${item.count}" oninput="editKaryawan(${idx}, 'count', this.value)" placeholder="Jumlah" class="w-16 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-center text-[10px] text-slate-900 dark:text-white">
             <span class="text-slate-500 dark:text-slate-400 text-[10px] font-semibold">Orang</span>
             <button onclick="deleteKaryawan(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
@@ -1424,8 +1434,8 @@
       bapData.saham.forEach((item, idx) => {
         container.innerHTML += `
           <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-850 text-xs">
-            <input type="text" value="${item.name}" oninput="editSaham(${idx}, 'name', this.value)" placeholder="Pemilik Saham" class="flex-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px] text-slate-900 dark:text-white">
-            <input type="text" value="${item.percentage}" oninput="editSaham(${idx}, 'percentage', this.value)" placeholder="%" class="w-14 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-900 dark:text-white">
+            <input type="text" value="${item.name}" oninput="editSaham(${idx}, 'name', this.value)" placeholder="Pemilik Saham" class="flex-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-[10px] text-slate-900 dark:text-white">
+            <input type="text" value="${item.percentage}" oninput="editSaham(${idx}, 'percentage', this.value)" placeholder="%" class="w-14 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-center text-[10px] text-slate-900 dark:text-white">
             <span class="text-slate-500 dark:text-slate-400 text-[10px] font-semibold">%</span>
             <button onclick="deleteSaham(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
@@ -1448,8 +1458,8 @@
               </button>
             </div>
             <div class="grid grid-cols-2 gap-1.5">
-              <input type="text" value="${item.name}" oninput="editInspector(${idx}, 'name', this.value)" placeholder="Nama Pemeriksa" class="px-2 py-1 text-xs bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-900 dark:text-white">
-              <input type="text" value="${item.nip}" oninput="editInspector(${idx}, 'nip', this.value)" placeholder="NIP" class="px-2 py-1 text-xs bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-900 dark:text-white">
+              <input type="text" value="${item.name}" oninput="editInspector(${idx}, 'name', this.value)" placeholder="Nama Pemeriksa" class="px-2 py-1 text-xs bg-white dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-900 dark:text-white">
+              <input type="text" value="${item.nip}" oninput="editInspector(${idx}, 'nip', this.value)" placeholder="NIP" class="px-2 py-1 text-xs bg-white dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded text-[10px] text-slate-900 dark:text-white">
             </div>
           </div>
         `;
@@ -1472,7 +1482,7 @@
               </div>
             </div>
             <input type="file" onchange="handlePicUpload(event, ${idx})" class="w-full text-[10px] text-slate-500">
-            <input type="text" value="${pic.caption}" oninput="editPicCaption(${idx}, this.value)" placeholder="Caption di cetakan" class="w-full px-2 py-0.5 text-[10px] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-slate-900 dark:text-white">
+            <input type="text" value="${pic.caption}" oninput="editPicCaption(${idx}, this.value)" placeholder="Caption di cetakan" class="w-full px-2 py-0.5 text-[10px] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 rounded text-slate-900 dark:text-white">
           </div>
         `;
       });
@@ -2055,8 +2065,8 @@
             <div class="flex justify-between items-center pt-2 border-t border-slate-100 dark:border-slate-800 mt-2">
               <span class="text-[9px] text-slate-400">${item.savedAt}</span>
               <div class="flex gap-1.5">
-                <button onclick="loadBapFromHistory('${item.id}')" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 text-emerald-600 dark:text-emerald-400 font-semibold rounded text-[10px]">Muat</button>
-                <button onclick="deleteBapFromHistory('${item.id}')" class="text-rose-500 hover:bg-rose-950/40 p-1 rounded"><i class="fa-solid fa-trash"></i></button>
+                <button onclick="loadBapFromHistory('${item.id}')" class="px-2 py-1 bg-emerald-50 dark:bg-emerald-955/50 hover:bg-emerald-100 text-emerald-600 dark:text-emerald-400 font-semibold rounded text-[10px]">Muat</button>
+                <button onclick="deleteBapFromHistory('${item.id}')" class="text-rose-500 hover:bg-rose-955/40 p-1 rounded"><i class="fa-solid fa-trash"></i></button>
               </div>
             </div>
           </div>
