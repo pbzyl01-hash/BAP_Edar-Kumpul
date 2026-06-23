@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Gentium Book Plus (Sangat mirip dengan Bookman Old Style untuk komputer yang tidak memilikinya) -->
+  <!-- Google Fonts: Gentium Book Plus (A premium serif font mimicking Bookman Old Style for system safety) -->
   <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   
   <style>
@@ -36,7 +36,7 @@
       text-shadow: 0 0 10px var(--accent-glow);
     }
 
-    /* A4 Document styling with Bookman Old Style & 12pt font size */
+    /* A4 Document layout with precise Bookman Old Style simulation */
     .document-preview {
       font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
       font-size: 12pt;
@@ -49,6 +49,14 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       position: relative;
       color: #000000;
+    }
+
+    /* Cover specific layout adjustments */
+    .cover-container {
+      min-height: 257mm; /* Adjusting for page constraints */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     /* Official Government table style */
@@ -102,30 +110,41 @@
       margin: 0 auto;
     }
 
-    .tree-line-horizontal {
-      height: 1.5px;
-      background-color: #000;
+    /* Strict Print Styles (Zero Margins/Borders/Watermarks/Background details) */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      body * {
+        visibility: hidden;
+      }
+      .document-preview, .document-preview * {
+        visibility: visible;
+      }
+      .document-preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm;
+        margin: 0 !important;
+        padding: 10mm 15mm 10mm 15mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .page-break {
+        page-break-before: always !important;
+        break-before: page !important;
+      }
     }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-    @media print {
-      body * { visibility: hidden; }
-      .document-preview, .document-preview * { visibility: visible; }
-      .document-preview {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        margin: 0;
-        padding: 10mm;
-        box-shadow: none;
-      }
-      .no-print { display: none !important; }
-      .page-break { page-break-before: always; }
-    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased">
@@ -380,9 +399,9 @@
             </div>
 
             <!-- VIII. Bentuk Spesimen (Multi-Select Checklist) -->
-            <div class="p-3 bg-slate-900 rounded-lg border border-slate-700 space-y-2">
+            <div class="p-3 bg-slate-900 rounded-lg border border-slate-700 space-y-1.5">
               <h4 class="text-[10px] font-bold text-emerald-400 uppercase">VIII. Bentuk Spesimen (Bisa Lebih Dari Satu)</h4>
-              <div id="bentuk-spesimen-checklist" class="space-y-1.5 max-h-48 overflow-y-auto text-xs"></div>
+              <div id="bentuk-spesimen-checklist" class="space-y-1.5 max-h-48 overflow-y-auto text-xs text-white"></div>
             </div>
           </div>
         </div>
@@ -536,52 +555,67 @@
       <!-- WRAPPER FOR DOCUMENT (Gaya Bookman Old Style & Ukuran Basis 12pt) -->
       <div class="document-preview shadow-2xl relative" id="printable-bap">
         
-        <!-- OFFICIAL HEADER OF MINISTRY (Menggunakan image_0a2a0a.png sesuai instruksi) -->
-        <div class="w-full mb-6 border-b border-black pb-1">
-          <img src="image_0a2a0a.png" alt="KOP BALAI KONSERVASI SUMBER DAYA ALAM KALIMANTAN TIMUR" class="w-full h-auto object-contain block" onerror="this.src='https://placehold.co/800x120/ececec/222222?text=KEMENTERIAN+LINGKUNGAN+HIDUP+DAN+KEHUTANAN%0ABALAI+KONSERVASI+SUMBER+DAYA+ALAM+KALIMANTAN+TIMUR'">
+        <!-- ================= PAGE 1: COVER BAP ================= -->
+        <div class="cover-container">
+          <!-- Official Kop -->
+          <div class="w-full mb-10 text-center">
+            <img src="image_0a2a0a.png" alt="KOP BALAI KONSERVASI SUMBER DAYA ALAM KALIMANTAN TIMUR" class="w-full h-auto object-contain block mx-auto" onerror="this.src='https://placehold.co/800x120/ececec/222222?text=KEMENTERIAN+LINGKUNGAN+HIDUP+DAN+KEHUTANAN%0ABALAI+KONSERVASI+SUMBER+DAYA+ALAM+KALIMANTAN+TIMUR'">
+          </div>
+
+          <!-- Document Main Title -->
+          <div class="text-center my-14">
+            <h1 class="text-[14pt] font-bold uppercase tracking-wide leading-relaxed" style="font-family: inherit;">
+              BERITA ACARA PEMERIKSAAN (BAP)<br>
+              PERSIAPAN TEKNIS PERIZINAN BERUSAHA<br>
+              PEREDARAN DALAM NEGERI
+            </h1>
+          </div>
+
+          <!-- Metadata Box centered -->
+          <div class="max-w-xl mx-auto my-12 text-[12pt] leading-loose">
+            <table class="w-full text-left" style="font-family: inherit;">
+              <tbody>
+                <tr>
+                  <td class="w-5/12 py-1 font-semibold">Nomor</td>
+                  <td class="w-4 py-1">:</td>
+                  <td class="py-1 font-bold" id="cover-nomor">BA.179/K.18/SKSDAW II/05/2026</td>
+                </tr>
+                <tr>
+                  <td class="py-1 font-semibold">Nama Perusahaan</td>
+                  <td>:</td>
+                  <td class="py-1 font-bold" id="cover-perusahaan">CV. Karisma Alam</td>
+                </tr>
+                <tr>
+                  <td class="py-1 font-semibold">Status Permohonan</td>
+                  <td>:</td>
+                  <td class="py-1" id="cover-status">Baru</td>
+                </tr>
+                <tr>
+                  <td class="py-1 font-semibold">Taksa</td>
+                  <td>:</td>
+                  <td class="py-1 font-bold" id="cover-taksa">Gaharu/Kemedangan</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Location and Date at the bottom -->
+          <div class="text-center mt-28 text-[12pt] font-bold text-gray-900 uppercase tracking-wide" id="cover-date-loc">
+            Tenggarong, 13 Mei 2026
+          </div>
         </div>
 
-        <!-- MAIN TITLE -->
-        <div class="text-center mb-4">
-          <h3 class="text-[12pt] font-bold underline uppercase tracking-wide leading-relaxed" style="font-family: inherit;">BERITA ACARA PEMERIKSAAN (BAP) PERSIAPAN TEKNIS PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h3>
-          <p class="text-[11pt] font-medium mt-1">Nomor: <span id="view-nomor" class="font-bold"></span></p>
-        </div>
+        <!-- Page break to separate cover page -->
+        <div class="page-break"></div>
 
-        <!-- QUICK INFO TABLE -->
-        <div class="w-full mb-3 text-[11pt] leading-relaxed">
-          <table class="w-full text-left">
-            <tbody>
-              <tr>
-                <td class="w-1/3 py-0.5 font-semibold">Nama Perusahaan</td>
-                <td class="w-4 py-0.5">:</td>
-                <td class="py-0.5 font-bold" id="view-perusahaan"></td>
-              </tr>
-              <tr>
-                <td class="py-0.5 font-semibold">Status Permohonan</td>
-                <td>:</td>
-                <td class="py-0.5" id="view-status"></td>
-              </tr>
-              <tr>
-                <td class="py-0.5 font-semibold">Taksa</td>
-                <td>:</td>
-                <td class="py-0.5 font-bold" id="view-taksa"></td>
-              </tr>
-              <tr>
-                <td class="py-0.5 font-semibold">Lokasi & Tanggal</td>
-                <td>:</td>
-                <td class="py-0.5" id="view-tgl-lokasi"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
+        <!-- ================= PAGE 2: MAIN DOCUMENT CONTENT ================= -->
         <!-- HEADER SUB-BAR -->
-        <div class="border-t border-b border-black py-1 my-2 text-center">
+        <div class="border-t border-b border-black py-1.5 mb-4 text-center">
           <h4 class="text-[11pt] font-bold uppercase">HASIL PEMERIKSAAN TEKNIS PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h4>
         </div>
 
         <!-- DASAR PELAKSANAAN -->
-        <div class="mb-3">
+        <div class="mb-4">
           <p class="text-[12pt] font-bold uppercase mb-1">DASAR PELAKSANAAN :</p>
           <table class="gov-table">
             <tbody id="view-table-dasar"></tbody>
@@ -589,7 +623,7 @@
         </div>
 
         <!-- I. DATA PERUSAHAAN -->
-        <div class="mb-3">
+        <div class="mb-4">
           <p class="text-[12pt] font-bold uppercase mb-1">I. DATA PERUSAHAAN</p>
           <table class="gov-table">
             <tbody>
@@ -633,7 +667,7 @@
         </div>
 
         <!-- II. PEMERIKSAAN KELENGKAPAN DOKUMEN -->
-        <div class="mb-3">
+        <div class="mb-4">
           <p class="text-[12pt] font-bold uppercase mb-1">II. PEMERIKSAAN KELENGKAPAN DOKUMEN PERSYARATAN</p>
           <table class="gov-table">
             <thead>
@@ -685,7 +719,7 @@
         </div>
 
         <!-- III. PEMERIKSAAN SARANA DAN PRASARANA -->
-        <div class="mb-3 page-break">
+        <div class="mb-4 page-break">
           <p class="text-[12pt] font-bold uppercase mb-1">III. PEMERIKSAAN SARANA DAN PRASARANA</p>
           <table class="gov-table">
             <thead>
@@ -702,7 +736,7 @@
         </div>
 
         <!-- IV. SPESIMEN YANG AKAN DIEDARKAN -->
-        <div class="mb-3">
+        <div class="mb-4">
           <p class="text-[12pt] font-bold uppercase mb-1">IV. SPESIMEN TUMBUHAN DAN SATWA LIAR YANG AKAN DIEDARKAN</p>
           <table class="gov-table">
             <thead>
@@ -718,7 +752,7 @@
         </div>
 
         <!-- V. STATUS LINDUNGAN -->
-        <div class="mb-3">
+        <div class="mb-4">
           <p class="text-[12pt] font-bold uppercase mb-1">V. STATUS LINDUNGAN</p>
           <table class="gov-table">
             <thead>
@@ -734,7 +768,7 @@
         </div>
 
         <!-- VI. STATUS APPENDIKS CITES -->
-        <div class="mb-3">
+        <div class="mb-4">
           <p class="text-[12pt] font-bold uppercase mb-1">VI. STATUS APPENDIKS DALAM CITES</p>
           <table class="gov-table">
             <thead>
@@ -750,7 +784,7 @@
         </div>
 
         <!-- VII. ASAL USUL SPESIMEN -->
-        <div class="mb-3 page-break">
+        <div class="mb-4 page-break">
           <p class="text-[12pt] font-bold uppercase mb-1">VII. PEROLEHAN ASAL USUL SPESIMEN YANG AKAN DIEDARKAN</p>
           <table class="gov-table">
             <thead>
@@ -766,7 +800,7 @@
         </div>
 
         <!-- VIII. BENTUK SPESIMEN -->
-        <div class="mb-3">
+        <div class="mb-4">
           <p class="text-[12pt] font-bold uppercase mb-1">VIII. BENTUK SPESIMEN YANG DIEDARKAN</p>
           <table class="gov-table">
             <thead>
@@ -782,17 +816,17 @@
         </div>
 
         <!-- IX - XI. TEKNIS NARRATIVE BLOCKS -->
-        <div class="mb-3">
-          <div class="space-y-2 text-[11pt] leading-relaxed">
-            <div class="p-1.5 border border-black bg-slate-50">
+        <div class="mb-4">
+          <div class="space-y-3 text-[11pt] leading-relaxed">
+            <div class="p-2.5 border border-black bg-slate-50">
               <p class="font-bold">IX. PEMERIKSAAN TEKNIS PELAKSANAAN PENAMPUNGAN:</p>
               <p id="v-nar-penampungan" class="text-justify text-gray-750 italic"></p>
             </div>
-            <div class="p-1.5 border border-black bg-slate-50">
+            <div class="p-2.5 border border-black bg-slate-50">
               <p class="font-bold">X. PEMERIKSAAN TEKNIS PELAKSANAAN PENGANGKUTAN:</p>
               <p id="v-nar-pengangkutan" class="text-justify text-gray-750 italic"></p>
             </div>
-            <div class="p-1.5 border border-black bg-slate-50">
+            <div class="p-2.5 border border-black bg-slate-50">
               <p class="font-bold">XI. PEMERIKSAAN SISTEM PEMBUANGAN LIMBAH:</p>
               <p id="v-nar-limbah" class="text-justify text-gray-750 italic"></p>
             </div>
@@ -800,12 +834,12 @@
         </div>
 
         <!-- XII. ORGANISASI & TENAGA KERJA & DIAGRAM HIERARKI -->
-        <div class="mb-3 page-break">
+        <div class="mb-4 page-break">
           <p class="text-[12pt] font-bold uppercase mb-1">XII. ORGANISASI DAN TENAGA KERJA</p>
           
           <!-- Visual Hierarchy Tree Diagram -->
-          <div class="p-3 border border-black bg-slate-50 text-center mb-3">
-            <p class="text-[10px] font-bold uppercase text-slate-800 tracking-wider mb-3 border-b pb-1" style="font-family: 'Inter', sans-serif;">Bagan Struktur Organisasi Perusahaan</p>
+          <div class="p-4 border border-black bg-slate-50 text-center mb-4">
+            <p class="text-[11px] font-bold uppercase text-slate-800 tracking-wider mb-3 border-b pb-1" style="font-family: 'Inter', sans-serif;">Bagan Struktur Organisasi Perusahaan</p>
             <div id="hierarchy-chart-container" class="flex flex-col items-center gap-1"></div>
           </div>
 
@@ -822,7 +856,7 @@
         </div>
 
         <!-- XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI -->
-        <div class="mb-3">
+        <div class="mb-4">
           <table class="gov-table">
             <tbody>
               <tr>
@@ -845,10 +879,10 @@
         </div>
 
         <!-- XV. PERNYATAAN DAN PENGESAHAN -->
-        <div class="mb-3">
+        <div class="mb-4">
           <p class="text-[12pt] font-bold uppercase mb-1">XV. PERNYATAAN DAN PENGESAHAN</p>
           <div class="text-[11pt] leading-relaxed text-justify italic font-medium bg-slate-50 p-3 rounded border border-black">
-            <ol class="list-decimal pl-5 space-y-1">
+            <ol class="list-decimal pl-5 space-y-1.5">
               <li>Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan yang ada di <span id="v-legal-perusahaan" class="font-bold"></span>.</li>
               <li>Semua kelengkapan dokumen pada butir II adalah sah dan sesuai dengan aslinya.</li>
               <li>Apabila data, dokumen, dan keterangan tersebut tidak benar, maka kami yang bertanda tangan di bawah ini bersedia dikenakan sanksi dan atau dituntut sesuai dengan peraturan yang berlaku.</li>
@@ -859,17 +893,17 @@
         <!-- SIGNATURES BLOCK (DYNAMIC INSPECTORS SUPPORT) -->
         <div class="mt-4 text-[11pt] leading-tight">
           <!-- Center Date Element -->
-          <div class="text-center mb-3">
+          <div class="text-center mb-4">
             <span class="font-bold text-slate-850 text-[12pt]" id="view-tempat-tgl"></span>
           </div>
 
-          <div class="text-center font-bold mb-2 text-slate-800">Dibuat dengan sebenarnya oleh:</div>
+          <div class="text-center font-bold mb-3 text-slate-800">Dibuat dengan sebenarnya oleh:</div>
           
           <!-- Dynamic Inspectors Grid Layout (Watermark removed, just blank space) -->
           <div id="view-inspectors-grid" class="grid gap-3 text-center mb-6"></div>
 
           <!-- Bottom Row: a.n. Kepala Balai & Mengetahui (Director) -->
-          <div class="grid grid-cols-2 gap-4 text-center mt-6 pt-2 border-t border-gray-200">
+          <div class="grid grid-cols-2 gap-4 text-center mt-6 pt-3 border-t border-gray-200">
             <div>
               <p class="font-semibold text-slate-800">Disahkan oleh:</p>
               <div class="text-[10pt] text-gray-700 font-bold leading-normal">
@@ -1461,12 +1495,21 @@
     function updateLivePreview() {
       syncStateFromInputs();
 
-      // Top metadata
+      // Top metadata & COVER metadata
       document.getElementById("view-nomor").innerText = bapData.nomor || "[Nomor BAP]";
+      document.getElementById("cover-nomor").innerText = bapData.nomor || "[Nomor BAP]";
+      
       document.getElementById("view-perusahaan").innerText = bapData.perusahaan || "[Nama Perusahaan]";
+      document.getElementById("cover-perusahaan").innerText = bapData.perusahaan || "[Nama Perusahaan]";
+      
       document.getElementById("view-status").innerText = bapData.status;
+      document.getElementById("cover-status").innerText = bapData.status;
+      
       document.getElementById("view-taksa").innerText = bapData.taksa || "[Taksa/Komoditi]";
+      document.getElementById("cover-taksa").innerText = bapData.taksa || "[Taksa/Komoditi]";
+      
       document.getElementById("view-tgl-lokasi").innerText = `${bapData.lokasi || '[Lokasi]'}, ${bapData.tanggal || '[Tanggal]'}`;
+      document.getElementById("cover-date-loc").innerText = `${bapData.lokasi || '[Lokasi]'}, ${bapData.tanggal || '[Tanggal]'}`;
       document.getElementById("view-tempat-tgl").innerText = `${bapData.lokasi || '[Lokasi]'}, ${bapData.tanggal || '[Tanggal]'}`;
 
       // Bab I
