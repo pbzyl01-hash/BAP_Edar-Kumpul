@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-BAP TEKNIS KSDAE - Sistem Pemeriksaan Teknis Perizinan TSL</title>
+  
+  <!-- Font Integration -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind Framework CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Sora', 'sans-serif'],
+          },
+          animation: {
+            'glow-pulse': 'glow-pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Variables & Colors */
+    :root {
+      --glow-color: rgba(99, 102, 241, 0.4);
+    }
+    .dark-glow {
+      text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color);
+    }
+    
+    @keyframes glow-pulse {
+      0%, 100% {
+        text-shadow: 0 0 8px rgba(99, 102, 241, 0.3), 0 0 15px rgba(99, 102, 241, 0.2);
+        opacity: 0.95;
+      }
+      50% {
+        text-shadow: 0 0 18px rgba(99, 102, 241, 0.7), 0 0 30px rgba(99, 102, 241, 0.4);
+        opacity: 1;
+      }
+    }
+
+    /* Print styling rules */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-area {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-[#0A0B0F] text-slate-800 dark:text-[#F1F2F6] min-height-screen transition-colors duration-300">
+
+  <!-- TOP HEADER & CLOCK WIDGET -->
+  <header class="no-print border-b border-slate-200 dark:border-white/5 bg-white/70 dark:bg-[#13141A]/75 backdrop-blur-md sticky top-0 z-40 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+      
+      <!-- Brand Title with glow effect -->
+      <div class="flex items-center gap-3">
+        <div class="bg-indigo-600 p-2.5 rounded-xl text-white shadow-lg shadow-indigo-600/30">
+          <i class="fa-solid fa-file-shield text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold font-display tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+            E-BAP TEKNIS <span class="text-indigo-600 dark:text-indigo-400 animate-glow-pulse dark-glow">KSDAE</span>
+          </h1>
+          <p class="text-xs text-slate-500 dark:text-[#9899A8]">Sistem Informasi & Pemeriksaan Fisik TSL</p>
+        </div>
+      </div>
+
+      <!-- Real-time Indonesian Clock & Mode Toggle -->
+      <div class="flex items-center gap-4">
+        <!-- Date Time Widget -->
+        <div class="text-right hidden md:block">
+          <div id="live-day-date" class="text-xs font-semibold text-slate-600 dark:text-[#9899A8]">Selasa, 23 Juni 2026</div>
+          <div id="live-clock" class="text-sm font-bold font-display text-slate-900 dark:text-white tracking-wider">11:19:28 WIB</div>
+        </div>
+
+        <!-- Theme Switcher Button -->
+        <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-100 hover:bg-slate-200 dark:bg-[#1C1D26] dark:hover:bg-[#252631] text-slate-700 dark:text-slate-300 transition-all shadow-sm" title="Ubah Tema">
+          <i id="theme-icon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 no-print">
+    
+    <!-- GAS Connection Status Card -->
+    <div class="mb-6 p-4 rounded-2xl bg-white dark:bg-[#1C1D26] border border-slate-200 dark:border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm">
+      <div class="flex items-center gap-3">
+        <span class="relative flex h-3.5 w-3.5">
+          <span id="status-pulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span id="status-dot" class="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500"></span>
+        </span>
+        <div>
+          <div class="text-xs text-slate-500 dark:text-[#9899A8] font-semibold">Integrasi Cloud Database</div>
+          <input type="text" id="gas-url-input" onchange="updateGASUrl()" placeholder="Masukkan URL Web App Google Apps Script..." class="bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/10 text-xs px-3 py-1.5 rounded-lg w-72 focus:outline-none focus:border-indigo-500 text-slate-800 dark:text-white mt-1" />
+        </div>
+      </div>
+      <div class="flex gap-2 w-full md:w-auto">
+        <button onclick="switchView('list')" class="btn-tab active flex-1 md:flex-none inline-flex justify-center items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold" id="tab-list">
+          <i class="fa-solid fa-folder-open"></i> Riwayat BAP
+        </button>
+        <button onclick="createNewBapForm()" class="btn-tab flex-1 md:flex-none inline-flex justify-center items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold" id="tab-form">
+          <i class="fa-solid fa-file-circle-plus"></i> Buat BAP Baru
+        </button>
+      </div>
+    </div>
+
+    <!-- LIST VIEW: DATA REGISTERED BAP -->
+    <section id="view-list" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold font-display text-slate-900 dark:text-white">Arsip Berita Acara</h2>
+          <p class="text-xs text-slate-500 dark:text-[#9899A8]">Daftar pemeriksaan teknis penangkaran & pengedar tumbuhan/satwa liar (TSL)</p>
+        </div>
+        
+        <!-- Search & Filter Controls -->
+        <div class="flex gap-2">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="text" id="search-bap" onkeyup="filterBapList()" placeholder="Cari nama perusahaan / no BAP..." class="pl-9 pr-4 py-2 rounded-xl border border-slate-200 dark:border-white/5 bg-white dark:bg-[#1C1D26] text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/30 w-64 text-slate-800 dark:text-white" />
+          </div>
+        </div>
+      </div>
+
+      <!-- BAP Records Grid -->
+      <div id="bap-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Will be dynamically populated. Skeleton loader inside init. -->
+        <div class="skeleton h-48 rounded-2xl col-span-full"></div>
+      </div>
+    </section>
+
+    <!-- FORM VIEW: MULTI-STEP BAP INPUT -->
+    <section id="view-form" class="hidden space-y-6">
+      
+      <!-- Stepper Nav Bar -->
+      <div class="overflow-x-auto pb-2">
+        <div class="flex items-center min-w-[760px] bg-white dark:bg-[#1C1D26] p-2 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm">
+          <button onclick="goToStep(1)" id="step-btn-1" class="step-btn active">1. Umum & Dasar</button>
+          <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
+          <button onclick="goToStep(2)" id="step-btn-2" class="step-btn">2. Data & Legalitas</button>
+          <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
+          <button onclick="goToStep(3)" id="step-btn-3" class="step-btn">3. Sarana Prasarana</button>
+          <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
+          <button onclick="goToStep(4)" id="step-btn-4" class="step-btn">4. Spesimen & CITES</button>
+          <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
+          <button onclick="goToStep(5)" id="step-btn-5" class="step-btn">5. Narasi & Teknis</button>
+          <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
+          <button onclick="goToStep(6)" id="step-btn-6" class="step-btn">6. TTD & Lampiran</button>
+        </div>
+      </div>
+
+      <!-- Main Form Element -->
+      <form id="bap-entry-form" onsubmit="saveBapData(event)" class="space-y-6">
+        <!-- Hidden input to handle editing states -->
+        <input type="hidden" id="form-bap-id" value="" />
+
+        <!-- STEP 1: INFORMASI UMUM & DASAR PELAKSANAAN -->
+        <div id="step-container-1" class="form-step-container">
+          <div class="bg-white dark:bg-[#1C1D26] p-6 rounded-2xl border border-slate-200 dark:border-white/5 space-y-6">
+            <h3 class="text-base font-bold font-display border-b border-slate-100 dark:border-white/5 pb-3 flex items-center gap-2">
+              <span class="text-indigo-600 dark:text-indigo-400">01.</span> Informasi Umum & Dasar Hukum
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label class="form-label">Nomor Surat BAP</label>
+                <input type="text" id="f-no-bap" required placeholder="Contoh: BA.179/K.18/SKSDAW II/05/2026" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nama Perusahaan (Pemohon)</label>
+                <input type="text" id="f-nama-perusahaan" required placeholder="Contoh: CV. Karisma Alam" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Status Permohonan</label>
+                <select id="f-status-permohonan" class="form-input">
+                  <option value="Baru">Baru</option>
+                  <option value="Perpanjangan">Perpanjangan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Taksa / Komoditas Utama</label>
+                <input type="text" id="f-taxa" required placeholder="Contoh: Gaharu/Kemedangan" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Kabupaten/Kota Tempat Pemeriksaan</label>
+                <input type="text" id="f-tempat-bap" required placeholder="Contoh: Tenggarong" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tanggal Pelaksanaan Pemeriksaan</label>
+                <input type="date" id="f-tanggal-bap" required class="form-input" />
+              </div>
+            </div>
+
+            <!-- Legal Reference Checklist (Dasar Hukum) -->
+            <div class="space-y-3 pt-3">
+              <label class="form-label">Dasar Pelaksanaan (Rujukan Peraturan / Surat Tugas)</label>
+              
+              <!-- Pre-filled Legal References 1-4 -->
+              <div class="space-y-2" id="dasar-hukum-list">
+                <div class="flex items-start gap-3 p-3 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5">
+                  <input type="checkbox" checked id="f-dasar-1" class="mt-1 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+                  <textarea class="w-full bg-transparent text-xs text-slate-700 dark:text-slate-300 border-none focus:ring-0 p-0 resize-none h-12" id="f-dasar-text-1">Peraturan Menteri Lingkungan Hidup dan Kehutanan Nomor 3 Tahun 2021 tentang Standar Kegiatan Usaha pada Penyelenggaraan Perizinan Berusaha Berbasis Risiko Sektor Lingkungan Hidup dan Kehutanan.</textarea>
+                </div>
+                <div class="flex items-start gap-3 p-3 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5">
+                  <input type="checkbox" checked id="f-dasar-2" class="mt-1 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+                  <textarea class="w-full bg-transparent text-xs text-slate-700 dark:text-slate-300 border-none focus:ring-0 p-0 resize-none h-12" id="f-dasar-text-2">Peraturan Direktur Jenderal Perlindungan Hutan dan Konservasi Alam Nomor SK.9/IV-SET/2014 tentang Pedoman Penyusunan Proposal, Rencana Kerja Tahunan dan Berita Acara Persiapan Teknis Pengedar Tumbuhan dan Satwa Liar.</textarea>
+                </div>
+                <div class="flex items-start gap-3 p-3 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5">
+                  <input type="checkbox" checked id="f-dasar-3" class="mt-1 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+                  <textarea class="w-full bg-transparent text-xs text-slate-700 dark:text-slate-300 border-none focus:ring-0 p-0 resize-none h-12" id="f-dasar-text-3">Surat Tugas Kepala Seksi KSDA Wilayah II Tenggarong Nomor ST. 178/K.18/SKSDAW II/05/2026 Tanggal 13 Mei 2026.</textarea>
+                </div>
+                <div class="flex items-start gap-3 p-3 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5">
+                  <input type="checkbox" checked id="f-dasar-4" class="mt-1 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+                  <textarea class="w-full bg-transparent text-xs text-slate-700 dark:text-slate-300 border-none focus:ring-0 p-0 resize-none h-12" id="f-dasar-text-4">Surat Permohonan CV. Karisma Alam Nomor: 11/CV/KA /SMD/V/2026 Tanggal 08 Mei 2026 Perihal Permohonan BAP Kelayakan Teknis dan Pertimbangan Teknis Pengedar TSL.</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: DATA PERUSAHAAN & LEGALITAS DOKUMEN -->
+        <div id="step-container-2" class="form-step-container hidden">
+          <div class="bg-white dark:bg-[#1C1D26] p-6 rounded-2xl border border-slate-200 dark:border-white/5 space-y-6">
+            <h3 class="text-base font-bold font-display border-b border-slate-100 dark:border-white/5 pb-3 flex items-center gap-2">
+              <span class="text-indigo-600 dark:text-indigo-400">02.</span> Profil & Legalitas Dokumen Perusahaan
+            </h3>
+            
+            <h4 class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">I. Identitas Perusahaan</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label class="form-label">Nama Pemilik / Direktur</label>
+                <input type="text" id="f-nama-pemilik" required placeholder="Linardi Tan" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tanggal Pendirian Perusahaan</label>
+                <input type="text" id="f-tgl-pendirian" placeholder="Contoh: 22 Januari 2026" class="form-input" />
+              </div>
+              <div class="form-group md:col-span-2">
+                <label class="form-label">Alamat Kantor</label>
+                <input type="text" id="f-alamat-kantor" required placeholder="Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda" class="form-input" />
+              </div>
+              <div class="form-group md:col-span-2">
+                <label class="form-label">Alamat Penampungan / Gudang Fisik</label>
+                <input type="text" id="f-alamat-penampungan" required placeholder="Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nomor Telepon / Fax</label>
+                <input type="text" id="f-no-telp" placeholder="0811 551 400" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Perusahaan</label>
+                <input type="email" id="f-email" placeholder="karismaalamoffice@gmail.com" class="form-input" />
+              </div>
+            </div>
+
+            <h4 class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider border-t border-slate-100 dark:border-white/5 pt-4">II. Kelengkapan Berkas / Dokumen Syarat</h4>
+            <div class="space-y-4">
+              
+              <!-- Akta Pendirian -->
+              <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                <div class="font-semibold text-xs text-slate-900 dark:text-white">1. Akta Pendirian Perusahaan</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <input type="text" id="f-akta-no" placeholder="Nomor: 05" class="form-input text-xs" />
+                  <input type="text" id="f-akta-tgl" placeholder="Tanggal: 22 Januari 2026" class="form-input text-xs" />
+                  <input type="text" id="f-akta-notaris" placeholder="Nama Notaris: Johny Marthen Londong, S.H." class="form-input text-xs" />
+                </div>
+              </div>
+
+              <!-- NIB -->
+              <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                <div class="font-semibold text-xs text-slate-900 dark:text-white">2. Nomor Induk Berusaha (NIB)</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <input type="text" id="f-nib-no" placeholder="Nomor NIB: 9120300781719" class="form-input text-xs" />
+                  <input type="text" id="f-nib-tgl" placeholder="Tanggal NIB: 11 Juli 2019" class="form-input text-xs" />
+                  <input type="text" id="f-nib-kbli" placeholder="Kode KBLI: 02209" class="form-input text-xs" />
+                </div>
+              </div>
+
+              <!-- KKPR -->
+              <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                <div class="font-semibold text-xs text-slate-900 dark:text-white">3. Persetujuan Kesesuaian Kegiatan Pemanfaatan Ruang (KKPR)</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input type="text" id="f-kkpr-tgl" placeholder="Tanggal Terbit: 08 Mei 2025" class="form-input text-xs" />
+                  <input type="text" id="f-kkpr-penerbit" placeholder="Badan Penerbit: OSS" class="form-input text-xs" />
+                </div>
+              </div>
+
+              <!-- NPWP & Pakta -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                  <div class="font-semibold text-xs text-slate-900 dark:text-white">4. Nomor Pokok Wajib Pajak (NPWP)</div>
+                  <input type="text" id="f-npwp-no" placeholder="Contoh: 02.467.679.3-7222.000" class="form-input text-xs" />
+                </div>
+                <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                  <div class="font-semibold text-xs text-slate-900 dark:text-white">5. Pakta Integritas</div>
+                  <input type="text" id="f-pakta-tgl" placeholder="Tanggal Penandatanganan: 08 Mei 2026" class="form-input text-xs" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: PEMERIKSAAN SARANA DAN PRASARANA -->
+        <div id="step-container-3" class="form-step-container hidden">
+          <div class="bg-white dark:bg-[#1C1D26] p-6 rounded-2xl border border-slate-200 dark:border-white/5 space-y-6">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-white/5 pb-3">
+              <h3 class="text-base font-bold font-display flex items-center gap-2">
+                <span class="text-indigo-600 dark:text-indigo-400">03.</span> Hasil Pemeriksaan Sarpras
+              </h3>
+              <button type="button" onclick="addSarprasRow()" class="px-3 py-1.5 bg-indigo-600/15 hover:bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+                <i class="fa-solid fa-plus"></i> Tambah Sarpras
+              </button>
+            </div>
+
+            <!-- Sarpras Table Editor -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-200 dark:border-white/10 text-slate-500 dark:text-[#9899A8]">
+                    <th class="py-3 px-2">Nama Sarana/Prasarana</th>
+                    <th class="py-3 px-2 w-28">Satuan</th>
+                    <th class="py-3 px-2 w-28">Ukuran</th>
+                    <th class="py-3 px-2 w-24">Jumlah</th>
+                    <th class="py-3 px-2 w-16 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="sarpras-table-body" class="divide-y divide-slate-100 dark:divide-white/5">
+                  <!-- Row items will be dynamically loaded in Javascript (with defaults matching the imagery) -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: SPESIMEN & STATUS REGULASI (CITES, LINDUNGAN) -->
+        <div id="step-container-4" class="form-step-container hidden">
+          <div class="bg-white dark:bg-[#1C1D26] p-6 rounded-2xl border border-slate-200 dark:border-white/5 space-y-6">
+            <h3 class="text-base font-bold font-display border-b border-slate-100 dark:border-white/5 pb-3 flex items-center gap-2">
+              <span class="text-indigo-600 dark:text-indigo-400">04.</span> Detail Spesimen TSL & Regulasi CITES
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- Specimen Taxa Select -->
+              <div class="space-y-3">
+                <label class="form-label block">Pilih Salah Satu Klasifikasi Taksa</label>
+                <div class="grid grid-cols-2 gap-2" id="taxa-select-group">
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="taxa-opt" value="Reptilia" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs">Reptilia</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="taxa-opt" value="Mamalia" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs">Mamalia</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="taxa-opt" value="Amphibia" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs">Amphibia</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="taxa-opt" value="Burung" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs">Burung</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="taxa-opt" value="Gaharu" checked class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Gaharu</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="taxa-opt" value="Tumbuhan" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs">Tumbuhan</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- CITES Appendix Selection -->
+              <div class="space-y-3">
+                <label class="form-label block">Status Regulasi & Appendiks CITES</label>
+                <div class="space-y-2">
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="cites-opt" value="I" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs">Appendiks I CITES</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="cites-opt" value="II" checked class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Appendiks II CITES</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="cites-opt" value="III" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs">Appendiks III CITES</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/5 cursor-pointer">
+                    <input type="radio" name="cites-opt" value="Non" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="text-xs">Non-Appendiks CITES</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Protection & Origin Specs -->
+              <div class="space-y-4">
+                <div class="form-group">
+                  <label class="form-label">Status Perlindungan UU RI</label>
+                  <select id="f-status-perlindungan" class="form-input">
+                    <option value="Tidak Dilindungi" selected>Tidak Dilindungi</option>
+                    <option value="Dilindungi">Dilindungi Undang-Undang</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Sumber Perolehan Asal Usul</label>
+                  <select id="f-sumber-spesimen" class="form-input">
+                    <option value="Tangkapan Alam" selected>Tangkapan Alam (W)</option>
+                    <option value="Hasil Penangkaran/Budidaya">Hasil Penangkaran / Budidaya (C)</option>
+                    <option value="Luar Negeri (Impor)">Luar Negeri / Impor (I)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Specimen Form Shapes -->
+              <div class="space-y-4">
+                <div class="form-group">
+                  <label class="form-label">Bentuk Komoditas / Spesimen</label>
+                  <select id="f-bentuk-spesimen" class="form-input">
+                    <option value="Kayu" selected>Kayu (Kepingan/Kemedangan)</option>
+                    <option value="Hidup">Hidup (Live Specimen)</option>
+                    <option value="Minyak">Minyak Atsiri (Oil)</option>
+                    <option value="Kulit">Kulit Satwa (Skin)</option>
+                    <option value="Lainnya">Bentuk Lainnya</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Keterangan Sumber/Asal Usul</label>
+                  <input type="text" id="f-keterangan-asal" value="Berdasarkan kuota pengambilan di alam yang telah ditetapkan oleh Balai KSDA Kalimantan Timur" class="form-input" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: DETAIL NARASI PEMERIKSAAN & TEKNIS -->
+        <div id="step-container-5" class="form-step-container hidden">
+          <div class="bg-white dark:bg-[#1C1D26] p-6 rounded-2xl border border-slate-200 dark:border-white/5 space-y-6">
+            <h3 class="text-base font-bold font-display border-b border-slate-100 dark:border-white/5 pb-3 flex items-center gap-2">
+              <span class="text-indigo-600 dark:text-indigo-400">05.</span> Narasi Pelaksanaan Teknis & Bisnis
+            </h3>
+
+            <div class="space-y-4">
+              <!-- Penampungan -->
+              <div class="form-group">
+                <label class="form-label">IX. Pemeriksaan Teknis Pelaksanaan Penampungan</label>
+                <textarea id="f-narasi-penampungan" class="form-input h-24 text-xs">Kegiatan penampungan dilakukan setelah pihak perusahaan mendapatkan barang dari hasil pembelian pihak pencari dan juga masyarakat yang langsung mengantarkan barang berupa gaharu kepada pihak perusahaan. Penampungan dimaksudkan untuk mengumpulkan gaharu yang didapat perusahaan dari pencari sebelum dilakukan perlakuan.</textarea>
+              </div>
+
+              <!-- Pengangkutan -->
+              <div class="form-group">
+                <label class="form-label">X. Pemeriksaan Teknis Pelaksanaan Pengangkutan</label>
+                <textarea id="f-narasi-pengangkutan" class="form-input h-24 text-xs">Teknis pengangkutan gaharu sebelum dilakukan pengangkutan terlebih dahulu di packing (dikemas) sebelum diangkut ke daerah tujuan pengiriman menggunakan pesawat udara. Daerah tujuan penjualan gaharu yaitu : Jakarta dan daerah lainnya sesuai permintaan pasar.</textarea>
+              </div>
+
+              <!-- Limbah -->
+              <div class="form-group">
+                <label class="form-label">XI. Pemeriksaan Sistem Pembuangan Limbah</label>
+                <textarea id="f-narasi-limbah" class="form-input h-24 text-xs">Limbah yang dihasilkan berupa limbah padat dan cair yang tidak berbahaya. Sistem Pembuangan Limbah yaitu dengan menyapu dan mengumpulkan limbah yang dihasilkan untuk kemudian di buang ke tempat pembuangan sampah sedangkan limbah cair dibuang melalui parit/selokan yang telah disiapkan.</textarea>
+              </div>
+
+              <!-- Program Konservasi -->
+              <div class="form-group">
+                <label class="form-label">XIV. Program Pembinaan Konservasi Jenis yang Diedarkan</label>
+                <textarea id="f-narasi-pembinaan" class="form-input h-24 text-xs">Untuk mewujudkan bisnis gaharu agar dapat berkesinambungan dan terus menerus maka diperlukan adanya kegiatan pembinaan konservasi agar tidak terjadi kelangkaan jenis gaharu di masa akan datang. Program pembinaan konservasi yang dilakukan di antaranya adalah dengan melakukan penyortiran/menyeleksi pembelian gaharu dan kemedangan dan juga pihak perusahaan memberikan penyuluhan kepada para pencari gaharu untuk tidak menebang pohon yang tidak mempunyai kandungan gaharu agar kelestarian jenis pohon yang lain tetap terjaga.</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 6: PENANDATANGAN & LAMPIRAN GAMBAR DOKUMENTASI -->
+        <div id="step-container-6" class="form-step-container hidden">
+          <div class="bg-white dark:bg-[#1C1D26] p-6 rounded-2xl border border-slate-200 dark:border-white/5 space-y-6">
+            <h3 class="text-base font-bold font-display border-b border-slate-100 dark:border-white/5 pb-3 flex items-center gap-2">
+              <span class="text-indigo-600 dark:text-indigo-400">06.</span> Pejabat Penandatangan & Dokumentasi Foto
+            </h3>
+
+            <!-- Signatures Section -->
+            <h4 class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">I. Daftar Penandatangan Dokumen BAP</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- Pemeriksa 1 -->
+              <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                <div class="font-semibold text-xs text-slate-900 dark:text-white flex items-center gap-1">
+                  <i class="fa-solid fa-user-tie text-indigo-600"></i> Petugas Pemeriksa I
+                </div>
+                <input type="text" id="f-pem-1-nama" required placeholder="Nama Pemeriksa I: Ahmad Ripai, S.Hut." class="form-input text-xs" />
+                <input type="text" id="f-pem-1-nip" placeholder="NIP: 19800412 200012 1 001" class="form-input text-xs" />
+              </div>
+
+              <!-- Pemeriksa 2 -->
+              <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                <div class="font-semibold text-xs text-slate-900 dark:text-white flex items-center gap-1">
+                  <i class="fa-solid fa-user-tie text-indigo-600"></i> Petugas Pemeriksa II
+                </div>
+                <input type="text" id="f-pem-2-nama" required placeholder="Nama Pemeriksa II: Herdi Yusuf, S.Hut." class="form-input text-xs" />
+                <input type="text" id="f-pem-2-nip" placeholder="NIP: 19851227 202012 1 005" class="form-input text-xs" />
+              </div>
+
+              <!-- Pengesah SKW -->
+              <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                <div class="font-semibold text-xs text-slate-900 dark:text-white flex items-center gap-1">
+                  <i class="fa-solid fa-signature text-indigo-600"></i> Pejabat Pengesah (Seksi Wilayah)
+                </div>
+                <input type="text" id="f-pengesah-an" value="a.n. Kepala Balai, Kepala Seksi KSDA Wilayah II," class="form-input text-xs" />
+                <input type="text" id="f-pengesah-nama" required placeholder="Nama Pejabat: Suriawati Halim, S.Hut., M.P." class="form-input text-xs" />
+                <input type="text" id="f-pengesah-nip" placeholder="NIP: 19751127 200003 2 001" class="form-input text-xs" />
+              </div>
+
+              <!-- Perwakilan Perusahaan -->
+              <div class="p-4 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5 space-y-3">
+                <div class="font-semibold text-xs text-slate-900 dark:text-white flex items-center gap-1">
+                  <i class="fa-solid fa-briefcase text-indigo-600"></i> Perwakilan Perusahaan / Direktur
+                </div>
+                <input type="text" id="f-dir-nama" required placeholder="Nama Direktur: Linardi Tan" class="form-input text-xs" />
+                <input type="text" id="f-dir-jabatan" value="Direktur" class="form-input text-xs" />
+              </div>
+            </div>
+
+            <!-- Photos & Images Section -->
+            <h4 class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider border-t border-slate-100 dark:border-white/5 pt-4">II. Lampiran Foto & Gambar Pemeriksaan</h4>
+            <div class="space-y-4">
+              <div class="p-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-white/10 text-center relative hover:border-indigo-600 dark:hover:border-indigo-400 transition-colors">
+                <input type="file" id="f-photo-uploader" accept="image/*" multiple onchange="handlePhotoUploads(event)" class="absolute inset-0 opacity-0 cursor-pointer" />
+                <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400 mb-2"></i>
+                <div class="text-xs font-semibold">Klik / Seret Foto di Sini untuk Diunggah</div>
+                <div class="text-[10px] text-slate-400 mt-1">Dapat mengunggah beberapa berkas sekaligus (Maksimal 2MB per gambar)</div>
+              </div>
+
+              <!-- Uploaded Images Grid -->
+              <div id="form-uploaded-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <!-- Dynamically populated upload previews -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Form Control Buttons -->
+        <div class="flex justify-between items-center bg-white dark:bg-[#1C1D26] p-4 rounded-2xl border border-slate-200 dark:border-white/5">
+          <button type="button" onclick="stepBackward()" id="form-back-btn" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-[#252631]">
+            Sebelumnya
+          </button>
+          
+          <div class="flex gap-2">
+            <button type="button" onclick="switchView('list')" class="px-5 py-2.5 rounded-xl border border-amber-600/20 text-amber-600 hover:bg-amber-600/10 text-xs font-semibold">
+              Batal
+            </button>
+            <button type="submit" id="form-save-submit-btn" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-semibold shadow-lg shadow-indigo-600/25">
+              Simpan Data BAP
+            </button>
+            <button type="button" onclick="stepForward()" id="form-next-btn" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-semibold shadow-lg shadow-indigo-600/25">
+              Selanjutnya
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- PRINT AREA TEMPLATE (Sesuai Layout Surat Dinas/BAP Resmi) -->
+  <!-- ================================================================= -->
+  <div id="print-area-template" class="hidden print-area bg-white text-black p-10 font-serif max-w-[800px] mx-auto text-sm leading-relaxed">
+    
+    <!-- Kop Resmi Kementerian Kehutanan -->
+    <div class="flex items-center gap-4 border-b-[3px] border-double border-black pb-4 mb-4">
+      <!-- Minimalist vector-based outline or placeholder representing a seal/logo -->
+      <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center border border-black/10 rounded-full bg-slate-100">
+        <i class="fa-solid fa-tree-deciduous text-3xl text-emerald-800"></i>
+      </div>
+      <div class="text-center flex-grow">
+        <h2 class="text-base font-bold uppercase tracking-tight leading-tight">Kementerian Kehutanan</h2>
+        <h3 class="text-sm font-bold uppercase leading-tight">Direktorat Jenderal Konservasi Sumber Daya Alam dan Ekosistem</h3>
+        <h1 class="text-base font-extrabold uppercase leading-tight tracking-wide">Balai Konservasi Sumber Daya Alam Kalimantan Timur</h1>
+        <p class="text-[10px] font-sans font-normal italic mt-1 leading-tight">Alamat : Jl. Tambak Rel No. 9 RT. 11 Kel. Baru Kec. Tenggarong – Kabupaten Kutai Kartanegara</p>
+      </div>
+    </div>
+
+    <!-- Judul Dokumen -->
+    <div class="text-center space-y-1 my-6">
+      <h2 class="text-sm font-bold underline uppercase">BERITA ACARA PEMERIKSAAN (BAP) PERSIAPAN TEKNIS</h2>
+      <h2 class="text-sm font-bold uppercase">PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h2>
+      <div class="text-xs font-sans">Nomor: <span id="p-no-bap" class="font-bold"></span></div>
+    </div>
+
+    <!-- Metadata General -->
+    <div class="grid grid-cols-3 gap-y-1 font-sans text-xs border border-black p-3 bg-slate-50/50 mb-6">
+      <div class="font-semibold">Nama Perusahaan</div>
+      <div class="col-span-2">: <span id="p-nama-perusahaan" class="font-bold"></span></div>
+      
+      <div class="font-semibold">Status Permohonan</div>
+      <div class="col-span-2">: <span id="p-status-permohonan"></span></div>
+      
+      <div class="font-semibold">Taksa / Komoditas</div>
+      <div class="col-span-2">: <span id="p-taxa" class="font-bold"></span></div>
+      
+      <div class="font-semibold">Tempat, Tanggal</div>
+      <div class="col-span-2">: <span id="p-tempat-bap"></span>, <span id="p-tanggal-bap"></span></div>
+    </div>
+
+    <!-- Dasar Pelaksanaan -->
+    <div class="space-y-2 mb-6">
+      <div class="font-bold uppercase text-xs border-b border-black pb-1">DASAR PELAKSANAAN</div>
+      <ol id="p-dasar-hukum" class="list-decimal pl-5 text-xs space-y-1 leading-snug">
+        <!-- Dyn. Populated -->
+      </ol>
+    </div>
+
+    <!-- I. Data Perusahaan -->
+    <div class="space-y-2 mb-6">
+      <div class="font-bold uppercase text-xs border-b border-black pb-1">I. DATA PERUSAHAAN</div>
+      <table class="w-full text-xs font-sans">
+        <tbody>
+          <tr><td class="w-48 py-1">1. Nama Pemilik / Direktur</td><td class="py-1">: <span id="p-nama-pemilik" class="font-semibold"></span></td></tr>
+          <tr><td class="py-1">2. Nama Perusahaan</td><td class="py-1">: <span id="p-corp-nama" class="font-semibold"></span></td></tr>
+          <tr><td class="py-1">3. Tanggal Pendirian</td><td class="py-1">: <span id="p-tgl-pendirian"></span></td></tr>
+          <tr><td class="py-1">4. Alamat Kantor</td><td class="py-1">: <span id="p-alamat-kantor"></span></td></tr>
+          <tr><td class="py-1">5. Alamat Penampungan</td><td class="py-1">: <span id="p-alamat-penampungan"></span></td></tr>
+          <tr><td class="py-1">6. Nomor Telp/Fax</td><td class="py-1">: <span id="p-no-telp"></span></td></tr>
+          <tr><td class="py-1">7. Email</td><td class="py-1">: <span id="p-email"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- II. Pemeriksaan Dokumen -->
+    <div class="space-y-2 mb-6 page-break">
+      <div class="font-bold uppercase text-xs border-b border-black pb-1">II. PEMERIKSAAN KELENGKAPAN DOKUMEN PERSYARATAN</div>
+      <table class="w-full border border-black text-xs font-sans">
+        <thead>
+          <tr class="bg-slate-100 border-b border-black text-center">
+            <th class="border-r border-black p-2 w-12">No.</th>
+            <th class="border-r border-black p-2">Jenis Dokumen Persyaratan</th>
+            <th class="p-2">Keterangan / Detil Dokumen</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-black" id="p-dokumen-rows">
+          <!-- Dyn. Populated -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- III. Sarpras -->
+    <div class="space-y-2 mb-6">
+      <div class="font-bold uppercase text-xs border-b border-black pb-1">III. PEMERIKSAAN SARANA DAN PRASARANA</div>
+      <table class="w-full border border-black text-xs font-sans">
+        <thead>
+          <tr class="bg-slate-100 border-b border-black text-center">
+            <th class="border-r border-black p-2 w-12">No.</th>
+            <th class="border-r border-black p-2">Jenis Sarana / Prasarana</th>
+            <th class="border-r border-black p-2 w-24">Satuan</th>
+            <th class="border-r border-black p-2 w-24">Ukuran</th>
+            <th class="p-2 w-20">Jumlah</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-black" id="p-sarpras-rows">
+          <!-- Dyn. Populated -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- IV, V, VI, VII, VIII Detail Regulasi Spesimen -->
+    <div class="space-y-2 mb-6 page-break">
+      <div class="font-bold uppercase text-xs border-b border-black pb-1">IV - VIII. SPESIFIKASI SPESIMEN & PEROLEHAN</div>
+      <table class="w-full border border-black text-xs font-sans divide-y divide-black">
+        <tr class="divide-x divide-black"><td class="p-2 w-1/3 bg-slate-50 font-semibold">Taksa Terpilih</td><td class="p-2" id="p-spesimen-taxa"></td></tr>
+        <tr class="divide-x divide-black"><td class="p-2 bg-slate-50 font-semibold">Status Perlindungan</td><td class="p-2" id="p-spesimen-lindung"></td></tr>
+        <tr class="divide-x divide-black"><td class="p-2 bg-slate-50 font-semibold">Status Appendiks CITES</td><td class="p-2" id="p-spesimen-cites"></td></tr>
+        <tr class="divide-x divide-black"><td class="p-2 bg-slate-50 font-semibold">Asal Usul / Sumber</td><td class="p-2" id="p-spesimen-sumber"></td></tr>
+        <tr class="divide-x divide-black"><td class="p-2 bg-slate-50 font-semibold">Bentuk Spesimen</td><td class="p-2" id="p-spesimen-bentuk"></td></tr>
+      </table>
+    </div>
+
+    <!-- IX, X, XI, XIV Hasil Teknis Naratif -->
+    <div class="space-y-4 mb-6">
+      <div class="space-y-1">
+        <div class="font-bold text-xs">IX. PEMERIKSAAN TEKNIS PELAKSANAAN PENAMPUNGAN</div>
+        <p class="text-xs italic pl-4" id="p-narasi-penampungan"></p>
+      </div>
+      <div class="space-y-1">
+        <div class="font-bold text-xs">X. PEMERIKSAAN TEKNIS PELAKSANAAN PENGANGKUTAN</div>
+        <p class="text-xs italic pl-4" id="p-narasi-pengangkutan"></p>
+      </div>
+      <div class="space-y-1">
+        <div class="font-bold text-xs">XI. PEMERIKSAAN SISTEM PEMBUANGAN LIMBAH</div>
+        <p class="text-xs italic pl-4" id="p-narasi-limbah"></p>
+      </div>
+      <div class="space-y-1">
+        <div class="font-bold text-xs">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</div>
+        <p class="text-xs italic pl-4" id="p-narasi-pembinaan"></p>
+      </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="space-y-4 my-12 page-break">
+      <div class="font-bold uppercase text-xs border-b border-black pb-1">XV. PERNYATAAN DAN PENGESAHAN TANDA TANGAN</div>
+      
+      <p class="text-[11px] leading-relaxed text-justify italic font-serif">
+        Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan fisik yang ada di lapangan. Semua kelengkapan dokumen telah diverifikasi sesuai aslinya. Apabila data, dokumen, dan keterangan tersebut di atas terbukti tidak benar, maka kami bersedia dikenakan sanksi hukum sesuai ketentuan perundang-undangan yang berlaku.
+      </p>
+
+      <!-- Signatures Grid -->
+      <div class="grid grid-cols-2 gap-12 text-xs font-sans pt-6">
+        
+        <!-- Pemeriksa -->
+        <div class="space-y-12">
+          <div>
+            <div class="font-bold">Dibuat dengan sebenarnya oleh:</div>
+            <div class="text-[11px] text-slate-500">Tim Petugas Pemeriksa BKSDA:</div>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <div class="font-bold underline" id="p-pem-1-nama"></div>
+              <div>NIP. <span id="p-pem-1-nip"></span></div>
+            </div>
+            <div>
+              <div class="font-bold underline" id="p-pem-2-nama"></div>
+              <div>NIP. <span id="p-pem-2-nip"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disahkan dan Mengetahui -->
+        <div class="space-y-12">
+          
+          <!-- Pengesah BKSDA -->
+          <div>
+            <div class="font-bold underline" id="p-pengesah-an"></div>
+            <div class="font-bold">Kepala Seksi KSDA Wilayah II,</div>
+            <div class="h-16"></div>
+            <div class="font-bold underline" id="p-pengesah-nama"></div>
+            <div>NIP. <span id="p-pengesah-nip"></span></div>
+          </div>
+
+          <!-- Perwakilan Perusahaan -->
+          <div>
+            <div class="font-bold">Mengetahui:</div>
+            <div class="font-bold" id="p-dir-jabatan"></div>
+            <div class="h-16"></div>
+            <div class="font-bold underline" id="p-dir-nama"></div>
+            <div>CV. Karisma Alam</div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Photos Annex Document Page -->
+    <div class="page-break space-y-6">
+      <div class="text-center font-bold uppercase border-b border-black pb-2 mb-6">
+        LAMPIRAN DOKUMENTASI DOKUMEN BAP
+      </div>
+
+      <table class="w-full text-xs font-sans">
+        <tbody>
+          <tr><td class="w-24 font-bold">Lampiran</td><td>: Berita Acara Pemeriksaan (BAP) Persiapan Teknis</td></tr>
+          <tr><td class="font-bold">Nomor</td><td>: <span id="p-lamp-no"></span></td></tr>
+          <tr><td class="font-bold">Tanggal</td><td>: <span id="p-lamp-tgl"></span></td></tr>
+        </tbody>
+      </table>
+
+      <!-- Dynamic Print Photos Grid -->
+      <div id="p-photos-grid" class="grid grid-cols-2 gap-6 pt-4">
+        <!-- Uploaded pictures with numbered caption will render here -->
+      </div>
+    </div>
+
+    <!-- Back to Web Interface Control -->
+    <div class="no-print text-center pt-8 border-t border-slate-200 mt-12">
+      <button onclick="closePrintPreview()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard Aplikasi
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- JAVASCRIPT CONTROLLER LOGIC -->
+  <!-- ================================================================= -->
+  <script>
+    // State global untuk data dan GAS endpoint
+    let GAS_URL = https://script.google.com/macros/s/AKfycbyN7VozhRxBTp4Jv0jA9dOTm-6C4rL9QcpyFpccSICGPpi2LqKD_gxBb5XIHVUCVKYs-w/exec|| '';
+    let bapRecords = [];
+    let activeStep = 1;
+
+    // Database fallback (Mock data awal berdasarkan template gambar CV Karisma Alam)
+    const initialMockBaps = [
+      {
+        id: "mock-1",
+        no_bap: "BA.179/K.18/SKSDAW II/05/2026",
+        nama_perusahaan: "CV. Karisma Alam",
+        status_permohonan: "Baru",
+        taxa: "Gaharu/Kemedangan",
+        tempat_bap: "Tenggarong",
+        tanggal_bap: "2026-05-13",
+        dasar_hukum: [
+          "Peraturan Menteri Lingkungan Hidup dan Kehutanan Nomor 3 Tahun 2021 tentang Standar Kegiatan Usaha pada Penyelenggaraan Perizinan Berusaha Berbasis Risiko Sektor Lingkungan Hidup dan Kehutanan.",
+          "Peraturan Direktur Jenderal Perlindungan Hutan dan Konservasi Alam Nomor SK.9/IV-SET/2014 tentang Pedoman Penyusunan Proposal, Rencana Kerja Tahunan dan Berita Acara Persiapan Teknis Pengedar Tumbuhan dan Satwa Liar.",
+          "Surat Tugas Kepala Seksi KSDA Wilayah II Tenggarong Nomor ST. 178/K.18/SKSDAW II/05/2026 Tanggal 13 Mei 2026.",
+          "Surat Permohonan CV. Karisma Alam Nomor: 11/CV/KA /SMD/V/2026 Tanggal 08 Mei 2026 Perihal Permohonan BAP Kelayakan Teknis dan Pertimbangan Teknis Pengedar TSL."
+        ],
+        data_perusahaan: {
+          nama_pemilik: "Linardi Tan",
+          tgl_pendirian: "22 Januari 2026",
+          alamat_kantor: "Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda",
+          alamat_penampungan: "Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda",
+          no_telp: "0811 551 400",
+          email: "karismaalamoffice@gmail.com"
+        },
+        dokumen_persyaratan: {
+          akta_no: "05",
+          akta_tgl: "22 Januari 2026",
+          akta_notaris: "Johny Marthen Londong, S.H., M.Kn.",
+          nib_no: "9120300781719",
+          nib_tgl: "11 Juli 2019",
+          nib_kbli: "02209",
+          kkpr_tgl: "08 Mei 2025",
+          kkpr_penerbit: "OSS",
+          npwp_no: "02.467.679.3-7222.000",
+          pakta_tgl: "08 Mei 2026"
+        },
+        sarana_prasarana: [
+          { nama: "Kantor", satuan: "M2", ukuran: "16", jumlah: 1 },
+          { nama: "Timbangan", satuan: "Unit", ukuran: "Nagata", jumlah: 2 },
+          { nama: "Printer", satuan: "Unit", ukuran: "Canon E480", jumlah: 1 },
+          { nama: "Laptop", satuan: "Unit", ukuran: "Asus", jumlah: 1 },
+          { nama: "Meja dan kursi kerja", satuan: "Set", ukuran: "-", jumlah: 1 },
+          { nama: "Meja dan kursi tamu", satuan: "Set", ukuran: "-", jumlah: 1 },
+          { nama: "Kipas Angin", satuan: "Buah", ukuran: "Krisbow", jumlah: 3 },
+          { nama: "Alat Pengepak", satuan: "Buah", ukuran: "Tape dispenser/Tali", jumlah: 1 },
+          { nama: "Kendaraan roda empat", satuan: "Unit", ukuran: "Mobil", jumlah: 2 },
+          { nama: "Kendaraan roda dua", satuan: "Unit", ukuran: "Scoopy", jumlah: 2 },
+          { nama: "Gudang", satuan: "M2", ukuran: "6", jumlah: 1 }
+        ],
+        spesimen_detail: {
+          taxa: "Gaharu",
+          lindung: "Tidak Dilindungi",
+          cites: "II",
+          sumber: "Tangkapan Alam",
+          bentuk: "Kayu",
+          keterangan_asal: "Berdasarkan kuota pengambilan di alam yang telah ditetapkan oleh Balai KSDA Kalimantan Timur"
+        },
+        narasi_teknis: {
+          penampungan: "Kegiatan penampungan dilakukan setelah pihak perusahaan mendapatkan barang dari hasil pembelian pihak pencari dan juga masyarakat yang langsung mengantarkan barang berupa gaharu kepada pihak perusahaan. Penampungan dimaksudkan untuk mengumpulkan gaharu yang didapat perusahaan dari pencari sebelum dilakukan perlakuan.",
+          pengangkutan: "Teknis pengangkutan gaharu sebelum dilakukan pengangkutan terlebih dahulu di packing (dikemas) sebelum diangkut ke daerah tujuan pengiriman menggunakan pesawat udara. Daerah tujuan penjualan gaharu yaitu : Jakarta dan daerah lainnya sesuai permintaan pasar.",
+          limbah: "Limbah yang dihasilkan berupa limbah padat dan cair yang tidak berbahaya. Sistem Pembuangan Limbah yaitu dengan menyapu dan mengumpulkan limbah yang dihasilkan untuk kemudian di buang ke tempat pembuangan sampah sedangkan limbah cair dibuang melalui parit/selokan yang telah disiapkan.",
+          pembinaan: "Untuk mewujudkan bisnis gaharu agar dapat berkesinambungan dan terus menerus maka diperlukan adanya kegiatan pembinaan konservasi agar tidak terjadi kelangkaan jenis gaharu di masa akan datang. Program pembinaan konservasi yang dilakukan di antaranya adalah dengan melakukan penyortiran/menyeleksi pembelian gaharu dan kemedangan dan juga pihak perusahaan memberikan penyuluhan kepada para pencari gaharu untuk tidak menebang pohon yang tidak mempunyai kandungan gaharu agar kelestarian jenis pohon yang lain tetap terjaga."
+        },
+        penandatangan: {
+          pem_1_nama: "Ahmad Ripai, S.Hut.",
+          pem_1_nip: "19800412 200012 1 001",
+          pem_2_nama: "Herdi Yusuf, S.Hut.",
+          pem_2_nip: "19851227 202012 1 005",
+          pengesah_an: "a.n. Kepala Balai, Kepala Seksi KSDA Wilayah II,",
+          pengesah_nama: "Suriawati Halim, S.Hut., M.P.",
+          pengesah_nip: "19751127 200003 2 001",
+          dir_nama: "Linardi Tan",
+          dir_jabatan: "Direktur"
+        },
+        images_data: [
+          { url: "https://placehold.co/600x400/2563EB/ffffff?text=FOTO+1:+Ruangan+Kantor", desc: "Ruangan Kantor" },
+          { url: "https://placehold.co/600x400/2563EB/ffffff?text=FOTO+2:+Timbangan", desc: "Timbangan" }
+        ],
+        created_at: "2026-06-23T11:19:28.000Z"
+      }
+    ];
+
+    // Default list items for Sarpras
+    const defaultSarpras = [
+      { nama: "Kantor", satuan: "M2", ukuran: "16", jumlah: 1 },
+      { nama: "Timbangan", satuan: "Unit", ukuran: "Nagata", jumlah: 2 },
+      { nama: "Printer", satuan: "Unit", ukuran: "Canon E480", jumlah: 1 },
+      { nama: "Laptop", satuan: "Unit", ukuran: "Asus", jumlah: 1 },
+      { nama: "Meja dan kursi kerja", satuan: "Set", ukuran: "-", jumlah: 1 },
+      { nama: "Meja dan kursi tamu", satuan: "Set", ukuran: "-", jumlah: 1 },
+      { nama: "Kipas Angin", satuan: "Buah", ukuran: "Krisbow", jumlah: 3 },
+      { nama: "Alat Pengepak", satuan: "Buah", ukuran: "Dispenser", jumlah: 1 },
+      { nama: "Kendaraan roda empat", satuan: "Unit", ukuran: "Mobil", jumlah: 2 },
+      { nama: "Kendaraan roda dua", satuan: "Unit", ukuran: "Scoopy", jumlah: 2 },
+      { nama: "Gudang", satuan: "M2", ukuran: "6", jumlah: 1 }
+    ];
+
+    let uploadedPhotos = [];
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set Theme
+      const isDark = localStorage.getItem('darkMode') === 'true';
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('theme-icon').className = 'fa-solid fa-sun';
+      }
+      
+      // Init Clock
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // Set Input GAS Url
+      document.getElementById('gas-url-input').value = GAS_URL;
+
+      // Load Data
+      fetchBapRecords();
+    });
+
+    function updateClock() {
+      const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      
+      const now = new Date();
+      const day = days[now.getDay()];
+      const date = now.getDate();
+      const month = months[now.getMonth()];
+      const year = now.getFullYear();
+      
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      document.getElementById('live-day-date').textContent = `${day}, ${date} ${month} ${year}`;
+      document.getElementById('live-clock').textContent = `${hours}:${minutes}:${seconds} WIB`;
+    }
+
+    // Toggle Theme
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('darkMode', isDark);
+      document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+
+    // Update URL GAS
+    function updateGASUrl() {
+      const url = document.getElementById('gas-url-input').value.trim();
+      GAS_URL = url;
+      localStorage.setItem('BAP_GAS_URL', url);
+      showToast('Koneksi URL Web App GAS Diperbarui', 'info');
+      fetchBapRecords();
+    }
+
+    async function fetchBapRecords() {
+      setLoadingState(true);
+      
+      const statusDot = document.getElementById('status-dot');
+      const statusPulse = document.getElementById('status-pulse');
+
+      if (!GAS_URL) {
+        statusDot.className = 'relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500';
+        statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75';
+        
+        // Memakai local storage fallback
+        const localData = localStorage.getItem('BAP_LOCAL_DB');
+        if (localData) {
+          bapRecords = JSON.parse(localData);
+        } else {
+          bapRecords = [...initialMockBaps];
+          localStorage.setItem('BAP_LOCAL_DB', JSON.stringify(bapRecords));
+        }
+        showToast('Menggunakan Penyimpanan Lokal (GAS Belum Terkoneksi)', 'warning');
+        renderBapList(bapRecords);
+        setLoadingState(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${GAS_URL}?action=getAll`);
+        const result = await response.json();
+        
+        if (result.success) {
+          bapRecords = result.data;
+          // Sync ke lokal untuk offline access
+          localStorage.setItem('BAP_LOCAL_DB', JSON.stringify(bapRecords));
+          
+          statusDot.className = 'relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500';
+          statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75';
+          
+          showToast('Database Sinkron dengan Google Sheet!', 'success');
+          renderBapList(bapRecords);
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+        showToast('Koneksi GAS Gagal. Membuka mode offline lokal.', 'error');
+        
+        statusDot.className = 'relative inline-flex rounded-full h-3.5 w-3.5 bg-rose-500';
+        statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75';
+        
+        const localData = localStorage.getItem('BAP_LOCAL_DB') || JSON.stringify(initialMockBaps);
+        bapRecords = JSON.parse(localData);
+        renderBapList(bapRecords);
+      } finally {
+        setLoadingState(false);
+      }
+    }
+
+    function renderBapList(records) {
+      const container = document.getElementById('bap-cards-grid');
+      container.innerHTML = '';
+
+      if (records.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-500 dark:text-[#9899A8]">
+            <i class="fa-solid fa-inbox text-4xl mb-3"></i>
+            <p class="text-sm font-semibold">Belum Ada Berita Acara Tersimpan</p>
+            <p class="text-xs">Mulai buat BAP baru dengan mengklik tombol "Buat BAP Baru" diatas.</p>
+          </div>
+        `;
+        return;
+      }
+
+      records.forEach(item => {
+        const itemDate = new Date(item.tanggal_bap).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+        const card = document.createElement('div');
+        card.className = `p-5 rounded-2xl bg-white dark:bg-[#1C1D26] border border-slate-200 dark:border-white/5 space-y-4 hover:border-slate-300 dark:hover:border-white/10 transition-all flex flex-col justify-between shadow-sm hover:shadow-md`;
+        
+        card.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex justify-between items-start gap-2">
+              <span class="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold tracking-wider uppercase">${item.status_permohonan || 'Baru'}</span>
+              <span class="text-[10px] text-slate-400 font-semibold">${itemDate}</span>
+            </div>
+            <h3 class="font-bold font-display text-base text-slate-900 dark:text-white leading-tight truncate-2-lines">${item.nama_perusahaan}</h3>
+            <p class="text-xs text-slate-500 dark:text-[#9899A8] font-semibold">${item.no_bap}</p>
+            
+            <div class="pt-2 flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+              <div class="bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 p-1.5 rounded-lg">
+                <i class="fa-solid fa-seedling"></i>
+              </div>
+              <span class="font-medium truncate">${item.taxa}</span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 dark:border-white/5 flex gap-2">
+            <button onclick="previewBap('${item.id}')" class="flex-1 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#252631] dark:hover:bg-[#2e2f3d] text-xs font-semibold flex justify-center items-center gap-1.5 transition-all text-slate-700 dark:text-slate-300">
+              <i class="fa-solid fa-print"></i> Cetak / Preview
+            </button>
+            <button onclick="editBap('${item.id}')" class="p-2 rounded-xl bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 text-xs font-semibold" title="Edit">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button onclick="confirmDeleteBap('${item.id}')" class="p-2 rounded-xl bg-rose-600/10 hover:bg-rose-600/20 text-rose-600 dark:text-rose-400 text-xs font-semibold" title="Hapus">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Loading State
+    function setLoadingState(isLoading) {
+      if (isLoading) {
+        document.getElementById('bap-cards-grid').innerHTML = `
+          <div class="skeleton h-48 rounded-2xl"></div>
+          <div class="skeleton h-48 rounded-2xl"></div>
+          <div class="skeleton h-48 rounded-2xl"></div>
+        `;
+      }
+    }
+
+    // Navigation Views
+    function switchView(viewName) {
+      document.getElementById('view-list').classList.add('hidden');
+      document.getElementById('view-form').classList.add('hidden');
+      document.getElementById('tab-list').classList.remove('active');
+      document.getElementById('tab-form').classList.remove('active');
+
+      if (viewName === 'list') {
+        document.getElementById('view-list').classList.remove('hidden');
+        document.getElementById('tab-list').classList.add('active');
+      } else {
+        document.getElementById('view-form').classList.remove('hidden');
+        document.getElementById('tab-form').classList.add('active');
+      }
+    }
+
+    function goToStep(stepNum) {
+      activeStep = stepNum;
+      
+      // Update step indicator tabs
+      for (let i = 1; i <= 6; i++) {
+        const btn = document.getElementById(`step-btn-${i}`);
+        const container = document.getElementById(`step-container-${i}`);
+        
+        btn.classList.remove('active', 'completed');
+        container.classList.add('hidden');
+        
+        if (i < stepNum) {
+          btn.classList.add('completed');
+        } else if (i === stepNum) {
+          btn.classList.add('active');
+          container.classList.remove('hidden');
+        }
+      }
+
+      // Update Navigation Buttons visibility
+      document.getElementById('form-back-btn').style.display = stepNum === 1 ? 'none' : 'block';
+      document.getElementById('form-next-btn').style.display = stepNum === 6 ? 'none' : 'block';
+      document.getElementById('form-save-submit-btn').style.display = stepNum === 6 ? 'block' : 'none';
+    }
+
+    function stepForward() {
+      if (activeStep < 6) goToStep(activeStep + 1);
+    }
+
+    function stepBackward() {
+      if (activeStep > 1) goToStep(activeStep - 1);
+    }
+
+    function populateSarprasEditor(items) {
+      const tbody = document.getElementById('sarpras-table-body');
+      tbody.innerHTML = '';
+      
+      items.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-slate-100 dark:border-white/5';
+        tr.innerHTML = `
+          <td class="py-2 px-1">
+            <input type="text" value="${item.nama}" required class="f-sarp-nama form-input py-1 px-2 text-xs w-full bg-slate-50/50 dark:bg-transparent border-slate-200 dark:border-white/10" />
+          </td>
+          <td class="py-2 px-1">
+            <input type="text" value="${item.satuan}" required class="f-sarp-satuan form-input py-1 px-2 text-xs w-full bg-slate-50/50 dark:bg-transparent border-slate-200 dark:border-white/10" />
+          </td>
+          <td class="py-2 px-1">
+            <input type="text" value="${item.ukuran}" class="f-sarp-ukuran form-input py-1 px-2 text-xs w-full bg-slate-50/50 dark:bg-transparent border-slate-200 dark:border-white/10" />
+          </td>
+          <td class="py-2 px-1">
+            <input type="number" value="${item.jumlah}" required class="f-sarp-jumlah form-input py-1 px-2 text-xs w-full bg-slate-50/50 dark:bg-transparent border-slate-200 dark:border-white/10" />
+          </td>
+          <td class="py-2 px-1 text-center">
+            <button type="button" onclick="removeSarprasRow(this)" class="p-1.5 text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors">
+              <i class="fa-solid fa-circle-minus"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function addSarprasRow() {
+      const tbody = document.getElementById('sarpras-table-body');
+      const tr = document.createElement('tr');
+      tr.className = 'border-b border-slate-100 dark:border-white/5';
+      tr.innerHTML = `
+        <td class="py-2 px-1">
+          <input type="text" placeholder="Nama Baru" required class="f-sarp-nama form-input py-1 px-2 text-xs w-full bg-slate-50/50 dark:bg-transparent border-slate-200 dark:border-white/10" />
+        </td>
+        <td class="py-2 px-1">
+          <input type="text" placeholder="Unit/M2/Buah" required class="f-sarp-satuan form-input py-1 px-2 text-xs w-full bg-slate-50/50 dark:bg-transparent border-slate-200 dark:border-white/10" />
+        </td>
+        <td class="py-2 px-1">
+          <input type="text" placeholder="-" class="f-sarp-ukuran form-input py-1 px-2 text-xs w-full bg-slate-50/50 dark:bg-transparent border-slate-200 dark:border-white/10" />
+        </td>
+        <td class="py-2 px-1">
+          <input type="number" value="1" required class="f-sarp-jumlah form-input py-1 px-2 text-xs w-full bg-slate-50/50 dark:bg-transparent border-slate-200 dark:border-white/10" />
+        </td>
+        <td class="py-2 px-1 text-center">
+          <button type="button" onclick="removeSarprasRow(this)" class="p-1.5 text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors">
+            <i class="fa-solid fa-circle-minus"></i>
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function removeSarprasRow(btn) {
+      btn.closest('tr').remove();
+    }
+
+    function handlePhotoUploads(event) {
+      const files = event.target.files;
+      if (!files.length) return;
+
+      Array.from(files).forEach(file => {
+        if (file.size > 2097152) { // 2MB
+          showToast(`File ${file.name} melebihi batas 2MB!`, 'error');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const newPhoto = {
+            url: e.target.result,
+            desc: file.name.substring(0, file.name.lastIndexOf('.')) || 'Keterangan Foto'
+          };
+          uploadedPhotos.push(newPhoto);
+          renderPhotoPreviews();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderPhotoPreviews() {
+      const container = document.getElementById('form-uploaded-photos-grid');
+      container.innerHTML = '';
+
+      uploadedPhotos.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'relative group rounded-xl overflow-hidden border border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-[#13141A]';
+        item.innerHTML = `
+          <img src="${photo.url}" class="w-full h-32 object-cover" />
+          <div class="p-2 space-y-1">
+            <input type="text" value="${photo.desc}" onchange="updatePhotoDesc(${index}, this.value)" class="w-full text-[10px] bg-transparent border-none focus:ring-0 p-0 font-medium text-slate-700 dark:text-slate-300" placeholder="Keterangan gambar..." />
+          </div>
+          <button type="button" onclick="removeUploadedPhoto(${index})" class="absolute top-2 right-2 bg-rose-600 hover:bg-rose-700 text-white p-1 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function updatePhotoDesc(index, value) {
+      if (uploadedPhotos[index]) {
+        uploadedPhotos[index].desc = value;
+      }
+    }
+
+    function removeUploadedPhoto(index) {
+      uploadedPhotos.splice(index, 1);
+      renderPhotoPreviews();
+    }
+
+    function createNewBapForm() {
+      document.getElementById('bap-entry-form').reset();
+      document.getElementById('form-bap-id').value = '';
+      
+      // Load current date
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('f-tanggal-bap').value = today;
+
+      // Populate Default Sarpras
+      populateSarprasEditor(defaultSarpras);
+      
+      // Reset Upload Photos
+      uploadedPhotos = [
+        { url: "https://placehold.co/600x400/2563EB/ffffff?text=Ruang+Kantor", desc: "Ruangan Kantor" },
+        { url: "https://placehold.co/600x400/2563EB/ffffff?text=Timbangan", desc: "Timbangan Kerja" }
+      ];
+      renderPhotoPreviews();
+
+      goToStep(1);
+      switchView('form');
+    }
+
+    function editBap(id) {
+      const item = bapRecords.find(r => r.id === id);
+      if (!item) return;
+
+      document.getElementById('form-bap-id').value = item.id;
+      document.getElementById('f-no-bap').value = item.no_bap || '';
+      document.getElementById('f-nama-perusahaan').value = item.nama_perusahaan || '';
+      document.getElementById('f-status-permohonan').value = item.status_permohonan || 'Baru';
+      document.getElementById('f-taxa').value = item.taxa || '';
+      document.getElementById('f-tempat-bap').value = item.tempat_bap || '';
+      
+      // Date formatting for input
+      if (item.tanggal_bap) {
+        const formattedDate = item.tanggal_bap.substring(0, 10);
+        document.getElementById('f-tanggal-bap').value = formattedDate;
+      }
+
+      // Legal Basis Checklist (Dasar Hukum)
+      const dh = item.dasar_hukum || [];
+      for (let i = 1; i <= 4; i++) {
+        const chk = document.getElementById(`f-dasar-${i}`);
+        const txt = document.getElementById(`f-dasar-text-${i}`);
+        if (dh[i - 1]) {
+          chk.checked = true;
+          txt.value = dh[i - 1];
+        } else {
+          chk.checked = false;
+        }
+      }
+
+      // Company Info (Step 2)
+      const corp = item.data_perusahaan || {};
+      document.getElementById('f-nama-pemilik').value = corp.nama_pemilik || '';
+      document.getElementById('f-tgl-pendirian').value = corp.tgl_pendirian || '';
+      document.getElementById('f-alamat-kantor').value = corp.alamat_kantor || '';
+      document.getElementById('f-alamat-penampungan').value = corp.alamat_penampungan || '';
+      document.getElementById('f-no-telp').value = corp.no_telp || '';
+      document.getElementById('f-email').value = corp.email || '';
+
+      // Legality Docs
+      const docs = item.dokumen_persyaratan || {};
+      document.getElementById('f-akta-no').value = docs.akta_no || '';
+      document.getElementById('f-akta-tgl').value = docs.akta_tgl || '';
+      document.getElementById('f-akta-notaris').value = docs.akta_notaris || '';
+      document.getElementById('f-nib-no').value = docs.nib_no || '';
+      document.getElementById('f-nib-tgl').value = docs.nib_tgl || '';
+      document.getElementById('f-nib-kbli').value = docs.nib_kbli || '';
+      document.getElementById('f-kkpr-tgl').value = docs.kkpr_tgl || '';
+      document.getElementById('f-kkpr-penerbit').value = docs.kkpr_penerbit || '';
+      document.getElementById('f-npwp-no').value = docs.npwp_no || '';
+      document.getElementById('f-pakta-tgl').value = docs.pakta_tgl || '';
+
+      // Populate Sarpras Editor
+      populateSarprasEditor(item.sarana_prasarana || []);
+
+      // Step 4: Specimen Properties
+      const spec = item.spesimen_detail || {};
+      document.getElementById('f-status-perlindungan').value = spec.lindung || 'Tidak Dilindungi';
+      document.getElementById('f-sumber-spesimen').value = spec.sumber || 'Tangkapan Alam';
+      document.getElementById('f-bentuk-spesimen').value = spec.bentuk || 'Kayu';
+      document.getElementById('f-keterangan-asal').value = spec.keterangan_asal || '';
+
+      // Radio Taxa Selection
+      const taxaRadios = document.getElementsByName('taxa-opt');
+      taxaRadios.forEach(radio => {
+        if (radio.value === spec.taxa) radio.checked = true;
+      });
+
+      // Radio CITES selection
+      const citesRadios = document.getElementsByName('cites-opt');
+      citesRadios.forEach(radio => {
+        if (radio.value === spec.cites) radio.checked = true;
+      });
+
+      // Step 5: Naratives
+      const text = item.narasi_teknis || {};
+      document.getElementById('f-narasi-penampungan').value = text.penampungan || '';
+      document.getElementById('f-narasi-pengangkutan').value = text.pengangkutan || '';
+      document.getElementById('f-narasi-limbah').value = text.limbah || '';
+      document.getElementById('f-narasi-pembinaan').value = text.pembinaan || '';
+
+      // Step 6: Signatures & Photos
+      const sign = item.penandatangan || {};
+      document.getElementById('f-pem-1-nama').value = sign.pem_1_nama || '';
+      document.getElementById('f-pem-1-nip').value = sign.pem_1_nip || '';
+      document.getElementById('f-pem-2-nama').value = sign.pem_2_nama || '';
+      document.getElementById('f-pem-2-nip').value = sign.pem_2_nip || '';
+      document.getElementById('f-pengesah-an').value = sign.pengesah_an || 'a.n. Kepala Balai, Kepala Seksi KSDA Wilayah II,';
+      document.getElementById('f-pengesah-nama').value = sign.pengesah_nama || '';
+      document.getElementById('f-pengesah-nip').value = sign.pengesah_nip || '';
+      document.getElementById('f-dir-nama').value = sign.dir_nama || '';
+      document.getElementById('f-dir-jabatan').value = sign.dir_jabatan || 'Direktur';
+
+      uploadedPhotos = item.images_data || [];
+      renderPhotoPreviews();
+
+      goToStep(1);
+      switchView('form');
+    }
+
+    async function saveBapData(event) {
+      event.preventDefault();
+
+      // Gather Sarpras data
+      const sarprasItems = [];
+      const rows = document.querySelectorAll('#sarpras-table-body tr');
+      rows.forEach(row => {
+        sarprasItems.push({
+          nama: row.querySelector('.f-sarp-nama').value,
+          satuan: row.querySelector('.f-sarp-satuan').value,
+          ukuran: row.querySelector('.f-sarp-ukuran').value,
+          jumlah: parseInt(row.querySelector('.f-sarp-jumlah').value) || 0,
+        });
+      });
+
+      // Gather Legal list
+      const dasarHukum = [];
+      for (let i = 1; i <= 4; i++) {
+        if (document.getElementById(`f-dasar-${i}`).checked) {
+          dasarHukum.push(document.getElementById(`f-dasar-text-${i}`).value);
+        }
+      }
+
+      // Gather Selected Radios
+      let selectedTaxa = 'Gaharu';
+      document.getElementsByName('taxa-opt').forEach(r => { if (r.checked) selectedTaxa = r.value; });
+      
+      let selectedCites = 'II';
+      document.getElementsByName('cites-opt').forEach(r => { if (r.checked) selectedCites = r.value; });
+
+      // Build payload
+      const id = document.getElementById('form-bap-id').value;
+      const isEdit = id !== '';
+      
+      const payload = {
+        id: isEdit ? id : null,
+        no_bap: document.getElementById('f-no-bap').value,
+        nama_perusahaan: document.getElementById('f-nama-perusahaan').value,
+        status_permohonan: document.getElementById('f-status-permohonan').value,
+        taxa: document.getElementById('f-taxa').value,
+        tempat_bap: document.getElementById('f-tempat-bap').value,
+        tanggal_bap: document.getElementById('f-tanggal-bap').value,
+        dasar_hukum: dasarHukum,
+        data_perusahaan: {
+          nama_pemilik: document.getElementById('f-nama-pemilik').value,
+          tgl_pendirian: document.getElementById('f-tgl-pendirian').value,
+          alamat_kantor: document.getElementById('f-alamat-kantor').value,
+          alamat_penampungan: document.getElementById('f-alamat-penampungan').value,
+          no_telp: document.getElementById('f-no-telp').value,
+          email: document.getElementById('f-email').value,
+        },
+        dokumen_persyaratan: {
+          akta_no: document.getElementById('f-akta-no').value,
+          akta_tgl: document.getElementById('f-akta-tgl').value,
+          akta_notaris: document.getElementById('f-akta-notaris').value,
+          nib_no: document.getElementById('f-nib-no').value,
+          nib_tgl: document.getElementById('f-nib-tgl').value,
+          nib_kbli: document.getElementById('f-nib-kbli').value,
+          kkpr_tgl: document.getElementById('f-kkpr-tgl').value,
+          kkpr_penerbit: document.getElementById('f-kkpr-penerbit').value,
+          npwp_no: document.getElementById('f-npwp-no').value,
+          pakta_tgl: document.getElementById('f-pakta-tgl').value,
+        },
+        sarana_prasarana: sarprasItems,
+        spesimen_detail: {
+          taxa: selectedTaxa,
+          lindung: document.getElementById('f-status-perlindungan').value,
+          cites: selectedCites,
+          sumber: document.getElementById('f-sumber-spesimen').value,
+          bentuk: document.getElementById('f-bentuk-spesimen').value,
+          keterangan_asal: document.getElementById('f-keterangan-asal').value
+        },
+        narasi_teknis: {
+          penampungan: document.getElementById('f-narasi-penampungan').value,
+          pengangkutan: document.getElementById('f-narasi-pengangkutan').value,
+          limbah: document.getElementById('f-narasi-limbah').value,
+          pembinaan: document.getElementById('f-narasi-pembinaan').value
+        },
+        penandatangan: {
+          pem_1_nama: document.getElementById('f-pem-1-nama').value,
+          pem_1_nip: document.getElementById('f-pem-1-nip').value,
+          pem_2_nama: document.getElementById('f-pem-2-nama').value,
+          pem_2_nip: document.getElementById('f-pem-2-nip').value,
+          pengesah_an: document.getElementById('f-pengesah-an').value,
+          pengesah_nama: document.getElementById('f-pengesah-nama').value,
+          pengesah_nip: document.getElementById('f-pengesah-nip').value,
+          dir_nama: document.getElementById('f-dir-nama').value,
+          dir_jabatan: document.getElementById('f-dir-jabatan').value
+        },
+        images_data: uploadedPhotos
+      };
+
+      if (!GAS_URL) {
+        // Handle Save to Local Storage Fallback Mode
+        if (isEdit) {
+          const idx = bapRecords.findIndex(r => r.id === id);
+          if (idx !== -1) {
+            bapRecords[idx] = { ...payload, created_at: bapRecords[idx].created_at };
+          }
+        } else {
+          payload.id = 'local-' + Date.now();
+          payload.created_at = new Date().toISOString();
+          bapRecords.push(payload);
+        }
+        localStorage.setItem('BAP_LOCAL_DB', JSON.stringify(bapRecords));
+        showToast('Data Disimpan ke Memori Lokal Browser!', 'success');
+        renderBapList(bapRecords);
+        switchView('list');
+        return;
+      }
+
+      // Handle Save to Google Sheets
+      showToast('Sedang menyimpan berkas BAP ke Cloud Google Sheets...', 'info');
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: isEdit ? 'update' : 'create',
+            data: payload,
+            id: payload.id
+          })
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+          showToast('Data BAP Berhasil Disinkronkan dengan Google Sheets!', 'success');
+          fetchBapRecords();
+          switchView('list');
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (err) {
+        showToast('Sinkronisasi Cloud Gagal. Tersimpan di memori browser.', 'error');
+        console.error(err);
+      }
+    }
+
+    // confirm delete
+    function confirmDeleteBap(id) {
+      if (confirm('Apakah Anda yakin ingin menghapus data Berita Acara ini secara permanen?')) {
+        deleteBap(id);
+      }
+    }
+
+    async function deleteBap(id) {
+      if (!GAS_URL) {
+        bapRecords = bapRecords.filter(r => r.id !== id);
+        localStorage.setItem('BAP_LOCAL_DB', JSON.stringify(bapRecords));
+        showToast('Berita Acara Terhapus Lokal', 'warning');
+        renderBapList(bapRecords);
+        return;
+      }
+
+      showToast('Menghapus data BAP dari Cloud Google Sheets...', 'info');
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'delete', id })
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+          showToast('BAP Terhapus Permanen!', 'success');
+          fetchBapRecords();
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (err) {
+        showToast('Gagal menghapus data dari Cloud.', 'error');
+        console.error(err);
+      }
+    }
+
+    // Filter BAP search
+    function filterBapList() {
+      const q = document.getElementById('search-bap').value.toLowerCase();
+      const filtered = bapRecords.filter(item => 
+        item.nama_perusahaan.toLowerCase().includes(q) || 
+        item.no_bap.toLowerCase().includes(q) ||
+        item.taxa.toLowerCase().includes(q)
+      );
+      renderBapList(filtered);
+    }
+
+    function previewBap(id) {
+      const item = bapRecords.find(r => r.id === id);
+      if (!item) return;
+
+      const itemDate = new Date(item.tanggal_bap).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+
+      // Populate General info
+      document.getElementById('p-no-bap').textContent = item.no_bap || '-';
+      document.getElementById('p-nama-perusahaan').textContent = item.nama_perusahaan || '-';
+      document.getElementById('p-status-permohonan').textContent = item.status_permohonan || '-';
+      document.getElementById('p-taxa').textContent = item.taxa || '-';
+      document.getElementById('p-tempat-bap').textContent = item.tempat_bap || '-';
+      document.getElementById('p-tanggal-bap').textContent = itemDate;
+
+      // Populate Legal Basis
+      const dasarContainer = document.getElementById('p-dasar-hukum');
+      dasarContainer.innerHTML = '';
+      (item.dasar_hukum || []).forEach(rule => {
+        const li = document.createElement('li');
+        li.textContent = rule;
+        dasarContainer.appendChild(li);
+      });
+
+      // Populate Corporate Data (I)
+      const corp = item.data_perusahaan || {};
+      document.getElementById('p-nama-pemilik').textContent = corp.nama_pemilik || '-';
+      document.getElementById('p-corp-nama').textContent = item.nama_perusahaan || '-';
+      document.getElementById('p-tgl-pendirian').textContent = corp.tgl_pendirian || '-';
+      document.getElementById('p-alamat-kantor').textContent = corp.alamat_kantor || '-';
+      document.getElementById('p-alamat-penampungan').textContent = corp.alamat_penampungan || '-';
+      document.getElementById('p-no-telp').textContent = corp.no_telp || '-';
+      document.getElementById('p-email').textContent = corp.email || '-';
+
+      // Populate Legality Documents (II)
+      const docs = item.dokumen_persyaratan || {};
+      const docTbody = document.getElementById('p-dokumen-rows');
+      docTbody.innerHTML = `
+        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">1</td><td class="p-2 border-r border-black">Akta Pendirian Perusahaan</td><td class="p-2">Nomor: ${docs.akta_no || '-'}, Tanggal: ${docs.akta_tgl || '-'}, Notaris: ${docs.akta_notaris || '-'}</td></tr>
+        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">2</td><td class="p-2 border-r border-black">Nomor Induk Berusaha (NIB)</td><td class="p-2">Nomor: ${docs.nib_no || '-'}, Tanggal: ${docs.nib_tgl || '-'}, KBLI: ${docs.nib_kbli || '-'}</td></tr>
+        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">3</td><td class="p-2 border-r border-black">KKPR</td><td class="p-2">Tanggal: ${docs.kkpr_tgl || '-'}, Penerbit: ${docs.kkpr_penerbit || '-'}</td></tr>
+        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">4</td><td class="p-2 border-r border-black">Nomor Pokok Wajib Pajak (NPWP)</td><td class="p-2">Nomor: ${docs.npwp_no || '-'}</td></tr>
+        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">5</td><td class="p-2 border-r border-black">Pakta Integritas</td><td class="p-2">Tanggal: ${docs.pakta_tgl || '-'}</td></tr>
+      `;
+
+      // Populate Sarpras rows (III)
+      const sarpTbody = document.getElementById('p-sarpras-rows');
+      sarpTbody.innerHTML = '';
+      (item.sarana_prasarana || []).forEach((s, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'divide-x divide-black';
+        tr.innerHTML = `
+          <td class="p-2 text-center border-r border-black">${idx+1}</td>
+          <td class="p-2 border-r border-black">${s.nama}</td>
+          <td class="p-2 text-center border-r border-black">${s.satuan}</td>
+          <td class="p-2 text-center border-r border-black">${s.ukuran || '-'}</td>
+          <td class="p-2 text-center">${s.jumlah}</td>
+        `;
+        sarpTbody.appendChild(tr);
+      });
+
+      // Populate IV-VIII Specimen Details
+      const spec = item.spesimen_detail || {};
+      document.getElementById('p-spesimen-taxa').textContent = spec.taxa || '-';
+      document.getElementById('p-spesimen-lindung').textContent = spec.lindung || '-';
+      document.getElementById('p-spesimen-cites').textContent = `Appendiks ${spec.cites || '-'} CITES`;
+      document.getElementById('p-spesimen-sumber').textContent = spec.sumber || '-';
+      document.getElementById('p-spesimen-bentuk').textContent = `${spec.bentuk || '-'} (${spec.keterangan_asal || ''})`;
+
+      // Populate narratives IX, X, XI, XIV
+      const text = item.narasi_teknis || {};
+      document.getElementById('p-narasi-penampungan').textContent = text.penampungan || '-';
+      document.getElementById('p-narasi-pengangkutan').textContent = text.pengangkutan || '-';
+      document.getElementById('p-narasi-limbah').textContent = text.limbah || '-';
+      document.getElementById('p-narasi-pembinaan').textContent = text.pembinaan || '-';
+
+      // Signatures XV
+      const sign = item.penandatangan || {};
+      document.getElementById('p-pem-1-nama').textContent = sign.pem_1_nama || '-';
+      document.getElementById('p-pem-1-nip').textContent = sign.pem_1_nip || '-';
+      document.getElementById('p-pem-2-nama').textContent = sign.pem_2_nama || '-';
+      document.getElementById('p-pem-2-nip').textContent = sign.pem_2_nip || '-';
+      
+      document.getElementById('p-pengesah-an').textContent = sign.pengesah_an || 'a.n. Kepala Balai, Kepala Seksi KSDA Wilayah II,';
+      document.getElementById('p-pengesah-nama').textContent = sign.pengesah_nama || '-';
+      document.getElementById('p-pengesah-nip').textContent = sign.pengesah_nip || '-';
+      
+      document.getElementById('p-dir-nama').textContent = sign.dir_nama || '-';
+      document.getElementById('p-dir-jabatan').textContent = `${sign.dir_jabatan || 'Direktur'} ${item.nama_perusahaan}`;
+
+      // Lampiran metadata
+      document.getElementById('p-lamp-no').textContent = item.no_bap || '-';
+      document.getElementById('p-lamp-tgl').textContent = itemDate;
+
+      // Populate photos attachment layout
+      const photoGrid = document.getElementById('p-photos-grid');
+      photoGrid.innerHTML = '';
+      (item.images_data || []).forEach((photo, idx) => {
+        const div = document.createElement('div');
+        div.className = 'border border-black p-3 space-y-2 text-center';
+        div.innerHTML = `
+          <img src="${photo.url}" class="w-full h-48 object-cover border border-black/10" />
+          <div class="font-bold text-xs">Gambar ${idx+1} : ${photo.desc}</div>
+        `;
+        photoGrid.appendChild(div);
+      });
+
+      // Hide main workspace, show print template and trigger system print dialog
+      document.querySelectorAll('main').forEach(el => el.classList.add('hidden'));
+      document.getElementById('print-area-template').classList.remove('hidden');
+      
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        window.print();
+      }, 500);
+    }
+
+    function closePrintPreview() {
+      document.querySelectorAll('main').forEach(el => el.classList.remove('hidden'));
+      document.getElementById('print-area-template').classList.add('hidden');
+    }
+
+    // Toast Notifications System Helper
+    function showToast(message, type = 'success') {
+      const colors = {
+        success: '#10B981', error: '#EF4444', warning: '#F59E0B', info: '#6366F1'
+      };
+      
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+        background: #1C1D26; color: #F1F2F6;
+        border: 1px solid ${colors[type]}40; border-left: 4px solid ${colors[type]};
+        padding: 12px 20px; border-radius: 12px;
+        font-size: 13px; font-weight: 500;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+        max-width: 340px; display: flex; align-items: center; gap: 8px;
+      `;
+
+      let icon = 'fa-circle-info';
+      if (type === 'success') icon = 'fa-circle-check';
+      if (type === 'error') icon = 'fa-triangle-exclamation';
+      if (type === 'warning') icon = 'fa-circle-exclamation';
+
+      toast.innerHTML = `<i class="fa-solid ${icon}" style="color:${colors[type]}"></i> <span>${message}</span>`;
+      
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideIn  { from { transform: translateX(100%); opacity:0; } to { transform: translateX(0); opacity:1; } }
+        @keyframes fadeOut  { to   { opacity: 0; transform: translateX(10px); } }
+      `;
+      document.head.appendChild(style);
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+  </script>
+</body>
+</html>
