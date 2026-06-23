@@ -72,9 +72,68 @@
         page-break-before: always;
       }
     }
+
+    /* Step buttons style */
+    .step-btn {
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+    .step-btn.active {
+      background-color: rgb(79, 70, 229);
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+    .step-btn.completed {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: rgb(16, 185, 129);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+    .step-btn:not(.active):not(.completed) {
+      color: #9899A8;
+    }
+    .step-btn:not(.active):not(.completed):hover {
+      background-color: rgba(255,255,255,0.05);
+      color: #F1F2F6;
+    }
+    
+    .form-input {
+      width: 100%;
+      background-color: rgba(248, 250, 252, 0.8);
+      border: 1px solid rgba(226, 232, 240, 1);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #1e293b;
+      transition: all 0.2s;
+    }
+    .dark .form-input {
+      background-color: #13141A;
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #F1F2F6;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #6366F1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+    .form-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+    }
+    .dark .form-label {
+      color: #9899A8;
+    }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-[#0A0B0F] text-slate-800 dark:text-[#F1F2F6] min-height-screen transition-colors duration-300">
+<body class="bg-slate-50 dark:bg-[#0A0B0F] text-slate-800 dark:text-[#F1F2F6] min-h-screen transition-colors duration-300">
 
   <!-- TOP HEADER & CLOCK WIDGET -->
   <header class="no-print border-b border-slate-200 dark:border-white/5 bg-white/70 dark:bg-[#13141A]/75 backdrop-blur-md sticky top-0 z-40 transition-colors">
@@ -112,23 +171,23 @@
   <!-- MAIN WORKSPACE CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 no-print">
     
-    <!-- GAS Connection Status Card -->
+    <!-- Clean Action Menu & Workspace Controller (Integrasi Cloud removed from UI) -->
     <div class="mb-6 p-4 rounded-2xl bg-white dark:bg-[#1C1D26] border border-slate-200 dark:border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm">
       <div class="flex items-center gap-3">
-        <span class="relative flex h-3.5 w-3.5">
-          <span id="status-pulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-          <span id="status-dot" class="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500"></span>
+        <span class="relative flex h-2 w-2">
+          <span id="status-pulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span id="status-indicator" class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
         <div>
-          <div class="text-xs text-slate-500 dark:text-[#9899A8] font-semibold">Integrasi Cloud Database</div>
-          <input type="text" id="gas-url-input" onchange="updateGASUrl()" placeholder="Masukkan URL Web App Google Apps Script..." class="bg-slate-50 dark:bg-[#13141A] border border-slate-200 dark:border-white/10 text-xs px-3 py-1.5 rounded-lg w-72 focus:outline-none focus:border-indigo-500 text-slate-800 dark:text-white mt-1" />
+          <div class="text-xs text-slate-700 dark:text-[#9899A8] font-bold">Konektivitas Cloud Database</div>
+          <p class="text-[10px] text-slate-400">Sinkronisasi otomatis dengan Google Sheet diaktifkan secara senyap.</p>
         </div>
       </div>
       <div class="flex gap-2 w-full md:w-auto">
-        <button onclick="switchView('list')" class="btn-tab active flex-1 md:flex-none inline-flex justify-center items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold" id="tab-list">
+        <button onclick="switchView('list')" class="flex-1 md:flex-none inline-flex justify-center items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition-all" id="tab-list">
           <i class="fa-solid fa-folder-open"></i> Riwayat BAP
         </button>
-        <button onclick="createNewBapForm()" class="btn-tab flex-1 md:flex-none inline-flex justify-center items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold" id="tab-form">
+        <button onclick="createNewBapForm()" class="flex-1 md:flex-none inline-flex justify-center items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-[#1C1D26] text-slate-600 dark:text-[#9899A8] hover:text-slate-800 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#252631] transition-all" id="tab-form">
           <i class="fa-solid fa-file-circle-plus"></i> Buat BAP Baru
         </button>
       </div>
@@ -153,7 +212,6 @@
 
       <!-- BAP Records Grid -->
       <div id="bap-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Will be dynamically populated. Skeleton loader inside init. -->
         <div class="skeleton h-48 rounded-2xl col-span-full"></div>
       </div>
     </section>
@@ -164,17 +222,17 @@
       <!-- Stepper Nav Bar -->
       <div class="overflow-x-auto pb-2">
         <div class="flex items-center min-w-[760px] bg-white dark:bg-[#1C1D26] p-2 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm">
-          <button onclick="goToStep(1)" id="step-btn-1" class="step-btn active">1. Umum & Dasar</button>
+          <button type="button" onclick="goToStep(1)" id="step-btn-1" class="step-btn active">1. Umum & Dasar</button>
           <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
-          <button onclick="goToStep(2)" id="step-btn-2" class="step-btn">2. Data & Legalitas</button>
+          <button type="button" onclick="goToStep(2)" id="step-btn-2" class="step-btn">2. Data & Legalitas</button>
           <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
-          <button onclick="goToStep(3)" id="step-btn-3" class="step-btn">3. Sarana Prasarana</button>
+          <button type="button" onclick="goToStep(3)" id="step-btn-3" class="step-btn">3. Sarana Prasarana</button>
           <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
-          <button onclick="goToStep(4)" id="step-btn-4" class="step-btn">4. Spesimen & CITES</button>
+          <button type="button" onclick="goToStep(4)" id="step-btn-4" class="step-btn">4. Spesimen & CITES</button>
           <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
-          <button onclick="goToStep(5)" id="step-btn-5" class="step-btn">5. Narasi & Teknis</button>
+          <button type="button" onclick="goToStep(5)" id="step-btn-5" class="step-btn">5. Narasi & Teknis</button>
           <div class="w-8 border-t border-slate-300 dark:border-white/10"></div>
-          <button onclick="goToStep(6)" id="step-btn-6" class="step-btn">6. TTD & Lampiran</button>
+          <button type="button" onclick="goToStep(6)" id="step-btn-6" class="step-btn">6. TTD & Lampiran</button>
         </div>
       </div>
 
@@ -191,30 +249,30 @@
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Nomor Surat BAP</label>
                 <input type="text" id="f-no-bap" required placeholder="Contoh: BA.179/K.18/SKSDAW II/05/2026" class="form-input" />
               </div>
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Nama Perusahaan (Pemohon)</label>
                 <input type="text" id="f-nama-perusahaan" required placeholder="Contoh: CV. Karisma Alam" class="form-input" />
               </div>
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Status Permohonan</label>
                 <select id="f-status-permohonan" class="form-input">
                   <option value="Baru">Baru</option>
                   <option value="Perpanjangan">Perpanjangan</option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Taksa / Komoditas Utama</label>
                 <input type="text" id="f-taxa" required placeholder="Contoh: Gaharu/Kemedangan" class="form-input" />
               </div>
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Kabupaten/Kota Tempat Pemeriksaan</label>
                 <input type="text" id="f-tempat-bap" required placeholder="Contoh: Tenggarong" class="form-input" />
               </div>
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Tanggal Pelaksanaan Pemeriksaan</label>
                 <input type="date" id="f-tanggal-bap" required class="form-input" />
               </div>
@@ -224,7 +282,6 @@
             <div class="space-y-3 pt-3">
               <label class="form-label">Dasar Pelaksanaan (Rujukan Peraturan / Surat Tugas)</label>
               
-              <!-- Pre-filled Legal References 1-4 -->
               <div class="space-y-2" id="dasar-hukum-list">
                 <div class="flex items-start gap-3 p-3 bg-slate-50 dark:bg-[#13141A] rounded-xl border border-slate-200 dark:border-white/5">
                   <input type="checkbox" checked id="f-dasar-1" class="mt-1 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
@@ -256,27 +313,27 @@
             
             <h4 class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">I. Identitas Perusahaan</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Nama Pemilik / Direktur</label>
                 <input type="text" id="f-nama-pemilik" required placeholder="Linardi Tan" class="form-input" />
               </div>
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Tanggal Pendirian Perusahaan</label>
                 <input type="text" id="f-tgl-pendirian" placeholder="Contoh: 22 Januari 2026" class="form-input" />
               </div>
-              <div class="form-group md:col-span-2">
+              <div class="form-group md:col-span-2 flex flex-col gap-1.5">
                 <label class="form-label">Alamat Kantor</label>
                 <input type="text" id="f-alamat-kantor" required placeholder="Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda" class="form-input" />
               </div>
-              <div class="form-group md:col-span-2">
+              <div class="form-group md:col-span-2 flex flex-col gap-1.5">
                 <label class="form-label">Alamat Penampungan / Gudang Fisik</label>
                 <input type="text" id="f-alamat-penampungan" required placeholder="Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda" class="form-input" />
               </div>
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Nomor Telepon / Fax</label>
                 <input type="text" id="f-no-telp" placeholder="0811 551 400" class="form-input" />
               </div>
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">Email Perusahaan</label>
                 <input type="email" id="f-email" placeholder="karismaalamoffice@gmail.com" class="form-input" />
               </div>
@@ -355,7 +412,6 @@
                   </tr>
                 </thead>
                 <tbody id="sarpras-table-body" class="divide-y divide-slate-100 dark:divide-white/5">
-                  <!-- Row items will be dynamically loaded in Javascript (with defaults matching the imagery) -->
                 </tbody>
               </table>
             </div>
@@ -427,7 +483,7 @@
 
               <!-- Protection & Origin Specs -->
               <div class="space-y-4">
-                <div class="form-group">
+                <div class="form-group flex flex-col gap-1.5">
                   <label class="form-label">Status Perlindungan UU RI</label>
                   <select id="f-status-perlindungan" class="form-input">
                     <option value="Tidak Dilindungi" selected>Tidak Dilindungi</option>
@@ -435,7 +491,7 @@
                   </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group flex flex-col gap-1.5">
                   <label class="form-label">Sumber Perolehan Asal Usul</label>
                   <select id="f-sumber-spesimen" class="form-input">
                     <option value="Tangkapan Alam" selected>Tangkapan Alam (W)</option>
@@ -447,7 +503,7 @@
 
               <!-- Specimen Form Shapes -->
               <div class="space-y-4">
-                <div class="form-group">
+                <div class="form-group flex flex-col gap-1.5">
                   <label class="form-label">Bentuk Komoditas / Spesimen</label>
                   <select id="f-bentuk-spesimen" class="form-input">
                     <option value="Kayu" selected>Kayu (Kepingan/Kemedangan)</option>
@@ -458,7 +514,7 @@
                   </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group flex flex-col gap-1.5">
                   <label class="form-label">Keterangan Sumber/Asal Usul</label>
                   <input type="text" id="f-keterangan-asal" value="Berdasarkan kuota pengambilan di alam yang telah ditetapkan oleh Balai KSDA Kalimantan Timur" class="form-input" />
                 </div>
@@ -477,25 +533,25 @@
 
             <div class="space-y-4">
               <!-- Penampungan -->
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">IX. Pemeriksaan Teknis Pelaksanaan Penampungan</label>
                 <textarea id="f-narasi-penampungan" class="form-input h-24 text-xs">Kegiatan penampungan dilakukan setelah pihak perusahaan mendapatkan barang dari hasil pembelian pihak pencari dan juga masyarakat yang langsung mengantarkan barang berupa gaharu kepada pihak perusahaan. Penampungan dimaksudkan untuk mengumpulkan gaharu yang didapat perusahaan dari pencari sebelum dilakukan perlakuan.</textarea>
               </div>
 
               <!-- Pengangkutan -->
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">X. Pemeriksaan Teknis Pelaksanaan Pengangkutan</label>
                 <textarea id="f-narasi-pengangkutan" class="form-input h-24 text-xs">Teknis pengangkutan gaharu sebelum dilakukan pengangkutan terlebih dahulu di packing (dikemas) sebelum diangkut ke daerah tujuan pengiriman menggunakan pesawat udara. Daerah tujuan penjualan gaharu yaitu : Jakarta dan daerah lainnya sesuai permintaan pasar.</textarea>
               </div>
 
               <!-- Limbah -->
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">XI. Pemeriksaan Sistem Pembuangan Limbah</label>
                 <textarea id="f-narasi-limbah" class="form-input h-24 text-xs">Limbah yang dihasilkan berupa limbah padat dan cair yang tidak berbahaya. Sistem Pembuangan Limbah yaitu dengan menyapu dan mengumpulkan limbah yang dihasilkan untuk kemudian di buang ke tempat pembuangan sampah sedangkan limbah cair dibuang melalui parit/selokan yang telah disiapkan.</textarea>
               </div>
 
               <!-- Program Konservasi -->
-              <div class="form-group">
+              <div class="form-group flex flex-col gap-1.5">
                 <label class="form-label">XIV. Program Pembinaan Konservasi Jenis yang Diedarkan</label>
                 <textarea id="f-narasi-pembinaan" class="form-input h-24 text-xs">Untuk mewujudkan bisnis gaharu agar dapat berkesinambungan dan terus menerus maka diperlukan adanya kegiatan pembinaan konservasi agar tidak terjadi kelangkaan jenis gaharu di masa akan datang. Program pembinaan konservasi yang dilakukan di antaranya adalah dengan melakukan penyortiran/menyeleksi pembelian gaharu dan kemedangan dan juga pihak perusahaan memberikan penyuluhan kepada para pencari gaharu untuk tidak menebang pohon yang tidak mempunyai kandungan gaharu agar kelestarian jenis pohon yang lain tetap terjaga.</textarea>
               </div>
@@ -602,7 +658,6 @@
     
     <!-- Kop Resmi Kementerian Kehutanan -->
     <div class="flex items-center gap-4 border-b-[3px] border-double border-black pb-4 mb-4">
-      <!-- Minimalist vector-based outline or placeholder representing a seal/logo -->
       <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center border border-black/10 rounded-full bg-slate-100">
         <i class="fa-solid fa-tree-deciduous text-3xl text-emerald-800"></i>
       </div>
@@ -640,7 +695,6 @@
     <div class="space-y-2 mb-6">
       <div class="font-bold uppercase text-xs border-b border-black pb-1">DASAR PELAKSANAAN</div>
       <ol id="p-dasar-hukum" class="list-decimal pl-5 text-xs space-y-1 leading-snug">
-        <!-- Dyn. Populated -->
       </ol>
     </div>
 
@@ -672,7 +726,6 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-black" id="p-dokumen-rows">
-          <!-- Dyn. Populated -->
         </tbody>
       </table>
     </div>
@@ -691,7 +744,6 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-black" id="p-sarpras-rows">
-          <!-- Dyn. Populated -->
         </tbody>
       </table>
     </div>
@@ -799,7 +851,6 @@
 
       <!-- Dynamic Print Photos Grid -->
       <div id="p-photos-grid" class="grid grid-cols-2 gap-6 pt-4">
-        <!-- Uploaded pictures with numbered caption will render here -->
       </div>
     </div>
 
@@ -816,8 +867,9 @@
   <!-- JAVASCRIPT CONTROLLER LOGIC -->
   <!-- ================================================================= -->
   <script>
-    // State global untuk data dan GAS endpoint
-    let GAS_URL = https://script.google.com/macros/s/AKfycbyN7VozhRxBTp4Jv0jA9dOTm-6C4rL9QcpyFpccSICGPpi2LqKD_gxBb5XIHVUCVKYs-w/exec|| '';
+    // State global untuk data dan GAS endpoint.
+    // Tentukan URL web app Google Apps Script Anda langsung di bawah ini apabila dideploy:
+    let GAS_URL = localStorage.getItem('BAP_GAS_URL') || '';
     let bapRecords = [];
     let activeStep = 1;
 
@@ -926,15 +978,13 @@
       const isDark = localStorage.getItem('darkMode') === 'true';
       if (isDark) {
         document.documentElement.classList.add('dark');
-        document.getElementById('theme-icon').className = 'fa-solid fa-sun';
+        const themeIcon = document.getElementById('theme-icon');
+        if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
       }
       
       // Init Clock
       updateClock();
       setInterval(updateClock, 1000);
-
-      // Set Input GAS Url
-      document.getElementById('gas-url-input').value = GAS_URL;
 
       // Load Data
       fetchBapRecords();
@@ -954,35 +1004,32 @@
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
       
-      document.getElementById('live-day-date').textContent = `${day}, ${date} ${month} ${year}`;
-      document.getElementById('live-clock').textContent = `${hours}:${minutes}:${seconds} WIB`;
+      const dayDateEl = document.getElementById('live-day-date');
+      const clockEl = document.getElementById('live-clock');
+      
+      if (dayDateEl) dayDateEl.textContent = `${day}, ${date} ${month} ${year}`;
+      if (clockEl) clockEl.textContent = `${hours}:${minutes}:${seconds} WIB`;
     }
 
     // Toggle Theme
     function toggleDarkMode() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('darkMode', isDark);
-      document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-    }
-
-    // Update URL GAS
-    function updateGASUrl() {
-      const url = document.getElementById('gas-url-input').value.trim();
-      GAS_URL = url;
-      localStorage.setItem('BAP_GAS_URL', url);
-      showToast('Koneksi URL Web App GAS Diperbarui', 'info');
-      fetchBapRecords();
+      const themeIcon = document.getElementById('theme-icon');
+      if (themeIcon) {
+        themeIcon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      }
     }
 
     async function fetchBapRecords() {
       setLoadingState(true);
       
-      const statusDot = document.getElementById('status-dot');
+      const statusIndicator = document.getElementById('status-indicator');
       const statusPulse = document.getElementById('status-pulse');
 
       if (!GAS_URL) {
-        statusDot.className = 'relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500';
-        statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75';
+        if (statusIndicator) statusIndicator.className = 'relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500';
+        if (statusPulse) statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75';
         
         // Memakai local storage fallback
         const localData = localStorage.getItem('BAP_LOCAL_DB');
@@ -992,7 +1039,7 @@
           bapRecords = [...initialMockBaps];
           localStorage.setItem('BAP_LOCAL_DB', JSON.stringify(bapRecords));
         }
-        showToast('Menggunakan Penyimpanan Lokal (GAS Belum Terkoneksi)', 'warning');
+        showToast('Menggunakan Database Lokal Offline', 'info');
         renderBapList(bapRecords);
         setLoadingState(false);
         return;
@@ -1007,8 +1054,8 @@
           // Sync ke lokal untuk offline access
           localStorage.setItem('BAP_LOCAL_DB', JSON.stringify(bapRecords));
           
-          statusDot.className = 'relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500';
-          statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75';
+          if (statusIndicator) statusIndicator.className = 'relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500';
+          if (statusPulse) statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75';
           
           showToast('Database Sinkron dengan Google Sheet!', 'success');
           renderBapList(bapRecords);
@@ -1017,10 +1064,10 @@
         }
       } catch (err) {
         console.error('Fetch error:', err);
-        showToast('Koneksi GAS Gagal. Membuka mode offline lokal.', 'error');
+        showToast('Koneksi Cloud Gagal. Membuka data lokal offline.', 'warning');
         
-        statusDot.className = 'relative inline-flex rounded-full h-3.5 w-3.5 bg-rose-500';
-        statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75';
+        if (statusIndicator) statusIndicator.className = 'relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500';
+        if (statusPulse) statusPulse.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75';
         
         const localData = localStorage.getItem('BAP_LOCAL_DB') || JSON.stringify(initialMockBaps);
         bapRecords = JSON.parse(localData);
@@ -1032,6 +1079,7 @@
 
     function renderBapList(records) {
       const container = document.getElementById('bap-cards-grid');
+      if (!container) return;
       container.innerHTML = '';
 
       if (records.length === 0) {
@@ -1085,8 +1133,10 @@
 
     // Loading State
     function setLoadingState(isLoading) {
+      const grid = document.getElementById('bap-cards-grid');
+      if (!grid) return;
       if (isLoading) {
-        document.getElementById('bap-cards-grid').innerHTML = `
+        grid.innerHTML = `
           <div class="skeleton h-48 rounded-2xl"></div>
           <div class="skeleton h-48 rounded-2xl"></div>
           <div class="skeleton h-48 rounded-2xl"></div>
@@ -1096,17 +1146,38 @@
 
     // Navigation Views
     function switchView(viewName) {
-      document.getElementById('view-list').classList.add('hidden');
-      document.getElementById('view-form').classList.add('hidden');
-      document.getElementById('tab-list').classList.remove('active');
-      document.getElementById('tab-form').classList.remove('active');
+      const viewList = document.getElementById('view-list');
+      const viewForm = document.getElementById('view-form');
+      const tabList = document.getElementById('tab-list');
+      const tabForm = document.getElementById('tab-form');
+
+      if (!viewList || !viewForm || !tabList || !tabForm) return;
+
+      // Hide all views first
+      viewList.classList.add('hidden');
+      viewForm.classList.add('hidden');
+
+      // Default Style Classes
+      const inactiveTabClasses = [
+        'bg-slate-100', 'dark:bg-[#1C1D26]', 'text-slate-600', 'dark:text-[#9899A8]', 
+        'hover:text-slate-800', 'dark:hover:text-white', 'hover:bg-slate-200', 'dark:hover:bg-[#252631]'
+      ];
+      const activeTabClasses = ['bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-600/30'];
+
+      // Reset both buttons
+      tabList.classList.remove(...activeTabClasses);
+      tabList.classList.add(...inactiveTabClasses);
+      tabForm.classList.remove(...activeTabClasses);
+      tabForm.classList.add(...inactiveTabClasses);
 
       if (viewName === 'list') {
-        document.getElementById('view-list').classList.remove('hidden');
-        document.getElementById('tab-list').classList.add('active');
+        viewList.classList.remove('hidden');
+        tabList.classList.remove(...inactiveTabClasses);
+        tabList.classList.add(...activeTabClasses);
       } else {
-        document.getElementById('view-form').classList.remove('hidden');
-        document.getElementById('tab-form').classList.add('active');
+        viewForm.classList.remove('hidden');
+        tabForm.classList.remove(...inactiveTabClasses);
+        tabForm.classList.add(...activeTabClasses);
       }
     }
 
@@ -1118,21 +1189,31 @@
         const btn = document.getElementById(`step-btn-${i}`);
         const container = document.getElementById(`step-container-${i}`);
         
-        btn.classList.remove('active', 'completed');
-        container.classList.add('hidden');
+        if (btn) {
+          btn.classList.remove('active', 'completed');
+          if (i < stepNum) {
+            btn.classList.add('completed');
+          } else if (i === stepNum) {
+            btn.classList.add('active');
+          }
+        }
         
-        if (i < stepNum) {
-          btn.classList.add('completed');
-        } else if (i === stepNum) {
-          btn.classList.add('active');
-          container.classList.remove('hidden');
+        if (container) {
+          container.classList.add('hidden');
+          if (i === stepNum) {
+            container.classList.remove('hidden');
+          }
         }
       }
 
       // Update Navigation Buttons visibility
-      document.getElementById('form-back-btn').style.display = stepNum === 1 ? 'none' : 'block';
-      document.getElementById('form-next-btn').style.display = stepNum === 6 ? 'none' : 'block';
-      document.getElementById('form-save-submit-btn').style.display = stepNum === 6 ? 'block' : 'none';
+      const backBtn = document.getElementById('form-back-btn');
+      const nextBtn = document.getElementById('form-next-btn');
+      const saveBtn = document.getElementById('form-save-submit-btn');
+
+      if (backBtn) backBtn.style.display = stepNum === 1 ? 'none' : 'block';
+      if (nextBtn) nextBtn.style.display = stepNum === 6 ? 'none' : 'block';
+      if (saveBtn) saveBtn.style.display = stepNum === 6 ? 'block' : 'none';
     }
 
     function stepForward() {
@@ -1145,6 +1226,7 @@
 
     function populateSarprasEditor(items) {
       const tbody = document.getElementById('sarpras-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '';
       
       items.forEach((item, index) => {
@@ -1175,6 +1257,7 @@
 
     function addSarprasRow() {
       const tbody = document.getElementById('sarpras-table-body');
+      if (!tbody) return;
       const tr = document.createElement('tr');
       tr.className = 'border-b border-slate-100 dark:border-white/5';
       tr.innerHTML = `
@@ -1228,6 +1311,7 @@
 
     function renderPhotoPreviews() {
       const container = document.getElementById('form-uploaded-photos-grid');
+      if (!container) return;
       container.innerHTML = '';
 
       uploadedPhotos.forEach((photo, index) => {
@@ -1258,12 +1342,16 @@
     }
 
     function createNewBapForm() {
-      document.getElementById('bap-entry-form').reset();
-      document.getElementById('form-bap-id').value = '';
+      const form = document.getElementById('bap-entry-form');
+      if (form) form.reset();
+      
+      const idInput = document.getElementById('form-bap-id');
+      if (idInput) idInput.value = '';
       
       // Load current date
       const today = new Date().toISOString().split('T')[0];
-      document.getElementById('f-tanggal-bap').value = today;
+      const dateInput = document.getElementById('f-tanggal-bap');
+      if (dateInput) dateInput.value = today;
 
       // Populate Default Sarpras
       populateSarprasEditor(defaultSarpras);
@@ -1283,7 +1371,9 @@
       const item = bapRecords.find(r => r.id === id);
       if (!item) return;
 
-      document.getElementById('form-bap-id').value = item.id;
+      const idInput = document.getElementById('form-bap-id');
+      if (idInput) idInput.value = item.id;
+      
       document.getElementById('f-no-bap').value = item.no_bap || '';
       document.getElementById('f-nama-perusahaan').value = item.nama_perusahaan || '';
       document.getElementById('f-status-permohonan').value = item.status_permohonan || 'Baru';
@@ -1301,11 +1391,13 @@
       for (let i = 1; i <= 4; i++) {
         const chk = document.getElementById(`f-dasar-${i}`);
         const txt = document.getElementById(`f-dasar-text-${i}`);
-        if (dh[i - 1]) {
-          chk.checked = true;
-          txt.value = dh[i - 1];
-        } else {
-          chk.checked = false;
+        if (chk && txt) {
+          if (dh[i - 1]) {
+            chk.checked = true;
+            txt.value = dh[i - 1];
+          } else {
+            chk.checked = false;
+          }
         }
       }
 
@@ -1397,8 +1489,10 @@
       // Gather Legal list
       const dasarHukum = [];
       for (let i = 1; i <= 4; i++) {
-        if (document.getElementById(`f-dasar-${i}`).checked) {
-          dasarHukum.push(document.getElementById(`f-dasar-text-${i}`).value);
+        const chk = document.getElementById(`f-dasar-${i}`);
+        const txt = document.getElementById(`f-dasar-text-${i}`);
+        if (chk && chk.checked && txt) {
+          dasarHukum.push(txt.value);
         }
       }
 
@@ -1410,7 +1504,8 @@
       document.getElementsByName('cites-opt').forEach(r => { if (r.checked) selectedCites = r.value; });
 
       // Build payload
-      const id = document.getElementById('form-bap-id').value;
+      const idInput = document.getElementById('form-bap-id');
+      const id = idInput ? idInput.value : '';
       const isEdit = id !== '';
       
       const payload = {
@@ -1472,7 +1567,6 @@
       };
 
       if (!GAS_URL) {
-        // Handle Save to Local Storage Fallback Mode
         if (isEdit) {
           const idx = bapRecords.findIndex(r => r.id === id);
           if (idx !== -1) {
@@ -1490,7 +1584,6 @@
         return;
       }
 
-      // Handle Save to Google Sheets
       showToast('Sedang menyimpan berkas BAP ke Cloud Google Sheets...', 'info');
       try {
         const response = await fetch(GAS_URL, {
@@ -1511,7 +1604,7 @@
           throw new Error(result.error);
         }
       } catch (err) {
-        showToast('Sinkronisasi Cloud Gagal. Tersimpan di memori browser.', 'error');
+        showToast('Sinkronisasi Cloud Gagal. Tersimpan di memori browser.', 'warning');
         console.error(err);
       }
     }
@@ -1579,12 +1672,14 @@
 
       // Populate Legal Basis
       const dasarContainer = document.getElementById('p-dasar-hukum');
-      dasarContainer.innerHTML = '';
-      (item.dasar_hukum || []).forEach(rule => {
-        const li = document.createElement('li');
-        li.textContent = rule;
-        dasarContainer.appendChild(li);
-      });
+      if (dasarContainer) {
+        dasarContainer.innerHTML = '';
+        (item.dasar_hukum || []).forEach(rule => {
+          const li = document.createElement('li');
+          li.textContent = rule;
+          dasarContainer.appendChild(li);
+        });
+      }
 
       // Populate Corporate Data (I)
       const corp = item.data_perusahaan || {};
@@ -1599,29 +1694,33 @@
       // Populate Legality Documents (II)
       const docs = item.dokumen_persyaratan || {};
       const docTbody = document.getElementById('p-dokumen-rows');
-      docTbody.innerHTML = `
-        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">1</td><td class="p-2 border-r border-black">Akta Pendirian Perusahaan</td><td class="p-2">Nomor: ${docs.akta_no || '-'}, Tanggal: ${docs.akta_tgl || '-'}, Notaris: ${docs.akta_notaris || '-'}</td></tr>
-        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">2</td><td class="p-2 border-r border-black">Nomor Induk Berusaha (NIB)</td><td class="p-2">Nomor: ${docs.nib_no || '-'}, Tanggal: ${docs.nib_tgl || '-'}, KBLI: ${docs.nib_kbli || '-'}</td></tr>
-        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">3</td><td class="p-2 border-r border-black">KKPR</td><td class="p-2">Tanggal: ${docs.kkpr_tgl || '-'}, Penerbit: ${docs.kkpr_penerbit || '-'}</td></tr>
-        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">4</td><td class="p-2 border-r border-black">Nomor Pokok Wajib Pajak (NPWP)</td><td class="p-2">Nomor: ${docs.npwp_no || '-'}</td></tr>
-        <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">5</td><td class="p-2 border-r border-black">Pakta Integritas</td><td class="p-2">Tanggal: ${docs.pakta_tgl || '-'}</td></tr>
-      `;
+      if (docTbody) {
+        docTbody.innerHTML = `
+          <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">1</td><td class="p-2 border-r border-black">Akta Pendirian Perusahaan</td><td class="p-2">Nomor: ${docs.akta_no || '-'}, Tanggal: ${docs.akta_tgl || '-'}, Notaris: ${docs.akta_notaris || '-'}</td></tr>
+          <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">2</td><td class="p-2 border-r border-black">Nomor Induk Berusaha (NIB)</td><td class="p-2">Nomor: ${docs.nib_no || '-'}, Tanggal: ${docs.nib_tgl || '-'}, KBLI: ${docs.nib_kbli || '-'}</td></tr>
+          <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">3</td><td class="p-2 border-r border-black">KKPR</td><td class="p-2">Tanggal: ${docs.kkpr_tgl || '-'}, Penerbit: ${docs.kkpr_penerbit || '-'}</td></tr>
+          <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">4</td><td class="p-2 border-r border-black">Nomor Pokok Wajib Pajak (NPWP)</td><td class="p-2">Nomor: ${docs.npwp_no || '-'}</td></tr>
+          <tr class="divide-x divide-black"><td class="p-2 text-center border-r border-black">5</td><td class="p-2 border-r border-black">Pakta Integritas</td><td class="p-2">Tanggal: ${docs.pakta_tgl || '-'}</td></tr>
+        `;
+      }
 
       // Populate Sarpras rows (III)
       const sarpTbody = document.getElementById('p-sarpras-rows');
-      sarpTbody.innerHTML = '';
-      (item.sarana_prasarana || []).forEach((s, idx) => {
-        const tr = document.createElement('tr');
-        tr.className = 'divide-x divide-black';
-        tr.innerHTML = `
-          <td class="p-2 text-center border-r border-black">${idx+1}</td>
-          <td class="p-2 border-r border-black">${s.nama}</td>
-          <td class="p-2 text-center border-r border-black">${s.satuan}</td>
-          <td class="p-2 text-center border-r border-black">${s.ukuran || '-'}</td>
-          <td class="p-2 text-center">${s.jumlah}</td>
-        `;
-        sarpTbody.appendChild(tr);
-      });
+      if (sarpTbody) {
+        sarpTbody.innerHTML = '';
+        (item.sarana_prasarana || []).forEach((s, idx) => {
+          const tr = document.createElement('tr');
+          tr.className = 'divide-x divide-black';
+          tr.innerHTML = `
+            <td class="p-2 text-center border-r border-black">${idx+1}</td>
+            <td class="p-2 border-r border-black">${s.nama}</td>
+            <td class="p-2 text-center border-r border-black">${s.satuan}</td>
+            <td class="p-2 text-center border-r border-black">${s.ukuran || '-'}</td>
+            <td class="p-2 text-center">${s.jumlah}</td>
+          `;
+          sarpTbody.appendChild(tr);
+        });
+      }
 
       // Populate IV-VIII Specimen Details
       const spec = item.spesimen_detail || {};
@@ -1658,16 +1757,18 @@
 
       // Populate photos attachment layout
       const photoGrid = document.getElementById('p-photos-grid');
-      photoGrid.innerHTML = '';
-      (item.images_data || []).forEach((photo, idx) => {
-        const div = document.createElement('div');
-        div.className = 'border border-black p-3 space-y-2 text-center';
-        div.innerHTML = `
-          <img src="${photo.url}" class="w-full h-48 object-cover border border-black/10" />
-          <div class="font-bold text-xs">Gambar ${idx+1} : ${photo.desc}</div>
-        `;
-        photoGrid.appendChild(div);
-      });
+      if (photoGrid) {
+        photoGrid.innerHTML = '';
+        (item.images_data || []).forEach((photo, idx) => {
+          const div = document.createElement('div');
+          div.className = 'border border-black p-3 space-y-2 text-center';
+          div.innerHTML = `
+            <img src="${photo.url}" class="w-full h-48 object-cover border border-black/10" />
+            <div class="font-bold text-xs">Gambar ${idx+1} : ${photo.desc}</div>
+          `;
+          photoGrid.appendChild(div);
+        });
+      }
 
       // Hide main workspace, show print template and trigger system print dialog
       document.querySelectorAll('main').forEach(el => el.classList.add('hidden'));
