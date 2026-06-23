@@ -81,29 +81,30 @@
 
     /* Visual hierarchy tree styles for BAB XII */
     .tree-node {
-      border: 2px solid #000;
+      border: 1.5px solid #000;
       padding: 6px 12px;
-      border-radius: 4px;
-      background: #f8fafc;
-      font-size: 11px;
+      border-radius: 2px;
+      background: #ffffff;
+      font-size: 10.5px;
       font-weight: bold;
       text-align: center;
       display: inline-block;
-      min-width: 110px;
-      font-family: 'Inter', sans-serif;
+      min-width: 120px;
+      font-family: 'Gentium Book Plus', serif;
+      color: #000000;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
     }
 
     .tree-connector {
-      width: 2px;
+      width: 1.5px;
       background-color: #000;
       height: 16px;
       margin: 0 auto;
     }
 
-    .tree-horizontal-connector {
-      height: 2px;
+    .tree-line-horizontal {
+      height: 1.5px;
       background-color: #000;
-      margin: 0 auto;
     }
 
     ::-webkit-scrollbar { width: 6px; }
@@ -782,7 +783,6 @@
 
         <!-- IX - XI. TEKNIS NARRATIVE BLOCKS -->
         <div class="mb-3">
-          <p class="text-[12pt] font-bold uppercase mb-1">IX - XI. PEMERIKSAAN TEKNIS PELAKSANAAN</p>
           <div class="space-y-2 text-[11pt] leading-relaxed">
             <div class="p-1.5 border border-black bg-slate-50">
               <p class="font-bold">IX. PEMERIKSAAN TEKNIS PELAKSANAAN PENAMPUNGAN:</p>
@@ -804,7 +804,7 @@
           <p class="text-[12pt] font-bold uppercase mb-1">XII. ORGANISASI DAN TENAGA KERJA</p>
           
           <!-- Visual Hierarchy Tree Diagram -->
-          <div class="p-3 border border-black rounded bg-slate-50 text-center mb-3">
+          <div class="p-3 border border-black bg-slate-50 text-center mb-3">
             <p class="text-[10px] font-bold uppercase text-slate-800 tracking-wider mb-3 border-b pb-1" style="font-family: 'Inter', sans-serif;">Bagan Struktur Organisasi Perusahaan</p>
             <div id="hierarchy-chart-container" class="flex flex-col items-center gap-1"></div>
           </div>
@@ -823,7 +823,6 @@
 
         <!-- XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI -->
         <div class="mb-3">
-          <p class="text-[12pt] font-bold uppercase mb-1">XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI</p>
           <table class="gov-table">
             <tbody>
               <tr>
@@ -848,8 +847,12 @@
         <!-- XV. PERNYATAAN DAN PENGESAHAN -->
         <div class="mb-3">
           <p class="text-[12pt] font-bold uppercase mb-1">XV. PERNYATAAN DAN PENGESAHAN</p>
-          <div class="text-[11pt] leading-relaxed text-justify italic font-medium bg-slate-50 p-2.5 rounded border border-black">
-            "Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan yang ada di <span id="v-legal-perusahaan" class="font-bold"></span>. Semua kelengkapan dokumen pada butir II sama dengan aslinya. Apabila data, dokumen dan keterangan tersebut tidak benar, maka kami yang bertanda tangan di bawah ini bersedia dikenakan sanksi dan atau dituntut sesuai dengan peraturan yang berlaku."
+          <div class="text-[11pt] leading-relaxed text-justify italic font-medium bg-slate-50 p-3 rounded border border-black">
+            <ol class="list-decimal pl-5 space-y-1">
+              <li>Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan yang ada di <span id="v-legal-perusahaan" class="font-bold"></span>.</li>
+              <li>Semua kelengkapan dokumen pada butir II adalah sah dan sesuai dengan aslinya.</li>
+              <li>Apabila data, dokumen, dan keterangan tersebut tidak benar, maka kami yang bertanda tangan di bawah ini bersedia dikenakan sanksi dan atau dituntut sesuai dengan peraturan yang berlaku.</li>
+            </ol>
           </div>
         </div>
 
@@ -862,30 +865,30 @@
 
           <div class="text-center font-bold mb-2 text-slate-800">Dibuat dengan sebenarnya oleh:</div>
           
-          <!-- Dynamic Inspectors Grid Layout -->
+          <!-- Dynamic Inspectors Grid Layout (Watermark removed, just blank space) -->
           <div id="view-inspectors-grid" class="grid gap-3 text-center mb-6"></div>
 
           <!-- Bottom Row: a.n. Kepala Balai & Mengetahui (Director) -->
           <div class="grid grid-cols-2 gap-4 text-center mt-6 pt-2 border-t border-gray-200">
             <div>
-              <p class="font-semibold">Disahkan oleh:</p>
+              <p class="font-semibold text-slate-800">Disahkan oleh:</p>
               <div class="text-[10pt] text-gray-700 font-bold leading-normal">
                 a.n. Kepala Balai,<br>
                 <span id="view-kasi-jab"></span>
               </div>
-              <div class="h-12 flex items-center justify-center">
-                <span class="text-gray-300 text-[10px] border border-dashed border-gray-300 px-3 py-0.5 rounded">Tanda Tangan</span>
-              </div>
+              <div class="h-16"></div> <!-- Watermark removed -->
               <p class="font-bold underline" id="view-kasi-nama"></p>
               <p class="text-gray-600 text-[10pt]" id="view-kasi-nip"></p>
             </div>
             <div>
-              <p class="font-semibold">Mengetahui:</p>
-              <p class="text-gray-600 text-[10pt]" id="view-dir-jab"></p>
-              <div class="h-12 flex items-center justify-center">
-                <span class="text-gray-300 text-[10px] border border-dashed border-gray-300 px-3 py-0.5 rounded">Tanda Tangan / Stempel</span>
-              </div>
+              <p class="font-semibold text-slate-800">Mengetahui:</p>
+              <!-- Dibawahnya nama perusahaan -->
+              <p class="text-gray-800 font-bold text-[11pt]" id="view-dir-perusahaan-sig"></p>
+              <div class="h-16"></div> <!-- Watermark removed -->
+              <!-- Kemudian nama direktur -->
               <p class="font-bold underline" id="view-dir-nama"></p>
+              <!-- Kemudian nama jabatan Direktur -->
+              <p class="text-gray-600 text-[10pt]" id="view-dir-jab"></p>
             </div>
           </div>
         </div>
@@ -1281,7 +1284,7 @@
       bapData.saham.forEach((item, idx) => {
         container.innerHTML += `
           <div class="flex items-center gap-2 bg-slate-900 p-2 rounded-lg border border-slate-750 text-xs">
-            <input type="text" value="${item.name}" oninput="editSaham(${idx}, 'name', this.value)" placeholder="Nama Pemilik Saham" class="flex-1 px-1.5 py-0.5 border border-slate-700 bg-slate-800 text-white rounded text-[10px]">
+            <input type="text" value="${item.name}" oninput="editSaham(${idx}, 'name', this.value)" placeholder="Pemilik Saham" class="flex-1 px-1.5 py-0.5 border border-slate-700 bg-slate-800 text-white rounded text-[10px]">
             <input type="text" value="${item.percentage}" oninput="editSaham(${idx}, 'percentage', this.value)" placeholder="%" class="w-14 px-1.5 py-0.5 border border-slate-700 bg-slate-800 text-white rounded text-center text-[10px]">
             <span class="text-slate-400 text-[10px] font-semibold">%</span>
             <button onclick="deleteSaham(${idx})" class="p-1 text-rose-500 hover:bg-rose-950/40 rounded">
@@ -1501,6 +1504,9 @@
       document.getElementById("view-kasi-nama").innerText = bapData.kasiName;
       document.getElementById("view-kasi-nip").innerText = bapData.kasiNip ? `NIP. ${bapData.kasiNip}` : "";
       document.getElementById("view-kasi-jab").innerText = bapData.kasiJab;
+      
+      // Mengetahui Signature Block Updates
+      document.getElementById("view-dir-perusahaan-sig").innerText = bapData.perusahaan || "[Nama Perusahaan]";
       document.getElementById("view-dir-nama").innerText = bapData.dirName;
       document.getElementById("view-dir-jab").innerText = bapData.dirJab;
 
@@ -1586,38 +1592,67 @@
       const chartContainer = document.getElementById("hierarchy-chart-container");
       chartContainer.innerHTML = "";
       if (bapData.karyawan.length === 0) {
-        chartContainer.innerHTML = "<p class='text-[8px] text-gray-405'>Belum ada bagan jabatan</p>";
+        chartContainer.innerHTML = "<p class='text-[8px] text-gray-500'>Belum ada bagan jabatan</p>";
         return;
       }
 
-      // Root Node (First employee on the list)
+      // Root Node (First employee on the list, e.g., Direktur)
       const rootNode = bapData.karyawan[0];
       let html = `
-        <div class="tree-node border-emerald-600 bg-emerald-50">
-          <div>${rootNode.role}</div>
-          <div class="text-[8px] text-slate-500">Jumlah: ${rootNode.count} org</div>
+        <!-- Root node -->
+        <div class="flex flex-col items-center">
+          <div class="tree-node">
+            <div class="text-[10px] text-slate-800 uppercase tracking-wide border-b border-black pb-0.5 mb-1">${rootNode.role}</div>
+            <div class="text-[8px] font-normal text-slate-500">Jumlah: ${rootNode.count} org</div>
+          </div>
         </div>
       `;
 
-      // Subordinate Nodes
-      if (bapData.karyawan.length > 1) {
-        html += `<div class="tree-connector"></div>`;
-        html += `<div class="tree-horizontal-connector mb-1" style="width: 70%;"></div>`;
-        html += `<div class="flex justify-center gap-2 flex-wrap max-w-lg">`;
-        
-        for (let i = 1; i < bapData.karyawan.length; i++) {
-          const item = bapData.karyawan[i];
-          html += `
-            <div class="flex flex-col items-center">
-              <div class="tree-connector h-2"></div>
-              <div class="tree-node">
-                <div>${item.role}</div>
-                <div class="text-[8px] text-slate-550">Jumlah: ${item.count} org</div>
-              </div>
-            </div>
-          `;
-        }
-        html += `</div>`;
+      // Subordinate Nodes in structured table lines
+      const children = bapData.karyawan.slice(1);
+      if (children.length > 0) {
+        html += `
+          <!-- Vertical down line from Root -->
+          <div class="tree-connector"></div>
+          
+          <div class="flex justify-center w-full">
+            <table class="border-collapse">
+              <tbody>
+                <!-- Horizontal connector line row -->
+                <tr>
+                  ${children.map((child, idx) => {
+                    let borderClass = "border-t border-black";
+                    if (idx === 0) {
+                      borderClass = "border-t border-l border-black";
+                    }
+                    if (idx === children.length - 1) {
+                      borderClass = "border-t border-r border-black";
+                    }
+                    if (children.length === 1) {
+                      borderClass = "border-t border-l border-r border-black";
+                    }
+                    return `<td class="${borderClass} w-24 h-4"></td>`;
+                  }).join('')}
+                </tr>
+                <!-- Subordinate node cards row -->
+                <tr class="align-top">
+                  ${children.map((child) => {
+                    return `
+                      <td class="px-2 text-center" style="width: 110px;">
+                        <!-- Vertical line down to child node card -->
+                        <div class="tree-connector h-3"></div>
+                        <div class="tree-node">
+                          <div class="text-[9.5px] text-slate-800 uppercase border-b border-gray-300 pb-0.5 mb-1">${child.role}</div>
+                          <div class="text-[8px] font-normal text-slate-500">Jumlah: ${child.count} org</div>
+                        </div>
+                      </td>
+                    `;
+                  }).join('')}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
       }
 
       chartContainer.innerHTML = html;
@@ -1803,9 +1838,7 @@
         grid.innerHTML += `
           <div>
             <p class="font-semibold text-slate-700">Pemeriksa ${idx + 1}</p>
-            <div class="h-12 flex items-center justify-center">
-              <span class="text-gray-300 text-[8px] border border-dashed border-gray-300 px-3 py-0.5 rounded">Tanda Tangan</span>
-            </div>
+            <div class="h-16"></div> <!-- Blank space instead of watermark placeholder -->
             <p class="font-bold underline">${item.name}</p>
             <p class="text-gray-600 text-[10pt]">${item.nip ? 'NIP. ' + item.nip : ''}</p>
           </div>
@@ -1959,7 +1992,7 @@
       bapData.inspectors = JSON.parse(JSON.stringify(defaultInspectors));
       bapData.kasiName = "Suriawati Halim, S.Hut., M.P.";
       bapData.kasiNip = "19751127 200003 2 001";
-      bapData.kasiJab = "Kepala Seksi KSDA Wilayah II";
+      bapData.kasiJab = "Kepala Seksi KSDA Wilayah II,"; // Di bawah a.n. Kepala Balai
       bapData.dirName = "Linardi Tan";
       bapData.dirJab = "Direktur";
       bapData.pictures = JSON.parse(JSON.stringify(defaultPictures));
