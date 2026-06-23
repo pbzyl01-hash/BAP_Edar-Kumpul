@@ -3,18 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistem Pembuat BAP Teknis Resmi</title>
+  <title>Sistem Pembuat BAP Teknis Resmi - BKSDA Wilayah II Tenggarong</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts (Inter for App UI, Times New Roman style for Document) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   
   <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border: #e2e8f0;
+      --accent: #059669;
+      --accent-glow: rgba(5, 150, 105, 0.15);
+    }
+
+    .dark-theme {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-card: #1f2937;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --border: #374151;
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.2);
+    }
+
     body {
       font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background-color 0.3s, color 0.3s;
     }
+
+    /* Title Glow & Pulse effect */
+    .glowing-title {
+      font-family: 'Sora', sans-serif;
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--accent-glow);
+      animation: pulseGlow 2.5s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        text-shadow: 0 0 4px var(--accent-glow);
+        opacity: 0.95;
+      }
+      50% {
+        text-shadow: 0 0 16px var(--accent), 0 0 24px var(--accent-glow);
+        opacity: 1;
+      }
+    }
+
     /* A4 Document styling for preview */
     .document-preview {
       font-family: 'Lora', 'Times New Roman', Times, serif;
@@ -23,16 +68,51 @@
       padding: 25mm 20mm 20mm 20mm;
       margin: 0 auto;
       background: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
       position: relative;
-      color: #000;
+      color: #000000;
     }
+
+    /* Official Government table style */
+    .gov-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Lora', 'Times New Roman', Times, serif;
+      font-size: 11px;
+      color: #000000;
+    }
+
+    .gov-table th, .gov-table td {
+      border: 1px solid #000000;
+      padding: 4px 6px;
+      vertical-align: top;
+    }
+
+    .gov-table th {
+      background-color: #f1f5f9 !important; /* light grey print fallback */
+      font-weight: bold;
+      text-align: center;
+    }
+
     .preview-container {
-      background-color: #4b5563;
+      background-color: #334155;
       overflow-y: auto;
       height: calc(100vh - 64px);
     }
-    /* Print media query to isolate the A4 document when printing */
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    /* Print media query */
     @media print {
       body * {
         visibility: hidden;
@@ -46,7 +126,7 @@
         top: 0;
         width: 100%;
         margin: 0;
-        padding: 15mm 15mm 15mm 15mm;
+        padding: 10mm;
         box-shadow: none;
       }
       .no-print {
@@ -58,27 +138,36 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col antialiased">
 
   <!-- NAVBAR -->
-  <header class="bg-slate-900 text-white shadow-md z-10 no-print">
+  <header class="bg-slate-900 text-white shadow-md z-10 no-print border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="p-2 bg-emerald-600 rounded-lg">
-          <i class="fa-solid fa-file-invoice text-xl"></i>
+          <i class="fa-solid fa-file-invoice-dollar text-xl"></i>
         </div>
         <div>
-          <h1 class="text-lg font-bold tracking-tight">Sistem BAP Teknis</h1>
-          <p class="text-xs text-emerald-400 font-medium">BKSDA Wilayah II Tenggarong</p>
+          <h1 class="text-base font-extrabold tracking-tight glowing-title">E-BAP TEKNIS WILAYAH II</h1>
+          <p class="text-[10px] text-emerald-400 font-semibold tracking-wider uppercase">BKSDA KALIMANTAN TIMUR</p>
         </div>
+      </div>
+
+      <!-- Real-time Time, Day and Date Widget -->
+      <div class="hidden md:flex items-center space-x-2 bg-slate-800/80 px-4 py-1.5 rounded-lg border border-slate-700/50">
+        <i class="fa-regular fa-clock text-emerald-400 text-sm animate-pulse"></i>
+        <span id="live-datetime" class="text-xs font-mono font-medium tracking-wide text-gray-300">Memuat Waktu...</span>
       </div>
       
       <div class="flex items-center space-x-3">
-        <button onclick="loadSampleKarisma()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-semibold rounded-lg transition border border-emerald-500/30">
-          <i class="fa-solid fa-cloud-arrow-down mr-1.5"></i> Muat Template Karisma Alam
+        <button onclick="toggleTheme()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition" title="Ganti Tema">
+          <i id="theme-icon" class="fa-solid fa-moon"></i>
         </button>
-        <button onclick="triggerPrint()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition shadow-lg shadow-emerald-700/20 flex items-center gap-2">
-          <i class="fa-solid fa-print"></i> Cetak Dokumen / PDF
+        <button onclick="loadSampleKarisma()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-semibold rounded-lg transition border border-emerald-500/30">
+          <i class="fa-solid fa-cloud-arrow-down mr-1"></i> Muat Karisma Alam
+        </button>
+        <button onclick="triggerPrint()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition shadow-lg shadow-emerald-700/20 flex items-center gap-1.5">
+          <i class="fa-solid fa-print"></i> Cetak / PDF
         </button>
       </div>
     </div>
@@ -88,166 +177,265 @@
   <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
     
     <!-- LEFT PANEL: FORM & HISTORY EDITOR -->
-    <aside class="w-full lg:w-5/12 bg-slate-50 border-r border-gray-200 flex flex-col h-full overflow-hidden no-print">
+    <aside class="w-full lg:w-5/12 bg-[color:var(--bg-secondary)] border-r border-[color:var(--border)] flex flex-col h-full overflow-hidden no-print">
       
       <!-- SUB TABS NAVIGATION -->
-      <div class="bg-white border-b border-gray-200 flex">
-        <button id="tab-input-btn" onclick="switchTab('input')" class="flex-1 py-3 px-4 text-sm font-semibold border-b-2 border-emerald-600 text-emerald-600 transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-pen-to-square"></i> Input Form BAP
+      <div class="bg-[color:var(--bg-card)] border-b border-[color:var(--border)] flex">
+        <button id="tab-input-btn" onclick="switchTab('input')" class="flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-600 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-pen-to-square"></i> INPUT DOKUMEN BAP
         </button>
-        <button id="tab-history-btn" onclick="switchTab('history')" class="flex-1 py-3 px-4 text-sm font-semibold border-b-2 border-transparent text-gray-500 hover:text-slate-900 transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-history"></i> Riwayat BAP (<span id="history-count">0</span>)
+        <button id="tab-history-btn" onclick="switchTab('history')" class="flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-emerald-500 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-history"></i> RIWAYAT ARSIP (<span id="history-count">0</span>)
         </button>
       </div>
 
-      <!-- TAB 1: FORM INPUTS -->
-      <div id="tab-input-container" class="flex-1 overflow-y-auto p-5 space-y-6">
+      <!-- TAB 1: FORM INPUTS WITH ACCORDION SECTIONS -->
+      <div id="tab-input-container" class="flex-1 overflow-y-auto p-4 space-y-3">
         
         <!-- SECTION 1: HEADER & METADATA -->
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 space-y-4">
-          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 border-b pb-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> 1. Informasi Utama BAP
-          </h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">Nomor BAP</label>
-              <input type="text" id="bap-nomor" oninput="updateLivePreview()" placeholder="BA.179/K.18/SKSDAW II/05/2026" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+        <div class="bg-[color:var(--bg-card)] rounded-xl border border-[color:var(--border)] overflow-hidden">
+          <button onclick="toggleAccordion('acc-info')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center">
+            <span><i class="fa-solid fa-circle-info text-blue-500 mr-2"></i>INFORMASI UTAMA & NOMOR DOKUMEN</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+          <div id="acc-info" class="p-4 space-y-3">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Nomor BAP</label>
+                <input type="text" id="bap-nomor" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Nama Perusahaan</label>
+                <input type="text" id="bap-perusahaan" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Status Permohonan</label>
+                <input type="text" id="bap-status" oninput="updateLivePreview()" placeholder="Baru" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Taksa Utama</label>
+                <input type="text" id="bap-taksa" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Lokasi Pemeriksaan</label>
+                <input type="text" id="bap-lokasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Tanggal Pemeriksaan</label>
+                <input type="text" id="bap-tanggal" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Perusahaan</label>
-              <input type="text" id="bap-perusahaan" oninput="updateLivePreview()" placeholder="CV. Karisma Alam" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+          </div>
+        </div>
+
+        <!-- SECTION 2: DATA PERUSAHAAN (BAB I) -->
+        <div class="bg-[color:var(--bg-card)] rounded-xl border border-[color:var(--border)] overflow-hidden">
+          <button onclick="toggleAccordion('acc-perusahaan')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center">
+            <span><i class="fa-solid fa-building text-amber-500 mr-2"></i>BAB I. DATA PERUSAHAAN & IDENTITAS</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+          <div id="acc-perusahaan" class="p-4 space-y-3 hidden">
+            <div class="grid grid-cols-2 gap-3">
+              <div class="col-span-2">
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Nama Pemilik</label>
+                <input type="text" id="pi-pemilik" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Tanggal Pendirian</label>
+                <input type="text" id="pi-tgl-pendirian" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Nomor Telp/Fax</label>
+                <input type="text" id="pi-telp" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div class="col-span-2">
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Email</label>
+                <input type="email" id="pi-email" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+              </div>
+              <div class="col-span-2">
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Alamat Kantor</label>
+                <textarea id="pi-alamat-kantor" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]"></textarea>
+              </div>
+              <div class="col-span-2">
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Alamat Penampungan</label>
+                <textarea id="pi-alamat-gudang" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]"></textarea>
+              </div>
             </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: KELENGKAPAN DOKUMEN (BAB II) -->
+        <div class="bg-[color:var(--bg-card)] rounded-xl border border-[color:var(--border)] overflow-hidden">
+          <button onclick="toggleAccordion('acc-dokumen')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center">
+            <span><i class="fa-solid fa-folder-open text-purple-500 mr-2"></i>BAB II. DOKUMEN ADMINISTRASI (NIB, AKTA, DLL)</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+          <div id="acc-dokumen" class="p-4 space-y-4 hidden">
+            <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-lg space-y-2 border border-[color:var(--border)]">
+              <h4 class="text-[10px] font-bold text-emerald-600">Akta Pendirian Perusahaan</h4>
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="dok-akta-no" oninput="updateLivePreview()" placeholder="No. Akta" class="px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+                <input type="text" id="dok-akta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Akta" class="px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+                <input type="text" id="dok-akta-notaris" oninput="updateLivePreview()" placeholder="Nama Notaris" class="col-span-2 px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-lg space-y-2 border border-[color:var(--border)]">
+              <h4 class="text-[10px] font-bold text-emerald-600">Nomor Induk Berusaha (NIB)</h4>
+              <div class="grid grid-cols-3 gap-2">
+                <input type="text" id="dok-nib-no" oninput="updateLivePreview()" placeholder="No. NIB" class="col-span-2 px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+                <input type="text" id="dok-nib-kbli" oninput="updateLivePreview()" placeholder="Kode KBLI" class="px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+                <input type="text" id="dok-nib-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit" class="col-span-3 px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-lg space-y-2 border border-[color:var(--border)]">
+              <h4 class="text-[10px] font-bold text-emerald-600">Persetujuan Kesesuaian Tata Ruang & NPWP</h4>
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="dok-ruang-tgl" oninput="updateLivePreview()" placeholder="Tgl Kesesuaian Ruang" class="px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+                <input type="text" id="dok-ruang-penerbit" oninput="updateLivePreview()" placeholder="Penerbit" class="px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+                <input type="text" id="dok-npwp" oninput="updateLivePreview()" placeholder="No. NPWP" class="col-span-2 px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-lg space-y-2 border border-[color:var(--border)]">
+              <h4 class="text-[10px] font-bold text-emerald-600">Pakta Integritas</h4>
+              <input type="text" id="dok-pakta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit Pakta" class="w-full px-2.5 py-1 text-xs bg-[color:var(--bg-secondary)] border rounded text-[color:var(--text-primary)]">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: SARANA PRASARANA (BAB III) -->
+        <div class="bg-[color:var(--bg-card)] rounded-xl border border-[color:var(--border)] overflow-hidden">
+          <button onclick="toggleAccordion('acc-sarpras')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center">
+            <span><i class="fa-solid fa-boxes-packing text-emerald-500 mr-2"></i>BAB III. SARANA & PRASARANA DETAIL</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+          <div id="acc-sarpras" class="p-4 space-y-3 hidden">
+            <p class="text-[10px] text-gray-500 font-semibold mb-2">Edit Ukuran dan Jumlah untuk inventaris:</p>
+            <div id="sarpras-inputs-container" class="space-y-2 max-h-72 overflow-y-auto">
+              <!-- Dynamically populated sarpras fields -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: SPESIMEN & STATUS CITES (BAB IV - VIII) -->
+        <div class="bg-[color:var(--bg-card)] rounded-xl border border-[color:var(--border)] overflow-hidden">
+          <button onclick="toggleAccordion('acc-specimen')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center">
+            <span><i class="fa-solid fa-seedling text-indigo-500 mr-2"></i>BAB IV - VIII. SPESIMEN, LINDUNGAN, & CITES</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+          <div id="acc-specimen" class="p-4 space-y-4 hidden">
             <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">Status Permohonan</label>
-              <select id="bap-status" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                <option value="Baru">Baru</option>
-                <option value="Perpanjangan">Perpanjangan</option>
+              <label class="block text-[10px] font-bold text-gray-500 mb-1">Pilih Spesimen yang Diedarkan (Ceklist salah satu)</label>
+              <select id="spec-taksa-select" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border rounded-lg text-[color:var(--text-primary)]">
+                <option value="Gaharu">Gaharu (✔)</option>
+                <option value="Reptilia">Reptilia</option>
+                <option value="Mamalia">Mamalia</option>
+                <option value="Amphibia">Amphibia</option>
+                <option value="Aves/Burung">Aves / Burung</option>
+                <option value="Karang Hias">Karang Hias</option>
+                <option value="Insekta">Insekta</option>
+                <option value="Tumbuhan">Tumbuhan Lain</option>
               </select>
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">Taksa / Komoditi</label>
-              <input type="text" id="bap-taksa" oninput="updateLivePreview()" placeholder="Gaharu/Kemedangan" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Status Lindungan</label>
+                <select id="spec-lindung" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border rounded-lg text-[color:var(--text-primary)]">
+                  <option value="Tidak dilindungi">Tidak dilindungi (✔)</option>
+                  <option value="Dilindungi">Dilindungi</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Status CITES</label>
+                <select id="spec-cites" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border rounded-lg text-[color:var(--text-primary)]">
+                  <option value="Appendiks II">Appendiks II (✔)</option>
+                  <option value="Appendiks I">Appendiks I</option>
+                  <option value="Appendiks III">Appendiks III</option>
+                  <option value="Non Appendiks CITES">Non Appendiks CITES</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Sumber Spesimen</label>
+                <select id="spec-sumber" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border rounded-lg text-[color:var(--text-primary)]">
+                  <option value="Tangkapan alam">Tangkapan alam (✔)</option>
+                  <option value="Hasil penangkaran">Hasil penangkaran / budidaya</option>
+                  <option value="Luar negeri">Luar negeri (impor)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 mb-1">Bentuk Spesimen</label>
+                <select id="spec-bentuk" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border rounded-lg text-[color:var(--text-primary)]">
+                  <option value="Kayu">Kayu (✔)</option>
+                  <option value="Hidup">Hidup (live)</option>
+                  <option value="Mati">Mati (dead)</option>
+                  <option value="Minyak">Minyak / Abu</option>
+                </select>
+              </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">Lokasi Pemeriksaan</label>
-              <input type="text" id="bap-lokasi" oninput="updateLivePreview()" placeholder="Tenggarong" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">Tanggal Pemeriksaan</label>
-              <input type="text" id="bap-tanggal" oninput="updateLivePreview()" placeholder="13 Mei 2026" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+              <label class="block text-[10px] font-bold text-gray-500 mb-1">Keterangan Sumber Spesimen</label>
+              <input type="text" id="spec-sumber-ket" oninput="updateLivePreview()" value="Berdasarkan kuota pengambilan di alam yang telah ditetapkan oleh Balai KSDA Kalimantan Timur" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border rounded-lg text-[color:var(--text-primary)]">
             </div>
           </div>
         </div>
 
-        <!-- SECTION 2: DASAR PELAKSANAAN -->
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 space-y-3">
-          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 border-b pb-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 2. Dasar Pelaksanaan
-          </h3>
-          
-          <div id="dasar-list" class="space-y-2">
-            <!-- Dynamic Rules List -->
-          </div>
-          <button onclick="addDasarRule()" class="mt-2 w-full py-1.5 text-xs text-emerald-600 hover:text-emerald-700 font-semibold bg-emerald-50 rounded-lg hover:bg-emerald-100 transition border border-dashed border-emerald-300">
-            <i class="fa-solid fa-plus mr-1"></i> Tambah Dasar Pelaksanaan
+        <!-- SECTION 6: PEMERIKSAAN TEKNIS & PROSEDUR (BAB IX - XIV) -->
+        <div class="bg-[color:var(--bg-card)] rounded-xl border border-[color:var(--border)] overflow-hidden">
+          <button onclick="toggleAccordion('acc-teknis')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center">
+            <span><i class="fa-solid fa-gears text-rose-500 mr-2"></i>BAB IX - XIV. NARASI TEKNIS & SDM</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
-        </div>
-
-        <!-- SECTION 3: HASIL PEMERIKSAAN TEKNIS -->
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 space-y-4">
-          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 border-b pb-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> 3. Hasil Pemeriksaan Teknis
-          </h3>
-          
-          <div class="space-y-3">
+          <div id="acc-teknis" class="p-4 space-y-3 hidden">
             <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">A. Legalitas Perusahaan (NIB/Izin)</label>
-              <textarea id="hasil-legalitas" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Memiliki NIB No. ..."></textarea>
+              <label class="block text-[10px] font-bold text-gray-500 mb-1">IX. Teknis Pelaksanaan Penampungan</label>
+              <textarea id="nar-penampungan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]"></textarea>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">B. Fasilitas & Sarana Prasarana Gudang</label>
-              <textarea id="hasil-gudang" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Memiliki fasilitas kantor, ruang penyimpanan yang memadai..."></textarea>
+              <label class="block text-[10px] font-bold text-gray-500 mb-1">X. Teknis Pelaksanaan Pengangkutan</label>
+              <textarea id="nar-pengangkutan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]"></textarea>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">C. Stok Barang / Asal Usul Taksa</label>
-              <textarea id="hasil-stok" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Bahan baku diperoleh secara legal dari mitra binaan setempat..."></textarea>
+              <label class="block text-[10px] font-bold text-gray-500 mb-1">XI. Sistem Pembuangan Limbah</label>
+              <textarea id="nar-limbah" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]"></textarea>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-500 mb-1">XIII. Total Investasi (Rupiah)</label>
+              <input type="text" id="nar-investasi" oninput="updateLivePreview()" value="RP. 250.000.000" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-500 mb-1">XIV. Program Pembinaan Konservasi</label>
+              <textarea id="nar-pembinaan" oninput="updateLivePreview()" rows="3" class="w-full px-3 py-1.5 text-xs bg-[color:var(--bg-secondary)] border border-[color:var(--border)] rounded-lg text-[color:var(--text-primary)]"></textarea>
             </div>
           </div>
         </div>
 
-        <!-- SECTION 4: DAFTAR PENANDATANGAN (PETUGAS & PENGESAH) -->
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 space-y-4">
-          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 border-b pb-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> 4. Penandatangan Dokumen
-          </h3>
-          
-          <!-- Petugas 1 -->
-          <div class="p-3 bg-slate-50 rounded-lg space-y-2 border border-slate-200">
-            <h4 class="text-xs font-bold text-slate-700">Petugas Pemeriksa 1</h4>
-            <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="p1-nama" oninput="updateLivePreview()" placeholder="Ahmad Ripai, S.Hut." class="px-2.5 py-1.5 text-xs border rounded bg-white">
-              <input type="text" id="p1-nip" oninput="updateLivePreview()" placeholder="NIP. 19800412 200012 1 001" class="px-2.5 py-1.5 text-xs border rounded bg-white">
-            </div>
-          </div>
-
-          <!-- Petugas 2 -->
-          <div class="p-3 bg-slate-50 rounded-lg space-y-2 border border-slate-200">
-            <h4 class="text-xs font-bold text-slate-700">Petugas Pemeriksa 2</h4>
-            <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="p2-nama" oninput="updateLivePreview()" placeholder="Herdi Yusuf, S.Hut." class="px-2.5 py-1.5 text-xs border rounded bg-white">
-              <input type="text" id="p2-nip" oninput="updateLivePreview()" placeholder="NIP. 19851227 202012 1 005" class="px-2.5 py-1.5 text-xs border rounded bg-white">
-            </div>
-          </div>
-
-          <!-- Pengesah (Kepala Seksi) -->
-          <div class="p-3 bg-slate-50 rounded-lg space-y-2 border border-slate-200">
-            <h4 class="text-xs font-bold text-slate-700">Mengesahkan (a.n. Kepala Balai / Kasi)</h4>
-            <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="kasi-nama" oninput="updateLivePreview()" placeholder="Suriawati Halim, S.Hut., M.P." class="px-2.5 py-1.5 text-xs border rounded bg-white">
-              <input type="text" id="kasi-nip" oninput="updateLivePreview()" placeholder="NIP. 19751127 200003 2 001" class="px-2.5 py-1.5 text-xs border rounded bg-white">
-            </div>
-            <input type="text" id="kasi-jabatan" oninput="updateLivePreview()" placeholder="Kepala Seksi KSDA Wilayah II" class="w-full px-2.5 py-1.5 text-xs border rounded bg-white">
-          </div>
-
-          <!-- Direktur / Perwakilan CV -->
-          <div class="p-3 bg-slate-50 rounded-lg space-y-2 border border-slate-200">
-            <h4 class="text-xs font-bold text-slate-700">Mengetahui (Pihak Perusahaan)</h4>
-            <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="dir-nama" oninput="updateLivePreview()" placeholder="Linardi Tan" class="px-2.5 py-1.5 text-xs border rounded bg-white">
-              <input type="text" id="dir-jabatan" oninput="updateLivePreview()" placeholder="Direktur CV. Karisma Alam" class="px-2.5 py-1.5 text-xs border rounded bg-white">
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION 5: LAMPIRAN FOTO & DOKUMENTASI -->
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 space-y-3">
-          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 border-b pb-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> 5. Lampiran Gambar Pemeriksaan
-          </h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="p-2 border rounded-lg">
-              <label class="block text-xs font-bold mb-1">Gambar 1</label>
-              <input type="file" id="pic1" onchange="handleImageUpload(event, 'p1')" class="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
-              <input type="text" id="pic1-desc" oninput="updateLivePreview()" placeholder="Caption: Ruangan Kantor" class="mt-1 w-full px-2 py-1 text-xs border rounded">
-            </div>
-            <div class="p-2 border rounded-lg">
-              <label class="block text-xs font-bold mb-1">Gambar 2</label>
-              <input type="file" id="pic2" onchange="handleImageUpload(event, 'p2')" class="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
-              <input type="text" id="pic2-desc" oninput="updateLivePreview()" placeholder="Caption: Penyimpanan Gaharu" class="mt-1 w-full px-2 py-1 text-xs border rounded">
-            </div>
-          </div>
-        </div>
-
-        <!-- WORKSPACE DRAFT ACTIONS -->
-        <div class="flex gap-3 pt-3">
-          <button onclick="saveBapToHistory()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-floppy-disk"></i> Simpan ke Riwayat
+        <!-- SECTION 7: PENANDATANGAN & DOKUMENTASI (BAB XV) -->
+        <div class="bg-[color:var(--bg-card)] rounded-xl border border-[color:var(--border)] overflow-hidden">
+          <button onclick="toggleAccordion('acc-ttd-img')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center">
+            <span><i class="fa-solid fa-signature text-blue-500 mr-2"></i>XV. TANDA TANGAN & LAMPIRAN FOTO</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
-          <button onclick="resetBapForm()" class="py-3 px-4 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
-            <i class="fa-solid fa-rotate"></i> Reset
-          </button>
+          <div id="acc-ttd-img" class="p-4 space-y-4 hidden">
+            <!-- Signatures setup inside other tabs but keep sync references here -->
+            <p class="text-[10px] text-gray-500 italic">Gunakan panel utama di bagian atas untuk mengedit data petugas pemeriksa, Kasi, dan Direktur Perusahaan.</p>
+            
+            <div class="border-t pt-3">
+              <h4 class="text-[10px] font-bold text-emerald-600 mb-2">Upload Lampiran Gambar (Bahan Pengepakan, Timbangan dll):</h4>
+              <div class="space-y-2">
+                <div class="p-2 border rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <label class="block text-[9px] font-bold mb-1">Upload Gambar 3 (Meja Tamu)</label>
+                  <input type="file" onchange="handleImageUpload(event, 'p3')" class="w-full text-xs">
+                </div>
+                <div class="p-2 border rounded-lg bg-slate-50 dark:bg-slate-800">
+                  <label class="block text-[9px] font-bold mb-1">Upload Gambar 4 (Timbangan)</label>
+                  <input type="file" onchange="handleImageUpload(event, 'p4')" class="w-full text-xs">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -255,7 +443,7 @@
       <!-- TAB 2: RIWAYAT BAP -->
       <div id="tab-history-container" class="hidden flex-1 overflow-y-auto p-5 space-y-4">
         <div class="flex justify-between items-center pb-2 border-b">
-          <h3 class="font-bold text-slate-800 text-sm">Riwayat BAP Tersimpan</h3>
+          <h3 class="font-bold text-slate-800 dark:text-slate-200 text-sm">Riwayat BAP Tersimpan</h3>
           <button onclick="clearAllHistory()" class="text-xs text-rose-600 hover:text-rose-700 font-semibold">
             Hapus Semua
           </button>
@@ -275,25 +463,25 @@
         
         <!-- OFFICIAL HEADER OF MINISTRY -->
         <div class="flex items-center space-x-4 border-b-4 border-double border-black pb-3 mb-6">
-          <!-- Logo Placeholder (Official looking SVG Shield or Garuda) -->
           <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center border border-slate-300 p-1">
+            <!-- Government Forestry Shield Style Symbol -->
             <svg viewBox="0 0 100 100" class="w-full h-full text-slate-800">
-              <!-- Simple Garuda stylized vector shape -->
-              <path d="M50 15 L60 35 L80 35 L65 50 L75 75 L50 60 L25 75 L35 50 L20 35 L40 35 Z" fill="currentColor"></path>
-              <circle cx="50" cy="50" r="10" stroke="white" stroke-width="2" fill="none"></circle>
+              <path d="M50 10 L85 25 L85 60 C85 80 50 95 50 95 C50 95 15 80 15 60 L15 25 Z" fill="none" stroke="currentColor" stroke-width="4"></path>
+              <path d="M50 20 L50 85 M25 45 L50 45 M75 45 L50 45" stroke="currentColor" stroke-width="2"></path>
+              <circle cx="50" cy="50" r="14" stroke="currentColor" stroke-width="3" fill="none"></circle>
             </svg>
           </div>
           <div class="flex-1 text-center pr-12">
-            <h2 class="text-sm font-bold tracking-tight uppercase leading-snug">Kementerian Lingkungan Hidup Dan Kehutanan</h2>
-            <h2 class="text-xs font-bold uppercase leading-snug">Direktorat Jenderal Konservasi Sumber Daya Alam Dan Ekosistem</h2>
-            <h1 class="text-sm font-bold uppercase leading-snug">Balai Konservasi Sumber Daya Alam Kalimantan Timur</h1>
-            <p class="text-[10px] font-semibold leading-normal">Seksi Konservasi Wilayah II Tenggarong</p>
+            <h2 class="text-sm font-bold uppercase leading-snug">KEMENTERIAN KEHUTANAN</h2>
+            <h2 class="text-xs font-bold uppercase leading-snug">DIREKTORAT JENDERAL KONSERVASI SUMBER DAYA ALAM DAN EKOSISTEM</h2>
+            <h1 class="text-sm font-bold uppercase leading-snug">BALAI KONSERVASI SUMBER DAYA ALAM KALIMANTAN TIMUR</h1>
+            <p class="text-[9px] font-bold leading-normal">Alamat : Jl. Tambak Rel No. 9 RT. 11 Kel. Baru Kec. Tenggarong – Kabupaten Kutai Kartanegara</p>
           </div>
         </div>
 
         <!-- MAIN TITLE -->
         <div class="text-center mb-6">
-          <h3 class="text-xs font-bold underline uppercase tracking-wide leading-relaxed">Berita Acara Pemeriksaan (BAP) Persiapan Teknis Perizinan Berusaha Peredaran Dalam Negeri</h3>
+          <h3 class="text-xs font-bold underline uppercase tracking-wide leading-relaxed">BERITA ACARA PEMERIKSAAN (BAP) PERSIAPAN TEKNIS PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h3>
           <p class="text-xs font-medium">Nomor: <span id="view-nomor" class="font-bold">BA.179/K.18/SKSDAW II/05/2026</span></p>
         </div>
 
@@ -302,76 +490,228 @@
           <table class="w-full text-left">
             <tbody>
               <tr>
-                <td class="w-1/3 py-1 font-semibold">Nama Perusahaan</td>
-                <td class="w-4 py-1">:</td>
-                <td class="py-1 font-bold" id="view-perusahaan">CV. Karisma Alam</td>
+                <td class="w-1/3 py-0.5 font-semibold">Nama Perusahaan</td>
+                <td class="w-4 py-0.5">:</td>
+                <td class="py-0.5 font-bold" id="view-perusahaan">CV. Karisma Alam</td>
               </tr>
               <tr>
-                <td class="py-1 font-semibold">Status Permohonan</td>
+                <td class="py-0.5 font-semibold">Status Permohonan</td>
                 <td>:</td>
-                <td class="py-1" id="view-status">Baru</td>
+                <td class="py-0.5" id="view-status">Baru</td>
               </tr>
               <tr>
-                <td class="py-1 font-semibold">Taksa</td>
+                <td class="py-0.5 font-semibold">Taksa</td>
                 <td>:</td>
-                <td class="py-1 font-semibold" id="view-taksa">Gaharu/Kemedangan</td>
+                <td class="py-0.5 font-bold" id="view-taksa">Gaharu/Kemedangan</td>
               </tr>
               <tr>
-                <td class="py-1 font-semibold">Lokasi & Tanggal</td>
+                <td class="py-0.5 font-semibold">Lokasi & Tanggal</td>
                 <td>:</td>
-                <td class="py-1" id="view-tgl-lokasi">Tenggarong, 13 Mei 2026</td>
+                <td class="py-0.5" id="view-tgl-lokasi">Tenggarong, 13 Mei 2026</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- SUBTITLE HASIL -->
-        <div class="border-t border-b border-black py-1.5 my-4 text-center">
-          <h4 class="text-xs font-bold uppercase tracking-wider">Hasil Pemeriksaan Teknis, Perizinan Berusaha Peredaran Dalam Negeri</h4>
+        <!-- HEADER SUB-BAR -->
+        <div class="border-t border-b border-black py-1 my-3 text-center">
+          <h4 class="text-[11px] font-bold uppercase">HASIL PEMERIKSAAN TEKNIS PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h4>
         </div>
 
-        <!-- SECTION: DASAR PELAKSANAAN -->
-        <div class="space-y-3 text-[11px] leading-relaxed mb-6">
-          <h5 class="font-bold text-xs uppercase border-b pb-0.5 border-dashed border-slate-300">Dasar Pelaksanaan :</h5>
-          <ol class="list-decimal pl-5 space-y-1" id="view-dasar-list">
-            <!-- Rendered automatically -->
-          </ol>
+        <!-- DASAR PELAKSANAAN -->
+        <div class="mb-4">
+          <p class="text-[11px] font-bold uppercase mb-1">DASAR PELAKSANAAN :</p>
+          <table class="gov-table">
+            <tbody id="view-table-dasar">
+              <!-- Rendered automatically from JS rules -->
+            </tbody>
+          </table>
         </div>
 
-        <!-- SECTION: HASIL DETAIL -->
-        <div class="space-y-4 text-[11px] leading-relaxed mb-6">
-          <h5 class="font-bold text-xs uppercase border-b pb-0.5 border-dashed border-slate-300">Detail Hasil Pemeriksaan Teknis :</h5>
-          <div class="space-y-3 bg-slate-50 p-3 rounded border border-slate-200">
-            <div>
-              <p class="font-bold text-slate-800">A. Legalitas Perusahaan (NIB & Izin Usaha):</p>
-              <p class="pl-4 text-gray-700 italic" id="view-legalitas">CV. Karisma Alam berkedudukan resmi di Tenggarong dan memiliki berkas perizinan yang absah sesuai regulasi yang berlaku.</p>
+        <!-- I. DATA PERUSAHAAN -->
+        <div class="mb-4 page-break">
+          <p class="text-[11px] font-bold uppercase mb-1">I. DATA PERUSAHAAN</p>
+          <table class="gov-table">
+            <tbody>
+              <tr>
+                <td class="w-6 text-center">1</td>
+                <td class="w-1/3">Nama Pemilik</td>
+                <td>: <span id="v-pemilik" class="font-semibold">Linardi Tan</span></td>
+              </tr>
+              <tr>
+                <td class="text-center">2</td>
+                <td>Nama Perusahaan</td>
+                <td>: <span id="v-perusahaan" class="font-bold">CV. Karisma Alam</span></td>
+              </tr>
+              <tr>
+                <td class="text-center">3</td>
+                <td>Tanggal Pendirian</td>
+                <td>: <span id="v-tgl-pendirian">22 Januari 2026</span></td>
+              </tr>
+              <tr>
+                <td class="text-center">4</td>
+                <td>Alamat Kantor</td>
+                <td>: <span id="v-alamat-kantor">Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda</span></td>
+              </tr>
+              <tr>
+                <td class="text-center">5</td>
+                <td>Alamat Penampungan</td>
+                <td>: <span id="v-alamat-gudang">Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda</span></td>
+              </tr>
+              <tr>
+                <td class="text-center">6</td>
+                <td>Nomor Telp/Fax</td>
+                <td>: <span id="v-telp">0811 551 400</span></td>
+              </tr>
+              <tr>
+                <td class="text-center">7</td>
+                <td>Email</td>
+                <td>: <span id="v-email" class="italic">karismaalamoffice@gmail.com</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- II. PEMERIKSAAN KELENGKAPAN DOKUMEN -->
+        <div class="mb-4">
+          <p class="text-[11px] font-bold uppercase mb-1">II. PEMERIKSAAN KELENGKAPAN DOKUMEN PERSYARATAN</p>
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th class="w-8">No.</th>
+                <th class="w-2/5">Jenis Dokumen</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center">1</td>
+                <td>Akta Pendirian Perusahaan</td>
+                <td>
+                  Nomor: <span id="v-akta-no" class="font-semibold">05</span><br>
+                  Tanggal: <span id="v-akta-tgl">22 Januari 2026</span><br>
+                  Notaris: <span id="v-akta-notaris">Johny Marthen Londong, S.H., M.Kn.</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">2</td>
+                <td>Nomor Induk Berusaha (NIB)</td>
+                <td>
+                  Nomor: <span id="v-nib-no" class="font-semibold">9120300781719</span><br>
+                  Tanggal: <span id="v-nib-tgl">11 Juli 2019</span><br>
+                  KBLI: <span id="v-nib-kbli">02209</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">3</td>
+                <td>Kesesuaian Kegiatan Pemanfaatan Ruang</td>
+                <td>
+                  Tanggal: <span id="v-ruang-tgl">08 Mei 2025</span><br>
+                  Penerbit: <span id="v-ruang-penerbit">OSS</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">4</td>
+                <td>Nomor Pokok Wajib Pajak (NPWP)</td>
+                <td>Nomor: <span id="v-npwp" class="font-semibold">02.467.679.3-7222.000</span></td>
+              </tr>
+              <tr>
+                <td class="text-center">5</td>
+                <td>Pakta Integritas</td>
+                <td>Tanggal: <span id="v-pakta-tgl">08 Mei 2026</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- III. PEMERIKSAAN SARANA DAN PRASARANA -->
+        <div class="mb-4 page-break">
+          <p class="text-[11px] font-bold uppercase mb-1">III. PEMERIKSAAN SARANA DAN PRASARANA</p>
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th class="w-8">No.</th>
+                <th>Jenis Sarana Prasarana</th>
+                <th class="w-16">Satuan</th>
+                <th class="w-24">Ukuran</th>
+                <th class="w-16">Jumlah</th>
+              </tr>
+            </thead>
+            <tbody id="view-table-sarpras">
+              <!-- Rendered automatically from JS state -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- IV - VIII. SPESIMEN & CITES SUMMARY -->
+        <div class="mb-4">
+          <p class="text-[11px] font-bold uppercase mb-1">IV - VIII. KARAKTERISTIK SPESIMEN & REGULASI</p>
+          <table class="gov-table">
+            <tbody>
+              <tr>
+                <td class="w-1/3 font-semibold">Taksa Terpilih</td>
+                <td id="v-spec-taksa" class="font-bold text-emerald-700">Gaharu (✔)</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Status Lindungan</td>
+                <td id="v-spec-lindung">Tidak dilindungi (✔)</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Status Appendiks CITES</td>
+                <td id="v-spec-cites" class="font-semibold">Appendiks II (✔) - Gaharu/Kemedangan</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Sumber Perolehan</td>
+                <td>
+                  <span id="v-spec-sumber" class="font-semibold">Tangkapan alam (✔)</span><br>
+                  <span id="v-spec-sumber-ket" class="text-[10px] text-gray-600">Berdasarkan kuota...</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Bentuk Spesimen</td>
+                <td id="v-spec-bentuk">Kayu (✔)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- IX - XIV. TEKNIS NARRATIVE BLOCKS -->
+        <div class="mb-4 page-break">
+          <p class="text-[11px] font-bold uppercase mb-1">IX - XIV. PEMERIKSAAN TEKNIS & PROGRAM PEMBINAAN</p>
+          <div class="space-y-3 text-[11px] leading-relaxed">
+            <div class="p-2 border rounded bg-slate-50">
+              <p class="font-bold">IX. Teknis Pelaksanaan Penampungan:</p>
+              <p id="v-nar-penampungan" class="text-justify text-gray-700 italic"></p>
             </div>
-            <div>
-              <p class="font-bold text-slate-800">B. Fasilitas & Sarana Prasarana Gudang:</p>
-              <p class="pl-4 text-gray-700 italic" id="view-gudang">Tersedia tempat penampungan serta pemrosesan yang mumpuni dengan ventilasi, pengemasan, dan layout yang mendukung persiapan teknis taksa.</p>
+            <div class="p-2 border rounded bg-slate-50">
+              <p class="font-bold">X. Teknis Pelaksanaan Pengangkutan:</p>
+              <p id="v-nar-pengangkutan" class="text-justify text-gray-700 italic"></p>
             </div>
-            <div>
-              <p class="font-bold text-slate-800">C. Asal-Usul Komoditi / Stok:</p>
-              <p class="pl-4 text-gray-700 italic" id="view-stok">Taksa Gaharu/Kemedangan bersumber dari kemitraan yang tersertifikasi secara hukum, menjamin kelestarian lingkungan dan transparansi ekosistem dagang.</p>
+            <div class="p-2 border rounded bg-slate-50">
+              <p class="font-bold">XI. Sistem Pembuangan Limbah:</p>
+              <p id="v-nar-limbah" class="text-justify text-gray-700 italic"></p>
+            </div>
+            <div class="p-2 border rounded bg-slate-50">
+              <p class="font-bold">XIV. Program Pembinaan Konservasi Jenis yang Diedarkan:</p>
+              <p id="v-nar-pembinaan" class="text-justify text-gray-700 italic"></p>
             </div>
           </div>
         </div>
 
-        <!-- CONCLUDING STATEMENT / PERNYATAAN KEBENARAN -->
-        <div class="my-6 text-[11px] leading-relaxed text-justify italic font-medium bg-slate-100 p-3 rounded border border-slate-300">
-          "Apabila data yang kami berikan atau sampaikan tidak benar, maka kami yang bertanda tangan di bawah ini bersedia dikenakan sanksi dan atau dituntut sesuai dengan peraturan yang berlaku"
+        <!-- STATEMENT & LEGAL DECLARATION -->
+        <div class="my-6 text-[11px] leading-relaxed text-justify italic font-medium bg-slate-50 p-3 rounded border border-black">
+          "Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan yang ada di CV. Karisma Alam. Semua kelengkapan dokumen pada butir II sama dengan aslinya. Apabila data, dokumen dan keterangan tersebut tidak benar, maka kami yang bertanda tangan di bawah ini bersedia dikenakan sanksi dan atau dituntut sesuai dengan peraturan yang berlaku."
         </div>
 
-        <!-- SIGNATURES BLOCK (EXACT ORIGINAL Word FORMAT) -->
-        <div class="mt-8 text-[11px] leading-snug">
-          <!-- Tanggal & Lokasi Pembuatan -->
+        <!-- SIGNATURES BLOCK (EXACT Word FORMAT) -->
+        <div class="mt-8 text-[11px] leading-snug page-break">
           <div class="text-right mb-4">
             <span class="font-bold text-slate-700" id="view-tempat-tgl">Tenggarong, 13 Mei 2026</span>
           </div>
 
           <div class="text-center font-bold mb-4 text-slate-700">Dibuat dengan sebenarnya oleh:</div>
           
-          <!-- Petugas 1 & Petugas 2 -->
+          <!-- Pemeriksa 1 & 2 -->
           <div class="grid grid-cols-2 gap-4 text-center mb-6">
             <div>
               <p class="font-semibold text-slate-600">Pemeriksa 1</p>
@@ -391,7 +731,7 @@
             </div>
           </div>
 
-          <!-- Bottom Row: Pengesah (Kasi) & Mengetahui (Direktur) -->
+          <!-- Kasi & Direktur CV -->
           <div class="grid grid-cols-2 gap-4 text-center mt-8 pt-4 border-t border-gray-200">
             <div>
               <p class="font-semibold">Disahkan oleh:</p>
@@ -414,7 +754,7 @@
           </div>
         </div>
 
-        <!-- PAGE BREAK FOR PHOTO DOCUMENTATION ATTACHMENTS -->
+        <!-- PHOTO ATTACHMENT SECTION -->
         <div class="page-break my-8 border-t-2 border-slate-300 pt-8">
           <div class="text-xs leading-normal">
             <table class="w-full border-b border-gray-300 pb-2 mb-4">
@@ -437,7 +777,7 @@
               </tbody>
             </table>
 
-            <h4 class="text-center font-bold text-xs uppercase tracking-wider mb-6 border-b pb-2">Photo atau Gambar-Gambar Pemeriksaan</h4>
+            <h4 class="text-center font-bold text-xs uppercase tracking-wider mb-6 border-b pb-2">PHOTO ATAU GAMBAR-GAMBAR PEMERIKSAAN</h4>
             
             <div class="grid grid-cols-2 gap-6 mt-4">
               <div class="border p-2 rounded bg-slate-50 flex flex-col items-center">
@@ -445,15 +785,31 @@
                   <img id="img-slot1" class="w-full h-full object-cover hidden" src="" alt="Lampiran 1">
                   <span id="img-placeholder1" class="text-gray-400 text-xs text-center px-4"><i class="fa-regular fa-image text-3xl block mb-2"></i>[Belum Ada Gambar Ruangan Kantor]</span>
                 </div>
-                <p class="text-xs font-semibold text-center text-slate-700" id="view-caption1">Gambar 1: Ruangan Kantor</p>
+                <p class="text-[10px] font-semibold text-center text-slate-700" id="view-caption1">Gambar 1: Ruangan Kantor</p>
               </div>
 
               <div class="border p-2 rounded bg-slate-50 flex flex-col items-center">
                 <div class="w-full h-48 bg-slate-200 rounded flex items-center justify-center overflow-hidden mb-2 relative">
                   <img id="img-slot2" class="w-full h-full object-cover hidden" src="" alt="Lampiran 2">
-                  <span id="img-placeholder2" class="text-gray-400 text-xs text-center px-4"><i class="fa-regular fa-image text-3xl block mb-2"></i>[Belum Ada Gambar Stok/Meja Kerja]</span>
+                  <span id="img-placeholder2" class="text-gray-400 text-xs text-center px-4"><i class="fa-regular fa-image text-3xl block mb-2"></i>[Belum Ada Gambar Meja & Kursi Kerja]</span>
                 </div>
-                <p class="text-xs font-semibold text-center text-slate-700" id="view-caption2">Gambar 2: Meja Kerja/Penyimpanan</p>
+                <p class="text-[10px] font-semibold text-center text-slate-700" id="view-caption2">Gambar 2: Meja Kerja/Penyimpanan</p>
+              </div>
+
+              <div class="border p-2 rounded bg-slate-50 flex flex-col items-center">
+                <div class="w-full h-48 bg-slate-200 rounded flex items-center justify-center overflow-hidden mb-2 relative">
+                  <img id="img-slot3" class="w-full h-full object-cover hidden" src="" alt="Lampiran 3">
+                  <span id="img-placeholder3" class="text-gray-400 text-xs text-center px-4"><i class="fa-regular fa-image text-3xl block mb-2"></i>[Belum Ada Gambar Meja Tamu]</span>
+                </div>
+                <p class="text-[10px] font-semibold text-center text-slate-700">Gambar 3: Meja dan Kursi Tamu</p>
+              </div>
+
+              <div class="border p-2 rounded bg-slate-50 flex flex-col items-center">
+                <div class="w-full h-48 bg-slate-200 rounded flex items-center justify-center overflow-hidden mb-2 relative">
+                  <img id="img-slot4" class="w-full h-full object-cover hidden" src="" alt="Lampiran 4">
+                  <span id="img-placeholder4" class="text-gray-400 text-xs text-center px-4"><i class="fa-regular fa-image text-3xl block mb-2"></i>[Belum Ada Gambar Timbangan]</span>
+                </div>
+                <p class="text-[10px] font-semibold text-center text-slate-700">Gambar 4: Timbangan</p>
               </div>
             </div>
           </div>
@@ -471,12 +827,25 @@
   </div>
 
   <script>
-    // Initial Standard BAP Rules Template
     const defaultRules = [
       "Peraturan Menteri Lingkungan Hidup dan Kehutanan Nomor 3 Tahun 2021 tentang Standar Kegiatan Usaha pada Penyelenggaraan Perizinan Berusaha Berbasis Risiko Sektor Lingkungan Hidup dan Kehutanan.",
       "Peraturan Direktur Jenderal Perlindungan Hutan dan Konservasi Alam Nomor SK.9/IV-SET/2014 tentang Pedoman Penyusunan Proposal, Rencana Kerja Tahunan dan Berita Acara Persiapan Teknis Pengedar Tumbuhan dan Satwa Liar.",
       "Surat Tugas Kepala Seksi KSDA Wilayah II Tenggarong Nomor ST. 178/K.18/SKSDAW II/05/2026 Tanggal 13 Mei 2026.",
       "Surat Permohonan CV. Karisma Alam Nomor: 11/CV/KA/SMD/V/2026 Tanggal 08 Mei 2026 Perihal Permohonan BAP Kelayakan Teknis dan Pertimbangan."
+    ];
+
+    const defaultSarpras = [
+      { name: "Kantor", unit: "M2", size: "16", qty: "1" },
+      { name: "Timbangan", unit: "Unit", size: "-", qty: "2" },
+      { name: "Printer", unit: "Unit", size: "-", qty: "1" },
+      { name: "Laptop", unit: "Unit", size: "-", qty: "1" },
+      { name: "Meja dan kursi kerja", unit: "Set", size: "-", qty: "1" },
+      { name: "Meja dan kursi tamu", unit: "Set", size: "-", qty: "1" },
+      { name: "Kipas Angin", unit: "Buah", size: "-", qty: "3" },
+      { name: "Alat Pengepak", unit: "Buah", size: "-", qty: "1" },
+      { name: "Kendaraan roda empat", unit: "Unit", size: "-", qty: "2" },
+      { name: "Kendaraan roda dua", unit: "Unit", size: "-", qty: "2" },
+      { name: "Gudang", unit: "M2", size: "6", qty: "1" }
     ];
 
     let bapData = {
@@ -486,10 +855,35 @@
       taksa: "Gaharu/Kemedangan",
       lokasi: "Tenggarong",
       tanggal: "13 Mei 2026",
+      pemilik: "Linardi Tan",
+      tglPendirian: "22 Januari 2026",
+      alamatKantor: "Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda",
+      alamatGudang: "Jl. Mulawarman Kel. Karang Mumus, Kec. Samarinda Kota, Samarinda",
+      telp: "0811 551 400",
+      email: "karismaalamoffice@gmail.com",
+      aktaNo: "05",
+      aktaTgl: "22 Januari 2026",
+      aktaNotaris: "Johny Marthen Londong, S.H., M.Kn.",
+      nibNo: "9120300781719",
+      nibKbli: "02209",
+      nibTgl: "11 Juli 2019",
+      ruangTgl: "08 Mei 2025",
+      ruangPenerbit: "OSS",
+      npwp: "02.467.679.3-7222.000",
+      paktaTgl: "08 Mei 2026",
       dasarRules: [...defaultRules],
-      legalitas: "CV. Karisma Alam memiliki perizinan lengkap berupa Nomor Induk Berusaha (NIB) dan izin operasional penunjang yang sah.",
-      gudang: "Memiliki tempat penampungan taksa, fasilitas kantor yang memadai, serta kebersihan gudang yang sangat terjaga.",
-      stok: "Gaharu/Kemedangan diperoleh secara prosedural dari unit budidaya berkelanjutan sesuai ketentuan BKSDA Kalimantan Timur.",
+      sarpras: JSON.parse(JSON.stringify(defaultSarpras)),
+      specTaksa: "Gaharu",
+      specLindung: "Tidak dilindungi",
+      specCites: "Appendiks II",
+      specSumber: "Tangkapan alam",
+      specSumberKet: "Berdasarkan kuota pengambilan di alam yang telah ditetapkan oleh Balai KSDA Kalimantan Timur",
+      specBentuk: "Kayu",
+      narPenampungan: "Kegiatan penampungan dilakukan setelah pihak perusahaan mendapatkan barang dari hasil pembelian pihak pencari dan juga masyarakat yang langsung mengantarkan barang berupa gaharu kepada pihak perusahaan. Penampungan dimaksudkan untuk mengumpulkan gaharu yang didapat perusahaan dari pencari sebelum dilakukan perlakuan.",
+      narPengangkutan: "Teknis pengangkutan gaharu sebelum dilakukan pengangkutan terlebih dahulu di packing (dikemas) sebelum diangkut ke daerah tujuan pengiriman menggunakan pesawat udara. Daerah tujuan penjualan gaharu yaitu : Jakarta dan daerah lainnya sesuai permintaan pasar.",
+      narLimbah: "Limbah yang dihasilkan berupa limbah padat dan cair yang tidak berbahaya. Sistem Pembuangan Limbah yaitu dengan menyapu dan mengumpulkan limbah yang dihasilkan untuk kemudian di buang ke tempat pembuangan sampah sedangkan limbah cair dibuang melalui parit/selokan yang telah disiapkan.",
+      narInvestasi: "RP. 250.000.000",
+      narPembinaan: "Untuk mewujudkan bisnis gaharu agar dapat berkesinambungan dan terus menerus maka diperlukan adanya kegiatan pembinaan konservasi agar tidak terjadi kelangkaan jenis gaharu di masa akan datang. Program pembinaan konservasi yang dilakukan oleh CV. Karisma Alam di antaranya adalah dengan melakukan penyortiran/menyeleksi pembelian gaharu dan kemedangan dan juga pihak perusahaan memberikan penyuluhan kepada para pencari gaharu untuk tidak menebang pohon yang tidak mempunyai kandungan gaharu agar kelestarian jenis pohon yang lain tetap terjaga.",
       p1Name: "Ahmad Ripai, S.Hut.",
       p1Nip: "19800412 200012 1 001",
       p2Name: "Herdi Yusuf, S.Hut.",
@@ -501,18 +895,49 @@
       dirJab: "Direktur",
       img1: "",
       img2: "",
+      img3: "",
+      img4: "",
       caption1: "Gambar 1: Ruangan Kantor",
-      caption2: "Gambar 2: Meja Kerja/Penyimpanan"
+      caption2: "Gambar 2: Meja dan Kursi Kerja"
     };
 
-    // Keep history state in Memory & LocalStorage
     let historyBaps = [];
 
     window.onload = function() {
       loadHistoryFromStorage();
       fillFormFromState();
       updateLivePreview();
+      startLiveClock();
     };
+
+    function startLiveClock() {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      setInterval(() => {
+        const date = new Date();
+        document.getElementById("live-datetime").innerText = date.toLocaleDateString('id-ID', options);
+      }, 1000);
+    }
+
+    function toggleAccordion(id) {
+      const el = document.getElementById(id);
+      if (el.classList.contains("hidden")) {
+        el.classList.remove("hidden");
+      } else {
+        el.classList.add("hidden");
+      }
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.getElementById("theme-icon");
+      if (body.classList.contains("dark-theme")) {
+        body.classList.remove("dark-theme");
+        icon.className = "fa-solid fa-moon";
+      } else {
+        body.classList.add("dark-theme");
+        icon.className = "fa-solid fa-sun";
+      }
+    }
 
     function fillFormFromState() {
       document.getElementById("bap-nomor").value = bapData.nomor;
@@ -521,27 +946,47 @@
       document.getElementById("bap-taksa").value = bapData.taksa;
       document.getElementById("bap-lokasi").value = bapData.lokasi;
       document.getElementById("bap-tanggal").value = bapData.tanggal;
-      
-      document.getElementById("hasil-legalitas").value = bapData.legalitas;
-      document.getElementById("hasil-gudang").value = bapData.gudang;
-      document.getElementById("hasil-stok").value = bapData.stok;
 
-      document.getElementById("p1-nama").value = bapData.p1Name;
-      document.getElementById("p1-nip").value = bapData.p1Nip;
-      document.getElementById("p2-nama").value = bapData.p2Name;
-      document.getElementById("p2-nip").value = bapData.p2Nip;
+      // Bab I
+      document.getElementById("pi-pemilik").value = bapData.pemilik;
+      document.getElementById("pi-tgl-pendirian").value = bapData.tglPendirian;
+      document.getElementById("pi-telp").value = bapData.telp;
+      document.getElementById("pi-email").value = bapData.email;
+      document.getElementById("pi-alamat-kantor").value = bapData.alamatKantor;
+      document.getElementById("pi-alamat-gudang").value = bapData.alamatGudang;
 
-      document.getElementById("kasi-nama").value = bapData.kasiName;
-      document.getElementById("kasi-nip").value = bapData.kasiNip;
-      document.getElementById("kasi-jabatan").value = bapData.kasiJab;
+      // Bab II
+      document.getElementById("dok-akta-no").value = bapData.aktaNo;
+      document.getElementById("dok-akta-tgl").value = bapData.aktaTgl;
+      document.getElementById("dok-akta-notaris").value = bapData.aktaNotaris;
+      document.getElementById("dok-nib-no").value = bapData.nibNo;
+      document.getElementById("dok-nib-kbli").value = bapData.nibKbli;
+      document.getElementById("dok-nib-tgl").value = bapData.nibTgl;
+      document.getElementById("dok-ruang-tgl").value = bapData.ruangTgl;
+      document.getElementById("dok-ruang-penerbit").value = bapData.ruangPenerbit;
+      document.getElementById("dok-npwp").value = bapData.npwp;
+      document.getElementById("dok-pakta-tgl").value = bapData.paktaTgl;
 
-      document.getElementById("dir-nama").value = bapData.dirName;
-      document.getElementById("dir-jabatan").value = bapData.dirJab;
+      // Bab IV - VIII
+      document.getElementById("spec-taksa-select").value = bapData.specTaksa;
+      document.getElementById("spec-lindung").value = bapData.specLindung;
+      document.getElementById("spec-cites").value = bapData.specCites;
+      document.getElementById("spec-sumber").value = bapData.specSumber;
+      document.getElementById("spec-sumber-ket").value = bapData.specSumberKet;
+      document.getElementById("spec-bentuk").value = bapData.specBentuk;
+
+      // Bab IX - XIV
+      document.getElementById("nar-penampungan").value = bapData.narPenampungan;
+      document.getElementById("nar-pengangkutan").value = bapData.narPengangkutan;
+      document.getElementById("nar-limbah").value = bapData.narLimbah;
+      document.getElementById("nar-investasi").value = bapData.narInvestasi;
+      document.getElementById("nar-pembinaan").value = bapData.narPembinaan;
 
       document.getElementById("pic1-desc").value = bapData.caption1;
       document.getElementById("pic2-desc").value = bapData.caption2;
 
       renderDasarRulesInputs();
+      renderSarprasInputs();
     }
 
     function syncStateFromInputs() {
@@ -552,21 +997,40 @@
       bapData.lokasi = document.getElementById("bap-lokasi").value;
       bapData.tanggal = document.getElementById("bap-tanggal").value;
 
-      bapData.legalitas = document.getElementById("hasil-legalitas").value;
-      bapData.gudang = document.getElementById("hasil-gudang").value;
-      bapData.stok = document.getElementById("hasil-stok").value;
+      // Bab I
+      bapData.pemilik = document.getElementById("pi-pemilik").value;
+      bapData.tglPendirian = document.getElementById("pi-tgl-pendirian").value;
+      bapData.telp = document.getElementById("pi-telp").value;
+      bapData.email = document.getElementById("pi-email").value;
+      bapData.alamatKantor = document.getElementById("pi-alamat-kantor").value;
+      bapData.alamatGudang = document.getElementById("pi-alamat-gudang").value;
 
-      bapData.p1Name = document.getElementById("p1-nama").value;
-      bapData.p1Nip = document.getElementById("p1-nip").value;
-      bapData.p2Name = document.getElementById("p2-nama").value;
-      bapData.p2Nip = document.getElementById("p2-nip").value;
+      // Bab II
+      bapData.aktaNo = document.getElementById("dok-akta-no").value;
+      bapData.aktaTgl = document.getElementById("dok-akta-tgl").value;
+      bapData.aktaNotaris = document.getElementById("dok-akta-notaris").value;
+      bapData.nibNo = document.getElementById("dok-nib-no").value;
+      bapData.nibKbli = document.getElementById("dok-nib-kbli").value;
+      bapData.nibTgl = document.getElementById("dok-nib-tgl").value;
+      bapData.ruangTgl = document.getElementById("dok-ruang-tgl").value;
+      bapData.ruangPenerbit = document.getElementById("dok-ruang-penerbit").value;
+      bapData.npwp = document.getElementById("dok-npwp").value;
+      bapData.paktaTgl = document.getElementById("dok-pakta-tgl").value;
 
-      bapData.kasiName = document.getElementById("kasi-nama").value;
-      bapData.kasiNip = document.getElementById("kasi-nip").value;
-      bapData.kasiJab = document.getElementById("kasi-jabatan").value;
+      // Bab IV - VIII
+      bapData.specTaksa = document.getElementById("spec-taksa-select").value;
+      bapData.specLindung = document.getElementById("spec-lindung").value;
+      bapData.specCites = document.getElementById("spec-cites").value;
+      bapData.specSumber = document.getElementById("spec-sumber").value;
+      bapData.specSumberKet = document.getElementById("spec-sumber-ket").value;
+      bapData.specBentuk = document.getElementById("spec-bentuk").value;
 
-      bapData.dirName = document.getElementById("dir-nama").value;
-      bapData.dirJab = document.getElementById("dir-jabatan").value;
+      // Bab IX - XIV
+      bapData.narPenampungan = document.getElementById("nar-penampungan").value;
+      bapData.narPengangkutan = document.getElementById("nar-pengangkutan").value;
+      bapData.narLimbah = document.getElementById("nar-limbah").value;
+      bapData.narInvestasi = document.getElementById("nar-investasi").value;
+      bapData.narPembinaan = document.getElementById("nar-pembinaan").value;
 
       bapData.caption1 = document.getElementById("pic1-desc").value;
       bapData.caption2 = document.getElementById("pic2-desc").value;
@@ -577,9 +1041,9 @@
       container.innerHTML = "";
       bapData.dasarRules.forEach((rule, idx) => {
         container.innerHTML += `
-          <div class="flex items-start gap-2 bg-slate-50 p-2 rounded border">
+          <div class="flex items-start gap-2 bg-slate-50 dark:bg-slate-800 p-2 rounded border border-[color:var(--border)]">
             <span class="text-xs font-bold text-slate-500 mt-2">${idx + 1}.</span>
-            <textarea oninput="editDasarRule(${idx}, this.value)" class="flex-1 px-2 py-1 text-xs border rounded bg-white outline-none resize-none" rows="2">${rule}</textarea>
+            <textarea oninput="editDasarRule(${idx}, this.value)" class="flex-1 px-2 py-1 text-xs border rounded bg-white dark:bg-slate-900 text-[color:var(--text-primary)] outline-none resize-none" rows="2">${rule}</textarea>
             <button onclick="deleteDasarRule(${idx})" class="p-1 text-rose-600 hover:bg-rose-50 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
@@ -588,8 +1052,28 @@
       });
     }
 
+    function renderSarprasInputs() {
+      const container = document.getElementById("sarpras-inputs-container");
+      container.innerHTML = "";
+      bapData.sarpras.forEach((item, idx) => {
+        container.innerHTML += `
+          <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2 rounded-lg border border-[color:var(--border)] text-xs">
+            <span class="w-24 font-bold text-slate-700 dark:text-slate-300 truncate">${item.name}</span>
+            <input type="text" value="${item.size}" oninput="editSarpras(${idx}, 'size', this.value)" placeholder="Ukuran" class="w-16 px-1.5 py-0.5 border rounded text-center dark:bg-slate-900">
+            <input type="text" value="${item.qty}" oninput="editSarpras(${idx}, 'qty', this.value)" placeholder="Qty" class="w-12 px-1.5 py-0.5 border rounded text-center dark:bg-slate-900">
+            <span class="text-[10px] text-gray-400 font-semibold">${item.unit}</span>
+          </div>
+        `;
+      });
+    }
+
     function editDasarRule(index, value) {
       bapData.dasarRules[index] = value;
+      updateLivePreview();
+    }
+
+    function editSarpras(index, field, value) {
+      bapData.sarpras[index][field] = value;
       updateLivePreview();
     }
 
@@ -608,7 +1092,7 @@
     function updateLivePreview() {
       syncStateFromInputs();
 
-      // Text Fields
+      // Top metadata
       document.getElementById("view-nomor").innerText = bapData.nomor || "[Nomor BAP]";
       document.getElementById("view-perusahaan").innerText = bapData.perusahaan || "[Nama Perusahaan]";
       document.getElementById("view-status").innerText = bapData.status;
@@ -616,159 +1100,108 @@
       document.getElementById("view-tgl-lokasi").innerText = `${bapData.lokasi || '[Lokasi]'}, ${bapData.tanggal || '[Tanggal]'}`;
       document.getElementById("view-tempat-tgl").innerText = `${bapData.lokasi || '[Lokasi]'}, ${bapData.tanggal || '[Tanggal]'}`;
 
-      // Hasil Pemeriksaan
-      document.getElementById("view-legalitas").innerText = bapData.legalitas || "[Uraian Legalitas Usaha]";
-      document.getElementById("view-gudang").innerText = bapData.gudang || "[Uraian Sarpras Gudang]";
-      document.getElementById("view-stok").innerText = bapData.stok || "[Uraian Asal Usul Stok]";
+      // Bab I
+      document.getElementById("v-pemilik").innerText = bapData.pemilik;
+      document.getElementById("v-perusahaan").innerText = bapData.perusahaan;
+      document.getElementById("v-tgl-pendirian").innerText = bapData.tglPendirian;
+      document.getElementById("v-alamat-kantor").innerText = bapData.alamatKantor;
+      document.getElementById("v-alamat-gudang").innerText = bapData.alamatGudang;
+      document.getElementById("v-telp").innerText = bapData.telp;
+      document.getElementById("v-email").innerText = bapData.email;
 
-      // Penandatangan
-      document.getElementById("view-p1-nama").innerText = bapData.p1Name || "[Nama Pemeriksa 1]";
-      document.getElementById("view-p1-nip").innerText = bapData.p1Nip ? `NIP. ${bapData.p1Nip}` : "";
-      document.getElementById("view-p2-nama").innerText = bapData.p2Name || "[Nama Pemeriksa 2]";
-      document.getElementById("view-p2-nip").innerText = bapData.p2Nip ? `NIP. ${bapData.p2Nip}` : "";
+      // Bab II
+      document.getElementById("v-akta-no").innerText = bapData.aktaNo;
+      document.getElementById("v-akta-tgl").innerText = bapData.aktaTgl;
+      document.getElementById("v-akta-notaris").innerText = bapData.aktaNotaris;
+      document.getElementById("v-nib-no").innerText = bapData.nibNo;
+      document.getElementById("v-nib-tgl").innerText = bapData.nibTgl;
+      document.getElementById("v-nib-kbli").innerText = bapData.nibKbli;
+      document.getElementById("v-ruang-tgl").innerText = bapData.ruangTgl;
+      document.getElementById("v-ruang-penerbit").innerText = bapData.ruangPenerbit;
+      document.getElementById("v-npwp").innerText = bapData.npwp;
+      document.getElementById("v-pakta-tgl").innerText = bapData.paktaTgl;
 
-      document.getElementById("view-kasi-nama").innerText = bapData.kasiName || "[Nama Kepala Seksi]";
-      document.getElementById("view-kasi-nip").innerText = bapData.kasiNip ? `NIP. ${bapData.kasiNip}` : "";
-      document.getElementById("view-kasi-jab").innerText = bapData.kasiJab || "a.n. Kepala Balai, Kepala Seksi KSDA Wilayah II";
+      // Bab IV - VIII
+      document.getElementById("v-spec-taksa").innerText = bapData.specTaksa + " (✔)";
+      document.getElementById("v-spec-lindung").innerText = bapData.specLindung + " (✔)";
+      document.getElementById("v-spec-cites").innerText = bapData.specCites + " (✔) - " + bapData.taksa;
+      document.getElementById("v-spec-sumber").innerText = bapData.specSumber + " (✔)";
+      document.getElementById("v-spec-sumber-ket").innerText = bapData.specSumberKet;
+      document.getElementById("v-spec-bentuk").innerText = bapData.specBentuk + " (✔)";
 
-      document.getElementById("view-dir-nama").innerText = bapData.dirName || "[Nama Direktur]";
-      document.getElementById("view-dir-jab").innerText = bapData.dirJab || "Direktur";
-
-      // Lampiran Header
-      document.getElementById("view-lampiran-nomor").innerText = bapData.nomor || "[Nomor BAP]";
-      document.getElementById("view-lampiran-tgl").innerText = bapData.tanggal || "[Tanggal]";
+      // Bab IX - XIV
+      document.getElementById("v-nar-penampungan").innerText = bapData.narPenampungan;
+      document.getElementById("v-nar-pengangkutan").innerText = bapData.narPengangkutan;
+      document.getElementById("v-nar-limbah").innerText = bapData.narLimbah;
+      document.getElementById("v-nar-pembinaan").innerText = bapData.narPembinaan;
 
       // Captions
       document.getElementById("view-caption1").innerText = bapData.caption1 || "Gambar 1: Ruangan Kantor";
       document.getElementById("view-caption2").innerText = bapData.caption2 || "Gambar 2: Meja Kerja/Penyimpanan";
 
-      // Dasar Pelaksanaan List Render
-      const listContainer = document.getElementById("view-dasar-list");
-      listContainer.innerHTML = "";
-      bapData.dasarRules.forEach(rule => {
-        listContainer.innerHTML += `<li>${rule}</li>`;
+      // Render Dasar Hukum Table (with proper styling)
+      const dasarTable = document.getElementById("view-table-dasar");
+      dasarTable.innerHTML = "";
+      bapData.dasarRules.forEach((rule, idx) => {
+        dasarTable.innerHTML += `
+          <tr>
+            <td class="w-8 text-center">${idx + 1}</td>
+            <td>${rule}</td>
+          </tr>
+        `;
       });
 
-      // Images render
-      const slot1 = document.getElementById("img-slot1");
-      const ph1 = document.getElementById("img-placeholder1");
-      if (bapData.img1) {
-        slot1.src = bapData.img1;
-        slot1.classList.remove("hidden");
-        ph1.classList.add("hidden");
-      } else {
-        slot1.classList.add("hidden");
-        ph1.classList.remove("hidden");
-      }
+      // Render Sarpras Table (matching Word format)
+      const sarprasTable = document.getElementById("view-table-sarpras");
+      sarprasTable.innerHTML = "";
+      bapData.sarpras.forEach((item, idx) => {
+        sarprasTable.innerHTML += `
+          <tr>
+            <td class="text-center">${idx + 1}</td>
+            <td>${item.name}</td>
+            <td class="text-center">${item.unit}</td>
+            <td class="text-center">${item.size}</td>
+            <td class="text-center font-bold">${item.qty}</td>
+          </tr>
+        `;
+      });
 
-      const slot2 = document.getElementById("img-slot2");
-      const ph2 = document.getElementById("img-placeholder2");
-      if (bapData.img2) {
-        slot2.src = bapData.img2;
-        slot2.classList.remove("hidden");
-        ph2.classList.add("hidden");
-      } else {
-        slot2.classList.add("hidden");
-        ph2.classList.remove("hidden");
+      // Render uploaded / slot images in preview
+      renderImageSlots();
+    }
+
+    function renderImageSlots() {
+      for (let i = 1; i <= 4; i++) {
+        const slotImg = document.getElementById(`img-slot${i}`);
+        const slotPh = document.getElementById(`img-placeholder${i}`);
+        const imgState = bapData[`img${i}`];
+        if (imgState) {
+          slotImg.src = imgState;
+          slotImg.classList.remove("hidden");
+          slotPh.classList.add("hidden");
+        } else {
+          slotImg.classList.add("hidden");
+          slotPh.classList.remove("hidden");
+        }
       }
     }
 
     function handleImageUpload(event, slot) {
       const file = event.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.onload = function(e) {
-        if (slot === 'p1') {
-          bapData.img1 = e.target.result;
-        } else {
-          bapData.img2 = e.target.result;
-        }
+        bapData[`img${slot === 'p1' ? '1' : slot === 'p2' ? '2' : slot === 'p3' ? '3' : '4'}`] = e.target.result;
         updateLivePreview();
-        showToast("Gambar berhasil diunggah!");
+        showToast("Gambar berhasil ditambahkan ke draf lampiran!");
       };
       reader.readAsDataURL(file);
     }
 
-    function showToast(message) {
-      const toast = document.getElementById("toast");
-      const text = document.getElementById("toast-text");
-      text.innerText = message;
-      toast.classList.remove("translate-y-20");
-      setTimeout(() => {
-        toast.classList.add("translate-y-20");
-      }, 3000);
+    function triggerPrint() {
+      window.print();
     }
 
-    // Load template data CV Karisma Alam
-    function loadSampleKarisma() {
-      bapData = {
-        nomor: "BA.179/K.18/SKSDAW II/05/2026",
-        perusahaan: "CV. Karisma Alam",
-        status: "Baru",
-        taksa: "Gaharu/Kemedangan",
-        lokasi: "Tenggarong",
-        tanggal: "13 Mei 2026",
-        dasarRules: [...defaultRules],
-        legalitas: "Memiliki NIB dan kelayakan administrasi yang sesuai serta telah terdaftar secara sah dalam database BKSDA Kaltim.",
-        gudang: "Memiliki ruangan kantor khusus, gudang penampungan terisolasi yang representatif untuk bahan baku Gaharu, dan timbangan digital tersetifikasi.",
-        stok: "Stok diperoleh dari kemitraan pengumpul gaharu rakyat bersertifikasi, dipastikan tidak merusak kelestarian alam hutan lindung.",
-        p1Name: "Ahmad Ripai, S.Hut.",
-        p1Nip: "19800412 200012 1 001",
-        p2Name: "Herdi Yusuf, S.Hut.",
-        p2Nip: "19851227 202012 1 005",
-        kasiName: "Suriawati Halim, S.Hut., M.P.",
-        kasiNip: "19751127 200003 2 001",
-        kasiJab: "a.n. Kepala Balai, Kepala Seksi KSDA Wilayah II",
-        dirName: "Linardi Tan",
-        dirJab: "Direktur",
-        img1: "",
-        img2: "",
-        caption1: "Gambar 1: Ruangan Kantor CV. Karisma Alam",
-        caption2: "Gambar 2: Lokasi Penyimpanan Gaharu"
-      };
-      fillFormFromState();
-      updateLivePreview();
-      showToast("Template Karisma Alam berhasil dimuat!");
-    }
-
-    function resetBapForm() {
-      bapData = {
-        nomor: "",
-        perusahaan: "",
-        status: "Baru",
-        taksa: "",
-        lokasi: "",
-        tanggal: "",
-        dasarRules: [
-          "Peraturan Menteri Lingkungan Hidup dan Kehutanan Nomor 3 Tahun 2021...",
-          "Surat Tugas Kepala Seksi KSDA Wilayah II Tenggarong..."
-        ],
-        legalitas: "",
-        gudang: "",
-        stok: "",
-        p1Name: "",
-        p1Nip: "",
-        p2Name: "",
-        p2Nip: "",
-        kasiName: "",
-        kasiNip: "",
-        kasiJab: "a.n. Kepala Balai, Kepala Seksi KSDA Wilayah II",
-        dirName: "",
-        dirJab: "Direktur",
-        img1: "",
-        img2: "",
-        caption1: "Gambar 1: Ruangan Kantor",
-        caption2: "Gambar 2: Meja Kerja/Penyimpanan"
-      };
-      document.getElementById("pic1").value = "";
-      document.getElementById("pic2").value = "";
-      fillFormFromState();
-      updateLivePreview();
-      showToast("Form berhasil di-reset!");
-    }
-
-    // Switch Panel Tabs (Input vs History)
     function switchTab(target) {
       const inputBtn = document.getElementById("tab-input-btn");
       const historyBtn = document.getElementById("tab-history-btn");
@@ -776,49 +1209,33 @@
       const historyCont = document.getElementById("tab-history-container");
 
       if (target === 'input') {
-        inputBtn.classList.add("border-emerald-600", "text-emerald-600");
-        inputBtn.classList.remove("border-transparent", "text-gray-500");
-        historyBtn.classList.add("border-transparent", "text-gray-500");
-        historyBtn.classList.remove("border-emerald-600", "text-emerald-600");
-        
+        inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-600 transition flex items-center justify-center gap-2";
+        historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-emerald-500 transition flex items-center justify-center gap-2";
         inputCont.classList.remove("hidden");
         historyCont.classList.add("hidden");
       } else {
-        historyBtn.classList.add("border-emerald-600", "text-emerald-600");
-        historyBtn.classList.remove("border-transparent", "text-gray-500");
-        inputBtn.classList.add("border-transparent", "text-gray-500");
-        inputBtn.classList.remove("border-emerald-600", "text-emerald-600");
-        
+        historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-600 transition flex items-center justify-center gap-2";
+        inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-emerald-500 transition flex items-center justify-center gap-2";
         historyCont.classList.remove("hidden");
         inputCont.classList.add("hidden");
         renderHistoryList();
       }
     }
 
-    // Print Layout Mode
-    function triggerPrint() {
-      window.print();
-    }
-
-    // Storage Management (Local Database)
     function saveBapToHistory() {
       syncStateFromInputs();
       const id = Date.now().toString();
       const payload = { ...bapData, id, savedAt: new Date().toLocaleString() };
-      
       historyBaps.unshift(payload);
       localStorage.setItem("bap_history", JSON.stringify(historyBaps));
-      
       document.getElementById("history-count").innerText = historyBaps.length;
-      showToast("Dokumen BAP disimpan ke riwayat lokal!");
+      showToast("Draf berhasil disimpan ke Arsip lokal!");
     }
 
     function loadHistoryFromStorage() {
       const raw = localStorage.getItem("bap_history");
       if (raw) {
         historyBaps = JSON.parse(raw);
-      } else {
-        historyBaps = [];
       }
       document.getElementById("history-count").innerText = historyBaps.length;
     }
@@ -826,36 +1243,28 @@
     function renderHistoryList() {
       const container = document.getElementById("history-list");
       container.innerHTML = "";
-
       if (historyBaps.length === 0) {
         container.innerHTML = `
           <div class="text-center py-8 text-gray-400 text-xs">
             <i class="fa-solid fa-folder-open text-3xl mb-2 block"></i>
-            Belum ada riwayat BAP yang disimpan.
+            Belum ada berkas terarsip.
           </div>
         `;
         return;
       }
-
-      historyBaps.forEach((item, idx) => {
+      historyBaps.forEach(item => {
         container.innerHTML += `
-          <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm hover:border-emerald-500 transition duration-200 space-y-2">
-            <div class="flex justify-between items-start">
-              <div>
-                <h4 class="font-bold text-xs text-slate-800">${item.perusahaan || 'Perusahaan Tanpa Nama'}</h4>
-                <p class="text-[10px] text-gray-500">No: ${item.nomor || 'Draft'}</p>
-              </div>
-              <span class="px-2 py-0.5 text-[9px] font-bold bg-slate-100 text-slate-700 rounded-full">${item.status}</span>
+          <div class="bg-white dark:bg-slate-800 p-3 rounded-lg border border-[color:var(--border)] shadow-sm space-y-1 text-xs">
+            <div class="flex justify-between font-bold">
+              <span class="text-slate-800 dark:text-slate-200">${item.perusahaan}</span>
+              <span class="text-emerald-600">${item.status}</span>
             </div>
-            <div class="flex justify-between items-center pt-2 border-t text-[10px] text-gray-500">
-              <span>Saved: ${item.savedAt}</span>
+            <p class="text-[10px] text-gray-500">No BAP: ${item.nomor}</p>
+            <div class="flex justify-between items-center pt-2 border-t mt-2">
+              <span class="text-[9px] text-gray-400">${item.savedAt}</span>
               <div class="flex gap-1.5">
-                <button onclick="loadBapFromHistory('${item.id}')" class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded transition">
-                  Muat BAP
-                </button>
-                <button onclick="deleteBapFromHistory('${item.id}')" class="p-1 text-rose-600 hover:bg-rose-50 rounded transition">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
+                <button onclick="loadBapFromHistory('${item.id}')" class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded">Muat</button>
+                <button onclick="deleteBapFromHistory('${item.id}')" class="text-rose-500 hover:bg-rose-50 p-1 rounded"><i class="fa-solid fa-trash"></i></button>
               </div>
             </div>
           </div>
@@ -870,7 +1279,7 @@
         fillFormFromState();
         updateLivePreview();
         switchTab('input');
-        showToast(`Dokumen ${target.perusahaan || 'BAP'} berhasil dimuat!`);
+        showToast("Arsip BAP berhasil dimuat!");
       }
     }
 
@@ -879,17 +1288,42 @@
       localStorage.setItem("bap_history", JSON.stringify(historyBaps));
       document.getElementById("history-count").innerText = historyBaps.length;
       renderHistoryList();
-      showToast("Draf berhasil dihapus!");
+      showToast("Arsip BAP berhasil dihapus!");
     }
 
     function clearAllHistory() {
-      if (confirm("Apakah Anda yakin ingin menghapus semua riwayat BAP?")) {
+      if (confirm("Apakah Anda yakin ingin menghapus seluruh riwayat BAP?")) {
         historyBaps = [];
         localStorage.removeItem("bap_history");
         document.getElementById("history-count").innerText = "0";
         renderHistoryList();
         showToast("Seluruh riwayat berhasil dikosongkan!");
       }
+    }
+
+    function loadSampleKarisma() {
+      // Re-initialize with official CV Karisma Alam defaults
+      bapData.nomor = "BA.179/K.18/SKSDAW II/05/2026";
+      bapData.perusahaan = "CV. Karisma Alam";
+      bapData.status = "Baru";
+      bapData.taksa = "Gaharu/Kemedangan";
+      bapData.lokasi = "Tenggarong";
+      bapData.tanggal = "13 Mei 2026";
+      bapData.dasarRules = [...defaultRules];
+      bapData.sarpras = JSON.parse(JSON.stringify(defaultSarpras));
+      fillFormFromState();
+      updateLivePreview();
+      showToast("Template CV Karisma Alam Berhasil Dimuat!");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      const text = document.getElementById("toast-text");
+      text.innerText = message;
+      toast.classList.remove("translate-y-20");
+      setTimeout(() => {
+        toast.classList.add("translate-y-20");
+      }, 3000);
     }
   </script>
 </body>
