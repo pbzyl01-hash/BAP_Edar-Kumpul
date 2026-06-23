@@ -8,8 +8,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Gentium Book Plus (Sangat mirip dengan Bookman Old Style untuk komputer yang tidak memilikinya) -->
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -36,9 +36,11 @@
       text-shadow: 0 0 10px var(--accent-glow);
     }
 
-    /* A4 Document styling for preview */
+    /* A4 Document styling with Bookman Old Style & 12pt font size */
     .document-preview {
-      font-family: 'Lora', 'Times New Roman', Times, serif;
+      font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
+      font-size: 12pt;
+      line-height: 1.6;
       width: 210mm;
       min-height: 297mm;
       padding: 20mm 15mm 20mm 15mm;
@@ -53,8 +55,8 @@
     .gov-table {
       width: 100%;
       border-collapse: collapse;
-      font-family: 'Lora', 'Times New Roman', Times, serif;
-      font-size: 11px;
+      font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
+      font-size: 11pt;
       color: #000000;
       margin-bottom: 8px;
     }
@@ -77,17 +79,18 @@
       height: calc(100vh - 64px);
     }
 
-    /* Visual hierarchy tree styles */
+    /* Visual hierarchy tree styles for BAB XII */
     .tree-node {
       border: 2px solid #000;
       padding: 6px 12px;
       border-radius: 4px;
       background: #f8fafc;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: bold;
       text-align: center;
       display: inline-block;
       min-width: 110px;
+      font-family: 'Inter', sans-serif;
     }
 
     .tree-connector {
@@ -149,7 +152,7 @@
           <i class="fa-solid fa-cloud-arrow-down mr-1"></i> Muat Karisma Alam
         </button>
         <button onclick="triggerPrint()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition shadow-lg shadow-emerald-700/20 flex items-center gap-1.5">
-          <i class="fa-solid fa-print"></i> Cetak / PDF
+          <i class="fa-solid fa-print"></i> Cetak / PDF (A4)
         </button>
       </div>
     </div>
@@ -301,7 +304,7 @@
           </div>
         </div>
 
-        <!-- SECTION 5: SARANA PRASARANA (BAB III - DYNAMIC ADD/EDIT/DELETE) -->
+        <!-- SECTION 5: SARANA PRASARANA (BAB III) -->
         <div class="bg-slate-850 rounded-xl border border-slate-800 overflow-hidden">
           <button onclick="toggleAccordion('acc-sarpras')" class="w-full px-4 py-3 bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
             <span><i class="fa-solid fa-boxes-packing mr-2"></i>BAB III. SARANA & PRASARANA</span>
@@ -378,14 +381,12 @@
             <!-- VIII. Bentuk Spesimen (Multi-Select Checklist) -->
             <div class="p-3 bg-slate-900 rounded-lg border border-slate-700 space-y-2">
               <h4 class="text-[10px] font-bold text-emerald-400 uppercase">VIII. Bentuk Spesimen (Bisa Lebih Dari Satu)</h4>
-              <div id="bentuk-spesimen-checklist" class="space-y-1.5 max-h-48 overflow-y-auto text-xs">
-                <!-- Checkboxes populated via JS -->
-              </div>
+              <div id="bentuk-spesimen-checklist" class="space-y-1.5 max-h-48 overflow-y-auto text-xs"></div>
             </div>
           </div>
         </div>
 
-        <!-- SECTION 7: ORGANISASI & TENAGA KERJA (BAB XII - DYNAMIC EDIT/ADD/DELETE & TREE) -->
+        <!-- SECTION 7: ORGANISASI & TENAGA KERJA (BAB XII) -->
         <div class="bg-slate-850 rounded-xl border border-slate-800 overflow-hidden">
           <button onclick="toggleAccordion('acc-organisasi')" class="w-full px-4 py-3 bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
             <span><i class="fa-solid fa-sitemap mr-2"></i>BAB XII. STRUKTUR & TENAGA KERJA</span>
@@ -531,38 +532,26 @@
     <!-- RIGHT PANEL: IMMERSIVE LIVE PREVIEW (A4 PERFECT SCALING) -->
     <main class="flex-1 preview-container p-4 lg:p-8 flex items-start justify-center">
       
-      <!-- WRAPPER FOR DOCUMENT -->
+      <!-- WRAPPER FOR DOCUMENT (Gaya Bookman Old Style & Ukuran Basis 12pt) -->
       <div class="document-preview shadow-2xl relative" id="printable-bap">
         
-        <!-- OFFICIAL HEADER OF MINISTRY -->
-        <div class="flex items-center space-x-4 border-b-4 border-double border-black pb-3 mb-4">
-          <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center border border-slate-300 p-1">
-            <svg viewBox="0 0 100 100" class="w-full h-full text-slate-800">
-              <path d="M50 10 L85 25 L85 60 C85 80 50 95 50 95 C50 95 15 80 15 60 L15 25 Z" fill="none" stroke="currentColor" stroke-width="4"></path>
-              <path d="M50 20 L50 85 M25 45 L50 45 M75 45 L50 45" stroke="currentColor" stroke-width="2"></path>
-              <circle cx="50" cy="50" r="14" stroke="currentColor" stroke-width="3" fill="none"></circle>
-            </svg>
-          </div>
-          <div class="flex-1 text-center pr-12">
-            <h2 class="text-xs font-bold uppercase leading-tight">KEMENTERIAN KEHUTANAN</h2>
-            <h2 class="text-[10px] font-bold uppercase leading-tight">DIREKTORAT JENDERAL KONSERVASI SUMBER DAYA ALAM DAN EKOSISTEM</h2>
-            <h1 class="text-xs font-bold uppercase leading-tight">BALAI KONSERVASI SUMBER DAYA ALAM KALIMANTAN TIMUR</h1>
-            <p class="text-[8px] font-bold leading-normal">Alamat : Jl. Tambak Rel No. 9 RT. 11 Kel. Baru Kec. Tenggarong – Kabupaten Kutai Kartanegara</p>
-          </div>
+        <!-- OFFICIAL HEADER OF MINISTRY (Menggunakan image_0a2a0a.png sesuai instruksi) -->
+        <div class="w-full mb-6 border-b border-black pb-1">
+          <img src="image_0a2a0a.png" alt="KOP BALAI KONSERVASI SUMBER DAYA ALAM KALIMANTAN TIMUR" class="w-full h-auto object-contain block" onerror="this.src='https://placehold.co/800x120/ececec/222222?text=KEMENTERIAN+LINGKUNGAN+HIDUP+DAN+KEHUTANAN%0ABALAI+KONSERVASI+SUMBER+DAYA+ALAM+KALIMANTAN+TIMUR'">
         </div>
 
         <!-- MAIN TITLE -->
         <div class="text-center mb-4">
-          <h3 class="text-[10px] font-bold underline uppercase tracking-wide leading-relaxed">BERITA ACARA PEMERIKSAAN (BAP) PERSIAPAN TEKNIS PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h3>
-          <p class="text-[10px] font-medium">Nomor: <span id="view-nomor" class="font-bold"></span></p>
+          <h3 class="text-[12pt] font-bold underline uppercase tracking-wide leading-relaxed" style="font-family: inherit;">BERITA ACARA PEMERIKSAAN (BAP) PERSIAPAN TEKNIS PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h3>
+          <p class="text-[11pt] font-medium mt-1">Nomor: <span id="view-nomor" class="font-bold"></span></p>
         </div>
 
         <!-- QUICK INFO TABLE -->
-        <div class="w-full mb-3 text-[10px] leading-relaxed">
+        <div class="w-full mb-3 text-[11pt] leading-relaxed">
           <table class="w-full text-left">
             <tbody>
               <tr>
-                <td class="w-1/4 py-0.5 font-semibold">Nama Perusahaan</td>
+                <td class="w-1/3 py-0.5 font-semibold">Nama Perusahaan</td>
                 <td class="w-4 py-0.5">:</td>
                 <td class="py-0.5 font-bold" id="view-perusahaan"></td>
               </tr>
@@ -587,12 +576,12 @@
 
         <!-- HEADER SUB-BAR -->
         <div class="border-t border-b border-black py-1 my-2 text-center">
-          <h4 class="text-[10px] font-bold uppercase">HASIL PEMERIKSAAN TEKNIS PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h4>
+          <h4 class="text-[11pt] font-bold uppercase">HASIL PEMERIKSAAN TEKNIS PERIZINAN BERUSAHA PEREDARAN DALAM NEGERI</h4>
         </div>
 
         <!-- DASAR PELAKSANAAN -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">DASAR PELAKSANAAN :</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">DASAR PELAKSANAAN :</p>
           <table class="gov-table">
             <tbody id="view-table-dasar"></tbody>
           </table>
@@ -600,7 +589,7 @@
 
         <!-- I. DATA PERUSAHAAN -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">I. DATA PERUSAHAAN</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">I. DATA PERUSAHAAN</p>
           <table class="gov-table">
             <tbody>
               <tr>
@@ -644,7 +633,7 @@
 
         <!-- II. PEMERIKSAAN KELENGKAPAN DOKUMEN -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">II. PEMERIKSAAN KELENGKAPAN DOKUMEN PERSYARATAN</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">II. PEMERIKSAAN KELENGKAPAN DOKUMEN PERSYARATAN</p>
           <table class="gov-table">
             <thead>
               <tr>
@@ -696,7 +685,7 @@
 
         <!-- III. PEMERIKSAAN SARANA DAN PRASARANA -->
         <div class="mb-3 page-break">
-          <p class="text-[10px] font-bold uppercase mb-1">III. PEMERIKSAAN SARANA DAN PRASARANA</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">III. PEMERIKSAAN SARANA DAN PRASARANA</p>
           <table class="gov-table">
             <thead>
               <tr>
@@ -713,7 +702,7 @@
 
         <!-- IV. SPESIMEN YANG AKAN DIEDARKAN -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">IV. SPESIMEN TUMBUHAN DAN SATWA LIAR YANG AKAN DIEDARKAN</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">IV. SPESIMEN TUMBUHAN DAN SATWA LIAR YANG AKAN DIEDARKAN</p>
           <table class="gov-table">
             <thead>
               <tr>
@@ -729,7 +718,7 @@
 
         <!-- V. STATUS LINDUNGAN -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">V. STATUS LINDUNGAN</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">V. STATUS LINDUNGAN</p>
           <table class="gov-table">
             <thead>
               <tr>
@@ -745,7 +734,7 @@
 
         <!-- VI. STATUS APPENDIKS CITES -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">VI. STATUS APPENDIKS DALAM CITES</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">VI. STATUS APPENDIKS DALAM CITES</p>
           <table class="gov-table">
             <thead>
               <tr>
@@ -761,7 +750,7 @@
 
         <!-- VII. ASAL USUL SPESIMEN -->
         <div class="mb-3 page-break">
-          <p class="text-[10px] font-bold uppercase mb-1">VII. PEROLEHAN ASAL USUL SPESIMEN YANG AKAN DIEDARKAN</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">VII. PEROLEHAN ASAL USUL SPESIMEN YANG AKAN DIEDARKAN</p>
           <table class="gov-table">
             <thead>
               <tr>
@@ -777,7 +766,7 @@
 
         <!-- VIII. BENTUK SPESIMEN -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">VIII. BENTUK SPESIMEN YANG DIEDARKAN</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">VIII. BENTUK SPESIMEN YANG DIEDARKAN</p>
           <table class="gov-table">
             <thead>
               <tr>
@@ -793,30 +782,30 @@
 
         <!-- IX - XI. TEKNIS NARRATIVE BLOCKS -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">IX - XI. PEMERIKSAAN TEKNIS PELAKSANAAN</p>
-          <div class="space-y-2 text-[10px] leading-relaxed">
+          <p class="text-[12pt] font-bold uppercase mb-1">IX - XI. PEMERIKSAAN TEKNIS PELAKSANAAN</p>
+          <div class="space-y-2 text-[11pt] leading-relaxed">
             <div class="p-1.5 border border-black bg-slate-50">
               <p class="font-bold">IX. PEMERIKSAAN TEKNIS PELAKSANAAN PENAMPUNGAN:</p>
-              <p id="v-nar-penampungan" class="text-justify text-gray-700 italic"></p>
+              <p id="v-nar-penampungan" class="text-justify text-gray-750 italic"></p>
             </div>
             <div class="p-1.5 border border-black bg-slate-50">
               <p class="font-bold">X. PEMERIKSAAN TEKNIS PELAKSANAAN PENGANGKUTAN:</p>
-              <p id="v-nar-pengangkutan" class="text-justify text-gray-700 italic"></p>
+              <p id="v-nar-pengangkutan" class="text-justify text-gray-750 italic"></p>
             </div>
             <div class="p-1.5 border border-black bg-slate-50">
               <p class="font-bold">XI. PEMERIKSAAN SISTEM PEMBUANGAN LIMBAH:</p>
-              <p id="v-nar-limbah" class="text-justify text-gray-700 italic"></p>
+              <p id="v-nar-limbah" class="text-justify text-gray-750 italic"></p>
             </div>
           </div>
         </div>
 
         <!-- XII. ORGANISASI & TENAGA KERJA & DIAGRAM HIERARKI -->
         <div class="mb-3 page-break">
-          <p class="text-[10px] font-bold uppercase mb-1">XII. ORGANISASI DAN TENAGA KERJA</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">XII. ORGANISASI DAN TENAGA KERJA</p>
           
           <!-- Visual Hierarchy Tree Diagram -->
           <div class="p-3 border border-black rounded bg-slate-50 text-center mb-3">
-            <p class="text-[9px] font-bold uppercase text-slate-800 tracking-wider mb-3 border-b pb-1">Bagan Struktur Organisasi Perusahaan</p>
+            <p class="text-[10px] font-bold uppercase text-slate-800 tracking-wider mb-3 border-b pb-1" style="font-family: 'Inter', sans-serif;">Bagan Struktur Organisasi Perusahaan</p>
             <div id="hierarchy-chart-container" class="flex flex-col items-center gap-1"></div>
           </div>
 
@@ -832,9 +821,9 @@
           </table>
         </div>
 
-        <!-- XIII - XIV. INVESTASI & PEMBINAAN -->
+        <!-- XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI</p>
+          <p class="text-[12pt] font-bold uppercase mb-1">XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI</p>
           <table class="gov-table">
             <tbody>
               <tr>
@@ -845,12 +834,12 @@
               <tr>
                 <td class="font-bold">PEMEGANG SAHAM</td>
                 <td>
-                  <table class="w-full text-[9px] text-left border-collapse" id="view-table-saham"></table>
+                  <table class="w-full text-[10pt] text-left border-collapse" id="view-table-saham"></table>
                 </td>
               </tr>
               <tr>
                 <td class="font-bold">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</td>
-                <td><p id="v-nar-pembinaan" class="text-justify italic text-gray-700"></p></td>
+                <td><p id="v-nar-pembinaan" class="text-justify italic text-gray-750"></p></td>
               </tr>
             </tbody>
           </table>
@@ -858,17 +847,17 @@
 
         <!-- XV. PERNYATAAN DAN PENGESAHAN -->
         <div class="mb-3">
-          <p class="text-[10px] font-bold uppercase mb-1">XV. PERNYATAAN DAN PENGESAHAN</p>
-          <div class="text-[10px] leading-relaxed text-justify italic font-medium bg-slate-50 p-2.5 rounded border border-black">
+          <p class="text-[12pt] font-bold uppercase mb-1">XV. PERNYATAAN DAN PENGESAHAN</p>
+          <div class="text-[11pt] leading-relaxed text-justify italic font-medium bg-slate-50 p-2.5 rounded border border-black">
             "Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan yang ada di <span id="v-legal-perusahaan" class="font-bold"></span>. Semua kelengkapan dokumen pada butir II sama dengan aslinya. Apabila data, dokumen dan keterangan tersebut tidak benar, maka kami yang bertanda tangan di bawah ini bersedia dikenakan sanksi dan atau dituntut sesuai dengan peraturan yang berlaku."
           </div>
         </div>
 
         <!-- SIGNATURES BLOCK (DYNAMIC INSPECTORS SUPPORT) -->
-        <div class="mt-4 text-[10px] leading-tight">
+        <div class="mt-4 text-[11pt] leading-tight">
           <!-- Center Date Element -->
           <div class="text-center mb-3">
-            <span class="font-bold text-slate-850 text-xs" id="view-tempat-tgl"></span>
+            <span class="font-bold text-slate-850 text-[12pt]" id="view-tempat-tgl"></span>
           </div>
 
           <div class="text-center font-bold mb-2 text-slate-800">Dibuat dengan sebenarnya oleh:</div>
@@ -880,21 +869,21 @@
           <div class="grid grid-cols-2 gap-4 text-center mt-6 pt-2 border-t border-gray-200">
             <div>
               <p class="font-semibold">Disahkan oleh:</p>
-              <div class="text-[9px] text-gray-700 font-bold leading-normal">
+              <div class="text-[10pt] text-gray-700 font-bold leading-normal">
                 a.n. Kepala Balai,<br>
                 <span id="view-kasi-jab"></span>
               </div>
               <div class="h-12 flex items-center justify-center">
-                <span class="text-gray-300 text-[8px] border border-dashed border-gray-300 px-3 py-0.5 rounded">Tanda Tangan</span>
+                <span class="text-gray-300 text-[10px] border border-dashed border-gray-300 px-3 py-0.5 rounded">Tanda Tangan</span>
               </div>
               <p class="font-bold underline" id="view-kasi-nama"></p>
-              <p class="text-gray-600 text-[9px]" id="view-kasi-nip"></p>
+              <p class="text-gray-600 text-[10pt]" id="view-kasi-nip"></p>
             </div>
             <div>
               <p class="font-semibold">Mengetahui:</p>
-              <p class="text-gray-600 text-[9px]" id="view-dir-jab"></p>
+              <p class="text-gray-600 text-[10pt]" id="view-dir-jab"></p>
               <div class="h-12 flex items-center justify-center">
-                <span class="text-gray-300 text-[8px] border border-dashed border-gray-300 px-3 py-0.5 rounded">Tanda Tangan / Stempel</span>
+                <span class="text-gray-300 text-[10px] border border-dashed border-gray-300 px-3 py-0.5 rounded">Tanda Tangan / Stempel</span>
               </div>
               <p class="font-bold underline" id="view-dir-nama"></p>
             </div>
@@ -903,7 +892,7 @@
 
         <!-- PHOTO ATTACHMENT SECTION - ADAPTIVE PAGES SUPPORT -->
         <div class="page-break my-4 border-t-2 border-slate-300 pt-4">
-          <div class="text-[10px] leading-normal">
+          <div class="text-[11pt] leading-normal">
             <table class="w-full border-b border-gray-300 pb-2 mb-3">
               <tbody>
                 <tr>
@@ -924,7 +913,7 @@
               </tbody>
             </table>
 
-            <h4 class="text-center font-bold text-[10px] uppercase tracking-wider mb-4 border-b pb-1">PHOTO ATAU GAMBAR-GAMBAR PEMERIKSAAN</h4>
+            <h4 class="text-center font-bold text-[12pt] uppercase tracking-wider mb-4 border-b pb-1">PHOTO ATAU GAMBAR-GAMBAR PEMERIKSAAN</h4>
             
             <div class="grid grid-cols-2 gap-4 mt-2" id="view-images-grid"></div>
           </div>
@@ -1088,12 +1077,12 @@
 
       if (target === 'input') {
         inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-500 transition flex items-center justify-center gap-2";
-        historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-450 hover:text-emerald-500 transition flex items-center justify-center gap-2";
+        historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-400 hover:text-emerald-500 transition flex items-center justify-center gap-2";
         inputCont.classList.remove("hidden");
         historyCont.classList.add("hidden");
       } else {
         historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-500 transition flex items-center justify-center gap-2";
-        inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-450 hover:text-emerald-500 transition flex items-center justify-center gap-2";
+        inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-400 hover:text-emerald-500 transition flex items-center justify-center gap-2";
         historyCont.classList.remove("hidden");
         inputCont.classList.add("hidden");
         renderHistoryList();
@@ -1597,7 +1586,7 @@
       const chartContainer = document.getElementById("hierarchy-chart-container");
       chartContainer.innerHTML = "";
       if (bapData.karyawan.length === 0) {
-        chartContainer.innerHTML = "<p class='text-[8px] text-gray-400'>Belum ada bagan jabatan</p>";
+        chartContainer.innerHTML = "<p class='text-[8px] text-gray-405'>Belum ada bagan jabatan</p>";
         return;
       }
 
@@ -1818,7 +1807,7 @@
               <span class="text-gray-300 text-[8px] border border-dashed border-gray-300 px-3 py-0.5 rounded">Tanda Tangan</span>
             </div>
             <p class="font-bold underline">${item.name}</p>
-            <p class="text-gray-600 text-[9px]">${item.nip ? 'NIP. ' + item.nip : ''}</p>
+            <p class="text-gray-600 text-[10pt]">${item.nip ? 'NIP. ' + item.nip : ''}</p>
           </div>
         `;
       });
@@ -1839,7 +1828,7 @@
                 </div>
               `}
             </div>
-            <p class="text-[8px] font-bold text-center text-slate-800">${pic.caption}</p>
+            <p class="text-[9px] font-bold text-center text-slate-850" style="font-family: inherit;">${pic.caption}</p>
           </div>
         `;
       });
