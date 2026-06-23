@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,40 +8,83 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Gentium Book Plus (for official serif look) and Inter/Sora -->
+  <!-- Google Fonts: Gentium Book Plus (for official serif look), Inter, and Sora -->
   <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.25);
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --border: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.15);
+      --accent: #059669; /* Emerald */
+      --accent-glow: rgba(5, 150, 105, 0.15);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --glass-blur: 12px;
+      --shadow-lux: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    .dark {
+      --bg-primary: #030712; /* Deep Obsidian Slate */
+      --bg-secondary: #0b0f19;
+      --bg-card: rgba(15, 23, 42, 0.65); /* Frosted Deep Slate */
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.12);
+      --accent: #10b981; /* High Emerald Neon */
+      --accent-glow: rgba(16, 185, 129, 0.2);
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --glass-blur: 16px;
+      --shadow-lux: 0 10px 40px rgba(0, 0, 0, 0.5);
     }
 
     body {
       font-family: 'Inter', sans-serif;
-      transition: background-color 0.3s, color 0.3s;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Animasi menyala dan berdenyut untuk judul E-BAP */
+    /* Luxurious Morphing Glassmorphism Panels */
+    .glass-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lux);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-panel:hover {
+      border-color: var(--border-strong);
+    }
+
+    /* Neon Emerald Glowing Title Animation */
     .glowing-title {
       font-family: 'Sora', sans-serif;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--accent-glow);
-      animation: pulseGlow 2s infinite alternate;
+      background: linear-gradient(135deg, var(--accent) 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px var(--accent-glow);
+      animation: morphGlow 3s infinite alternate;
     }
 
-    @keyframes pulseGlow {
+    @keyframes morphGlow {
       0% {
-        text-shadow: 0 0 5px rgba(16, 185, 129, 0.2);
+        filter: brightness(0.95);
         transform: scale(1);
       }
       100% {
-        text-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
-        transform: scale(1.02);
+        filter: brightness(1.15);
+        transform: scale(1.01);
       }
     }
 
-    /* A4 Document layout using Bookman style fallback */
+    /* Exact A4 Document Styling using Bookman Old Style style fonts */
     .document-preview {
       font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
       font-size: 12pt;
@@ -51,12 +94,12 @@
       padding: 20mm 15mm 20mm 15mm;
       margin: 0 auto;
       background: white !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
       position: relative;
-      color: #000000 !important; /* Always black for printing */
+      color: #000000 !important; /* Fixed black color for standard document outputs */
     }
 
-    /* Cover specific layout */
+    /* Document Cover Layout */
     .cover-container {
       min-height: 257mm;
       display: flex;
@@ -64,19 +107,19 @@
       justify-content: space-between;
     }
 
-    /* Official Government table style */
+    /* Official Government Styled Table */
     .gov-table {
       width: 100%;
       border-collapse: collapse;
       font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
       font-size: 11pt;
       color: #000000 !important;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .gov-table th, .gov-table td {
-      border: 1px solid #000000 !important;
-      padding: 5px 8px;
+      border: 1.5px solid #000000 !important;
+      padding: 6px 10px;
       vertical-align: top;
     }
 
@@ -92,20 +135,19 @@
       height: calc(100vh - 64px);
     }
 
-    /* Professional hierarchy tree styles for BAB XII */
+    /* Professional hierarchy tree diagram style for BAB XII */
     .tree-node {
       border: 1.5px solid #000000;
       padding: 6px 12px;
       border-radius: 4px;
       background: #ffffff;
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: bold;
       text-align: center;
       display: inline-block;
-      min-width: 120px;
+      min-width: 130px;
       font-family: 'Gentium Book Plus', serif;
       color: #000000;
-      box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
     }
 
     .tree-connector {
@@ -115,7 +157,7 @@
       margin: 0 auto;
     }
 
-    /* Strict Print Styles (Zero Margins/Borders/Watermarks/Background details) */
+    /* Strict Print Styles (Zero Margins/Borders/Watermarks/Background Details) */
     @media print {
       body {
         background: #ffffff !important;
@@ -148,18 +190,18 @@
     }
 
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
-    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.03); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col antialiased transition-colors duration-300">
 
   <!-- NAVBAR -->
-  <header class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-md z-10 no-print border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+  <header class="glass-panel text-slate-900 dark:text-white shadow-md z-10 no-print border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="p-2 bg-emerald-600 rounded-lg text-white">
-          <i class="fa-solid fa-file-invoice-dollar text-xl animate-pulse"></i>
+          <i class="fa-solid fa-file-contract text-xl animate-pulse"></i>
         </div>
         <div>
           <h1 class="text-base font-extrabold tracking-tight glowing-title">E-BAP Teknis</h1>
@@ -167,23 +209,27 @@
         </div>
       </div>
 
-      <!-- Live Clock & Theme Controls -->
+      <!-- Live Clock -->
       <div class="hidden md:flex items-center space-x-4">
-        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-850 px-4 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700/50">
-          <i class="fa-regular fa-calendar text-emerald-500 text-sm animate-pulse"></i>
-          <span id="live-datetime" class="text-xs font-mono font-medium tracking-wide">Memuat Waktu...</span>
+        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-900 px-4 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
+          <i class="fa-regular fa-calendar text-emerald-500 text-sm animate-bounce"></i>
+          <span id="live-datetime" class="text-xs font-mono font-semibold tracking-wide">Memuat Waktu...</span>
         </div>
       </div>
       
       <div class="flex items-center space-x-3">
-        <!-- Theme Toggle Button -->
-        <button onclick="toggleTheme()" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-250 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 rounded-lg transition" title="Ubah Tema">
+        <!-- Theme Toggle Button (Light/Dark Mode) -->
+        <button onclick="toggleTheme()" class="p-2.5 bg-slate-150 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-850 text-slate-700 dark:text-amber-400 rounded-lg transition-all duration-300 border border-slate-300 dark:border-slate-800" title="Ubah Tema">
           <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
         </button>
-        <button onclick="loadSampleKarisma()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-emerald-600 dark:text-emerald-400 text-xs font-semibold rounded-lg transition border border-emerald-500/30">
-          <i class="fa-solid fa-cloud-arrow-down mr-1"></i> Muat Karisma Alam
+
+        <!-- EXACT BUTTON DESIGN FROM image_1a7c80.png -->
+        <button onclick="loadSampleKarisma()" class="px-4 py-2 border border-emerald-500/50 hover:border-emerald-400 bg-[#0e1726] hover:bg-[#15233a] text-emerald-400 hover:text-emerald-300 text-xs font-semibold rounded-xl transition flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-down text-emerald-500"></i> Muat Karisma Alam
         </button>
-        <button onclick="triggerPrint()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition shadow-lg shadow-emerald-700/20 flex items-center gap-1.5">
+
+        <!-- Print Action -->
+        <button onclick="triggerPrint()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition shadow-lg shadow-emerald-700/20 flex items-center gap-1.5">
           <i class="fa-solid fa-print"></i> Cetak / PDF (A4)
         </button>
       </div>
@@ -194,10 +240,10 @@
   <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
     
     <!-- LEFT PANEL: FORM & HISTORY EDITOR -->
-    <aside class="w-full lg:w-5/12 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col h-full overflow-hidden no-print transition-colors duration-300">
+    <aside class="w-full lg:w-5/12 bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-900 flex flex-col h-full overflow-hidden no-print transition-colors duration-300">
       
       <!-- SUB TABS NAVIGATION -->
-      <div class="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex">
+      <div class="bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-900 flex">
         <button id="tab-input-btn" onclick="switchTab('input')" class="flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-600 dark:text-emerald-400 transition flex items-center justify-center gap-2">
           <i class="fa-solid fa-pen-to-square"></i> INPUT DATA FORMULIR BAP
         </button>
@@ -211,7 +257,7 @@
         
         <!-- SECTION 1: HEADER & METADATA -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-info')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-info')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-circle-info mr-2"></i>INFORMASI UTAMA & NOMOR DOKUMEN</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -219,27 +265,27 @@
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nomor BAP</label>
-                <input type="text" id="bap-nomor" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="bap-nomor" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nama Perusahaan</label>
-                <input type="text" id="bap-perusahaan" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="bap-perusahaan" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Status Permohonan</label>
-                <input type="text" id="bap-status" oninput="updateLivePreview()" placeholder="Baru" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="bap-status" oninput="updateLivePreview()" placeholder="Baru" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Taksa Utama</label>
-                <input type="text" id="bap-taksa" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="bap-taksa" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Lokasi Pemeriksaan</label>
-                <input type="text" id="bap-lokasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="bap-lokasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Tanggal Pemeriksaan</label>
-                <input type="text" id="bap-tanggal" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="bap-tanggal" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
             </div>
           </div>
@@ -247,7 +293,7 @@
 
         <!-- SECTION 2: DASAR PELAKSANAAN -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-dasar')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-dasar')" class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-gavel mr-2"></i>DASAR PELAKSANAAN</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -261,7 +307,7 @@
 
         <!-- SECTION 3: DATA PERUSAHAAN (BAB I) -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-perusahaan')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-perusahaan')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-building mr-2"></i>BAB I. DATA PERUSAHAAN & IDENTITAS</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -269,27 +315,27 @@
             <div class="grid grid-cols-2 gap-3">
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nama Pemilik</label>
-                <input type="text" id="pi-pemilik" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="pi-pemilik" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Tanggal Pendirian</label>
-                <input type="text" id="pi-tgl-pendirian" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="pi-tgl-pendirian" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nomor Telp/Fax</label>
-                <input type="text" id="pi-telp" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="pi-telp" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Email</label>
-                <input type="email" id="pi-email" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="email" id="pi-email" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Alamat Kantor</label>
-                <textarea id="pi-alamat-kantor" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg"></textarea>
+                <textarea id="pi-alamat-kantor" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white"></textarea>
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Alamat Penampungan</label>
-                <textarea id="pi-alamat-gudang" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg"></textarea>
+                <textarea id="pi-alamat-gudang" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white"></textarea>
               </div>
             </div>
           </div>
@@ -297,7 +343,7 @@
 
         <!-- SECTION 4: KELENGKAPAN DOKUMEN (BAB II) -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-dokumen')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-dokumen')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-folder-open mr-2"></i>BAB II. DOKUMEN ADMINISTRASI</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -305,40 +351,40 @@
             <div class="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Akta Pendirian Perusahaan</h4>
               <div class="grid grid-cols-2 gap-2">
-                <input type="text" id="dok-akta-no" oninput="updateLivePreview()" placeholder="No. Akta" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
-                <input type="text" id="dok-akta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Akta" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
-                <input type="text" id="dok-akta-notaris" oninput="updateLivePreview()" placeholder="Nama Notaris" class="col-span-2 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
+                <input type="text" id="dok-akta-no" oninput="updateLivePreview()" placeholder="No. Akta" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
+                <input type="text" id="dok-akta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Akta" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
+                <input type="text" id="dok-akta-notaris" oninput="updateLivePreview()" placeholder="Nama Notaris" class="col-span-2 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
               </div>
             </div>
 
             <div class="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Nomor Induk Berusaha (NIB)</h4>
               <div class="grid grid-cols-3 gap-2">
-                <input type="text" id="dok-nib-no" oninput="updateLivePreview()" placeholder="No. NIB" class="col-span-2 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
-                <input type="text" id="dok-nib-kbli" oninput="updateLivePreview()" placeholder="Kode KBLI" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
-                <input type="text" id="dok-nib-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit" class="col-span-3 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
+                <input type="text" id="dok-nib-no" oninput="updateLivePreview()" placeholder="No. NIB" class="col-span-2 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
+                <input type="text" id="dok-nib-kbli" oninput="updateLivePreview()" placeholder="Kode KBLI" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
+                <input type="text" id="dok-nib-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit" class="col-span-3 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
               </div>
             </div>
 
             <div class="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Tata Ruang & NPWP</h4>
               <div class="grid grid-cols-2 gap-2">
-                <input type="text" id="dok-ruang-tgl" oninput="updateLivePreview()" placeholder="Tgl Kesesuaian Ruang" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
-                <input type="text" id="dok-ruang-penerbit" oninput="updateLivePreview()" placeholder="Penerbit" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
-                <input type="text" id="dok-npwp" oninput="updateLivePreview()" placeholder="No. NPWP" class="col-span-2 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
+                <input type="text" id="dok-ruang-tgl" oninput="updateLivePreview()" placeholder="Tgl Kesesuaian Ruang" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
+                <input type="text" id="dok-ruang-penerbit" oninput="updateLivePreview()" placeholder="Penerbit" class="px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
+                <input type="text" id="dok-npwp" oninput="updateLivePreview()" placeholder="No. NPWP" class="col-span-2 px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
               </div>
             </div>
 
             <div class="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg space-y-2 border border-slate-200 dark:border-slate-800">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Pakta Integritas</h4>
-              <input type="text" id="dok-pakta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit Pakta" class="w-full px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded">
+              <input type="text" id="dok-pakta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit Pakta" class="w-full px-2.5 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-slate-850 dark:text-white">
             </div>
           </div>
         </div>
 
         <!-- SECTION 5: SARANA PRASARANA (BAB III) -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-sarpras')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-sarpras')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-boxes-packing mr-2"></i>BAB III. SARANA & PRASARANA</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -352,7 +398,7 @@
 
         <!-- SECTION 6: SPESIMEN & STATUS CITES (BAB IV - VIII) -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-specimen')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-specimen')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-seedling mr-2"></i>BAB IV - VIII. SPESIMEN & CITES</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -375,21 +421,21 @@
               </div>
               <div>
                 <label class="block text-[9px] font-bold text-slate-500 dark:text-slate-400 mb-1">Rincian Detail Jenis (Keterangan)</label>
-                <input type="text" id="spec-taksa-rincian" oninput="updateLivePreview()" placeholder="Contoh: Aquilaria microcarpa" class="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="spec-taksa-rincian" oninput="updateLivePreview()" placeholder="Contoh: Aquilaria microcarpa" class="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">V. Status Lindungan</label>
-                <select id="spec-lindung" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-800 dark:text-white">
+                <select id="spec-lindung" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
                   <option value="Dilindungi">Dilindungi</option>
                   <option value="Tidak dilindungi">Tidak dilindungi</option>
                 </select>
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">VI. Status CITES</label>
-                <select id="spec-cites" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-800 dark:text-white">
+                <select id="spec-cites" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
                   <option value="Appendiks I">Appendiks I</option>
                   <option value="Appendiks II">Appendiks II</option>
                   <option value="Appendiks III">Appendiks III</option>
@@ -398,7 +444,7 @@
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">VII. Sumber Spesimen</label>
-                <select id="spec-sumber" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-800 dark:text-white">
+                <select id="spec-sumber" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
                   <option value="Tangkapan alam">Tangkapan alam</option>
                   <option value="Hasil penangkaran/budidaya/transplantasi">Hasil penangkaran/budidaya/transplantasi</option>
                   <option value="Luar negeri (impor)">Luar negeri (impor)</option>
@@ -407,7 +453,7 @@
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Keterangan Sumber (VII)</label>
-              <input type="text" id="spec-sumber-ket" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+              <input type="text" id="spec-sumber-ket" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
             </div>
 
             <!-- VIII. Bentuk Spesimen (Multi-Select Checklist) -->
@@ -420,7 +466,7 @@
 
         <!-- SECTION 7: ORGANISASI & TENAGA KERJA (BAB XII) -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-organisasi')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-organisasi')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-sitemap mr-2"></i>BAB XII. STRUKTUR & TENAGA KERJA</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -435,14 +481,14 @@
 
         <!-- SECTION 8: INVESTASI & PEMEGANG SAHAM (BAB XIII) -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-saham')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-saham')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-coins mr-2"></i>BAB XIII. INVESTASI & SAHAM</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-saham" class="p-4 space-y-3 hidden">
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Total Investasi (Rupiah)</label>
-              <input type="text" id="nar-investasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+              <input type="text" id="nar-investasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
             </div>
             <div class="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2">
               <h4 class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">Pemegang Saham</h4>
@@ -456,33 +502,33 @@
 
         <!-- SECTION 9: TEKNIS & PEMBINAAN (BAB IX - XIV) -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-teknis')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-teknis')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-gears mr-2"></i>BAB IX - XIV. NARASI TEKNIS & PEMBINAAN</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-teknis" class="p-4 space-y-3 hidden">
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">IX. Teknis Pelaksanaan Penampungan</label>
-              <textarea id="nar-penampungan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg"></textarea>
+              <textarea id="nar-penampungan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white"></textarea>
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">X. Teknis Pelaksanaan Pengangkutan</label>
-              <textarea id="nar-pengangkutan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg"></textarea>
+              <textarea id="nar-pengangkutan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white"></textarea>
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">XI. Sistem Pembuangan Limbah</label>
-              <textarea id="nar-limbah" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg"></textarea>
+              <textarea id="nar-limbah" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white"></textarea>
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</label>
-              <textarea id="nar-pembinaan" oninput="updateLivePreview()" rows="3" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg"></textarea>
+              <textarea id="nar-pembinaan" oninput="updateLivePreview()" rows="3" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white"></textarea>
             </div>
           </div>
         </div>
 
         <!-- SECTION 10: PETUGAS PEMERIKSA & PENGESAH (BAB XV & SIGNATURES) -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-pemeriksa')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-pemeriksa')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-signature mr-2"></i>BAB XV. PETUGAS & PENGESAHAN</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -500,23 +546,23 @@
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nama Kasi</label>
-                <input type="text" id="kasi-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="kasi-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">NIP Kasi</label>
-                <input type="text" id="kasi-nip" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="kasi-nip" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div class="col-span-2">
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Jabatan Mengetahui (Kiri)</label>
-                <input type="text" id="kasi-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="kasi-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Nama Direktur (Kanan)</label>
-                <input type="text" id="dir-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="dir-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 mb-1">Jabatan Direktur</label>
-                <input type="text" id="dir-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg">
+                <input type="text" id="dir-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-850 dark:text-white">
               </div>
             </div>
           </div>
@@ -524,7 +570,7 @@
 
         <!-- SECTION 11: LAMPIRAN GAMBAR DENGAN KONTROL PENUH -->
         <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <button onclick="toggleAccordion('acc-images')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-800 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
+          <button onclick="toggleAccordion('acc-images')" class="w-full px-4 py-3 bg-slate-150 dark:bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-600 dark:text-emerald-400">
             <span><i class="fa-solid fa-images mr-2"></i>LAMPIRAN GAMBAR (KONTROL PENUH)</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
@@ -542,7 +588,7 @@
           <button onclick="saveBapToHistory()" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-1.5">
             <i class="fa-solid fa-bookmark"></i> SIMPAN DRAF LOKAL
           </button>
-          <button onclick="resetBapForm()" class="px-3 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs rounded-xl transition">
+          <button onclick="resetBapForm()" class="px-3 py-2 bg-slate-200 dark:bg-slate-850 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs rounded-xl transition">
             RESET
           </button>
         </div>
@@ -563,7 +609,7 @@
     </aside>
 
     <!-- RIGHT PANEL: IMMERSIVE LIVE PREVIEW (A4 PERFECT SCALING) -->
-    <main class="flex-1 preview-container p-4 lg:p-8 bg-slate-300 dark:bg-slate-800 transition-colors duration-300 flex items-start justify-center">
+    <main class="flex-1 preview-container p-4 lg:p-8 bg-slate-300 dark:bg-slate-850 transition-colors duration-300 flex items-start justify-center">
       
       <!-- WRAPPER FOR DOCUMENT (Gaya Bookman Old Style & Ukuran Basis 12pt) -->
       <div class="document-preview shadow-2xl relative" id="printable-bap">
@@ -1084,7 +1130,7 @@
       karyawan: JSON.parse(JSON.stringify(defaultKaryawan)),
       saham: JSON.parse(JSON.stringify(defaultSaham)),
       narPenampungan: "Kegiatan penampungan dilakukan setelah pihak perusahaan mendapatkan barang dari hasil pembelian pihak pencari dan juga masyarakat yang langsung mengantarkan barang berupa gaharu kepada pihak perusahaan. Penampungan dimaksudkan untuk mengumpulkan gaharu yang didapat perusahaan dari pencari sebelum dilakukan perlakuan.",
-      narPengangkutan: "Teknis pengangkutan gaharu sebelum dilakukan pengangkutan terlebih dahulu di packing (dikemas) sebelum diangkut ke daerah tujuan pengiriman menggunakan pesawat udara. Daerah tujuan penjualan gaharu yaitu : Jakarta dan daerah lainnya sesuai permintaan pasar.",
+      narPengangkutan: "Teknis pengangkutan gaharu sebelum dilakukan pengangkutan terlebih dahulu di packing (dikemas) sebelum diangkut to daerah tujuan pengiriman menggunakan pesawat udara. Daerah tujuan penjualan gaharu yaitu : Jakarta dan daerah lainnya sesuai permintaan pasar.",
       narLimbah: "Limbah yang dihasilkan berupa limbah padat dan cair yang tidak berbahaya. Sistem Pembuangan Limbah yaitu dengan menyapu dan mengumpulkan limbah yang dihasilkan untuk kemudian di buang ke tempat pembuangan sampah sedangkan limbah cair dibuang melalui parit/selokan yang telah disiapkan.",
       narInvestasi: "RP. 250.000.000",
       narPembinaan: "Untuk mewujudkan bisnis gaharu agar dapat berkesinambungan dan terus menerus maka diperlukan adanya kegiatan pembinaan konservasi agar tidak terjadi kelangkaan jenis gaharu di masa akan datang. Program pembinaan konservasi yang dilakukan oleh CV. Karisma Alam di antaranya adalah dengan melakukan penyortiran/menyeleksi pembelian gaharu dan kemedangan dan juga pihak perusahaan memberikan penyuluhan kepada para pencari gaharu untuk tidak menebang pohon yang tidak mempunyai kandungan gaharu agar kelestarian jenis pohon yang lain tetap terjaga.",
@@ -1100,16 +1146,17 @@
     let historyBaps = [];
 
     window.onload = function() {
-      // Initialize saved state from localStorage
-      loadHistoryFromStorage();
-      
-      // Sync local theme state
-      if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark');
+      // Sync Local Theme State
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      if (currentTheme === 'dark') {
+        document.documentElement.classList.add('dark');
         document.getElementById('theme-icon').className = 'fa-solid fa-sun text-sm';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('theme-icon').className = 'fa-solid fa-moon text-sm';
       }
 
-      // Populate interface and trigger initial calculations
+      loadHistoryFromStorage();
       fillFormFromState();
       updateLivePreview();
       startLiveClock();
@@ -1124,14 +1171,14 @@
     }
 
     function toggleTheme() {
-      const body = document.body;
+      const htmlElement = document.documentElement;
       const icon = document.getElementById('theme-icon');
-      if (body.classList.contains('dark')) {
-        body.classList.remove('dark');
+      if (htmlElement.classList.contains('dark')) {
+        htmlElement.classList.remove('dark');
         icon.className = 'fa-solid fa-moon text-sm';
         localStorage.setItem('theme', 'light');
       } else {
-        body.classList.add('dark');
+        htmlElement.classList.add('dark');
         icon.className = 'fa-solid fa-sun text-sm';
         localStorage.setItem('theme', 'dark');
       }
@@ -1288,9 +1335,9 @@
       container.innerHTML = "";
       bapData.dasarRules.forEach((rule, idx) => {
         container.innerHTML += `
-          <div class="flex items-start gap-2 bg-slate-100 dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-800">
+          <div class="flex items-start gap-2 bg-slate-100 dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-850">
             <span class="text-xs font-bold text-slate-500 mt-2">${idx + 1}.</span>
-            <textarea oninput="editDasarRule(${idx}, this.value)" class="flex-1 px-2 py-1 text-xs border border-slate-200 dark:border-slate-800 rounded bg-white dark:bg-slate-950 outline-none resize-none" rows="2">${rule}</textarea>
+            <textarea oninput="editDasarRule(${idx}, this.value)" class="flex-1 px-2 py-1 text-xs border border-slate-200 dark:border-slate-850 rounded bg-white dark:bg-slate-950 outline-none resize-none text-slate-850 dark:text-white" rows="2">${rule}</textarea>
             <button onclick="deleteDasarRule(${idx})" class="p-1 text-rose-500 hover:bg-rose-950/45 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
@@ -1304,11 +1351,11 @@
       container.innerHTML = "";
       bapData.sarpras.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-xs">
-            <input type="text" value="${item.name}" oninput="editSarpras(${idx}, 'name', this.value)" placeholder="Nama Alat" class="flex-1 min-w-[80px] px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px]">
-            <input type="text" value="${item.size}" oninput="editSarpras(${idx}, 'size', this.value)" placeholder="Ukuran" class="w-16 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px]">
-            <input type="text" value="${item.qty}" oninput="editSarpras(${idx}, 'qty', this.value)" placeholder="Qty" class="w-12 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px]">
-            <input type="text" value="${item.unit}" oninput="editSarpras(${idx}, 'unit', this.value)" placeholder="Satuan" class="w-14 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px]">
+          <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-850 text-xs">
+            <input type="text" value="${item.name}" oninput="editSarpras(${idx}, 'name', this.value)" placeholder="Nama Alat" class="flex-1 min-w-[80px] px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px] text-slate-850 dark:text-white">
+            <input type="text" value="${item.size}" oninput="editSarpras(${idx}, 'size', this.value)" placeholder="Ukuran" class="w-16 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-850 dark:text-white">
+            <input type="text" value="${item.qty}" oninput="editSarpras(${idx}, 'qty', this.value)" placeholder="Qty" class="w-12 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-850 dark:text-white">
+            <input type="text" value="${item.unit}" oninput="editSarpras(${idx}, 'unit', this.value)" placeholder="Satuan" class="w-14 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-850 dark:text-white">
             <button onclick="deleteSarpras(${idx})" class="p-1 text-rose-500 hover:bg-rose-950/45 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
@@ -1325,7 +1372,7 @@
         container.innerHTML += `
           <div class="flex items-center gap-2">
             <input type="checkbox" value="${bentuk}" ${isChecked} onchange="updateLivePreview()" class="bentuk-specimen-chk w-4 h-4 text-emerald-600 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 rounded focus:ring-emerald-500">
-            <label class="select-none text-[11px]">${bentuk}</label>
+            <label class="select-none text-[11px] text-slate-800 dark:text-slate-250">${bentuk}</label>
           </div>
         `;
       });
@@ -1336,9 +1383,9 @@
       container.innerHTML = "";
       bapData.karyawan.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-xs">
-            <input type="text" value="${item.role}" oninput="editKaryawan(${idx}, 'role', this.value)" placeholder="Jabatan" class="flex-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px]">
-            <input type="text" value="${item.count}" oninput="editKaryawan(${idx}, 'count', this.value)" placeholder="Jumlah" class="w-16 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px]">
+          <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-850 text-xs">
+            <input type="text" value="${item.role}" oninput="editKaryawan(${idx}, 'role', this.value)" placeholder="Jabatan" class="flex-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px] text-slate-850 dark:text-white">
+            <input type="text" value="${item.count}" oninput="editKaryawan(${idx}, 'count', this.value)" placeholder="Jumlah" class="w-16 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-850 dark:text-white">
             <span class="text-slate-500 text-[10px] font-semibold">Orang</span>
             <button onclick="deleteKaryawan(${idx})" class="p-1 text-rose-500 hover:bg-rose-950/45 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
@@ -1353,9 +1400,9 @@
       container.innerHTML = "";
       bapData.saham.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-xs">
-            <input type="text" value="${item.name}" oninput="editSaham(${idx}, 'name', this.value)" placeholder="Pemilik Saham" class="flex-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px]">
-            <input type="text" value="${item.percentage}" oninput="editSaham(${idx}, 'percentage', this.value)" placeholder="%" class="w-14 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px]">
+          <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-850 text-xs">
+            <input type="text" value="${item.name}" oninput="editSaham(${idx}, 'name', this.value)" placeholder="Pemilik Saham" class="flex-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-[10px] text-slate-850 dark:text-white">
+            <input type="text" value="${item.percentage}" oninput="editSaham(${idx}, 'percentage', this.value)" placeholder="%" class="w-14 px-1.5 py-0.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded text-center text-[10px] text-slate-850 dark:text-white">
             <span class="text-slate-500 text-[10px] font-semibold">%</span>
             <button onclick="deleteSaham(${idx})" class="p-1 text-rose-500 hover:bg-rose-950/45 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
@@ -1378,8 +1425,8 @@
               </button>
             </div>
             <div class="grid grid-cols-2 gap-1.5">
-              <input type="text" value="${item.name}" oninput="editInspector(${idx}, 'name', this.value)" placeholder="Nama Pemeriksa" class="px-2 py-1 text-xs bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px]">
-              <input type="text" value="${item.nip}" oninput="editInspector(${idx}, 'nip', this.value)" placeholder="NIP" class="px-2 py-1 text-xs bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-[10px]">
+              <input type="text" value="${item.name}" oninput="editInspector(${idx}, 'name', this.value)" placeholder="Nama Pemeriksa" class="px-2 py-1 text-xs bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded text-[10px] text-slate-850 dark:text-white">
+              <input type="text" value="${item.nip}" oninput="editInspector(${idx}, 'nip', this.value)" placeholder="NIP" class="px-2 py-1 text-xs bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded text-[10px] text-slate-855 dark:text-white">
             </div>
           </div>
         `;
@@ -1391,9 +1438,9 @@
       container.innerHTML = "";
       bapData.pictures.forEach((pic, idx) => {
         container.innerHTML += `
-          <div class="p-2 border border-slate-200 dark:border-slate-800 rounded-lg bg-slate-100 dark:bg-slate-900 flex flex-col gap-1.5">
+          <div class="p-2 border border-slate-200 dark:border-slate-850 rounded-lg bg-slate-100 dark:bg-slate-900 flex flex-col gap-1.5">
             <div class="flex justify-between items-center">
-              <input type="text" value="${pic.name}" oninput="editPictureName(${idx}, this.value)" placeholder="Label Gambar" class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 bg-transparent border-b border-dashed border-slate-300 dark:border-slate-700 outline-none">
+              <input type="text" value="${pic.name}" oninput="editPictureName(${idx}, this.value)" placeholder="Label Gambar" class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 bg-transparent border-b border-dashed border-slate-300 dark:border-slate-750 outline-none">
               <div class="flex items-center gap-1">
                 ${pic.img ? '<span class="text-[7px] bg-emerald-900 text-emerald-300 font-bold px-1 rounded">ADA GAMBAR</span>' : ''}
                 <button onclick="deletePictureSlot(${idx})" class="p-1 text-rose-500 hover:bg-rose-950/45 rounded">
@@ -1402,7 +1449,7 @@
               </div>
             </div>
             <input type="file" onchange="handlePicUpload(event, ${idx})" class="w-full text-[10px] text-slate-500">
-            <input type="text" value="${pic.caption}" oninput="editPicCaption(${idx}, this.value)" placeholder="Caption di cetakan" class="w-full px-2 py-0.5 text-[10px] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 rounded">
+            <input type="text" value="${pic.caption}" oninput="editPicCaption(${idx}, this.value)" placeholder="Caption di cetakan" class="w-full px-2 py-0.5 text-[10px] border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 rounded text-slate-850 dark:text-white">
           </div>
         `;
       });
