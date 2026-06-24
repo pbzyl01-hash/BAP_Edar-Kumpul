@@ -99,6 +99,12 @@
       color: #94a3b8;
     }
 
+    /* FORCE BLACK COLOR AND NORMAL STYLE (NO ITALIC) FOR ALL DOCUMENTS */
+    .a4-page, .a4-page * {
+      color: #000000 !important;
+      font-style: normal !important;
+    }
+
     .gov-table {
       width: 100%;
       border-collapse: collapse;
@@ -151,10 +157,10 @@
       margin: 0 auto;
     }
 
-    /* EXACT PHOTO COLUMN DIMENSIONS FOR DOCUMENT & PRINT: 9.14cm x 12.15cm */
+    /* EXACT PHOTO COLUMN DIMENSIONS FOR DOCUMENT & PRINT: 12.15cm x 9.14cm */
     .photo-column-wrapper {
-      width: 9.14cm !important;
-      height: 12.15cm !important;
+      width: 12.15cm !important;
+      height: 9.14cm !important;
       border: 1.5px solid #000000 !important;
       display: flex !important;
       flex-direction: column !important;
@@ -174,7 +180,7 @@
 
     .photo-image-container {
       width: 100% !important;
-      height: 9.8cm !important; /* Leaves precise space for margins and caption */
+      height: 7.0cm !important; /* Leaves precise space for margins and caption in landscape */
       background-color: #f8fafc;
       display: flex;
       align-items: center;
@@ -808,7 +814,7 @@
               <tr>
                 <td class="text-center">7</td>
                 <td>Email</td>
-                <td>: <span id="v-email" class="italic text-[12pt]"></span></td>
+                <td>: <span id="v-email" class="text-[12pt]"></span></td>
               </tr>
             </tbody>
           </table>
@@ -977,15 +983,15 @@
           <div class="space-y-2 text-[12pt] leading-relaxed">
             <div class="p-2 border border-black bg-slate-50">
               <p class="font-bold text-[12pt]">IX. TEKNIS PELAKSANAAN PENAMPUNGAN:</p>
-              <p id="v-nar-penampungan" class="text-justify text-gray-800 italic text-[12pt]"></p>
+              <p id="v-nar-penampungan" class="text-justify text-gray-800 text-[12pt]"></p>
             </div>
             <div class="p-2 border border-black bg-slate-50">
               <p class="font-bold text-[12pt]">X. TEKNIS PELAKSANAAN PENGANGKUTAN:</p>
-              <p id="v-nar-pengangkutan" class="text-justify text-gray-800 italic text-[12pt]"></p>
+              <p id="v-nar-pengangkutan" class="text-justify text-gray-800 text-[12pt]"></p>
             </div>
             <div class="p-2 border border-black bg-slate-50">
               <p class="font-bold text-[12pt]">XI. SISTEM PEMBUANGAN LIMBAH:</p>
-              <p id="v-nar-limbah" class="text-justify text-gray-800 italic text-[12pt]"></p>
+              <p id="v-nar-limbah" class="text-justify text-gray-800 text-[12pt]"></p>
             </div>
           </div>
         </div>
@@ -1032,7 +1038,7 @@
               </tr>
               <tr>
                 <td class="font-bold text-[12pt]">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</td>
-                <td><p id="v-nar-pembinaan" class="text-justify italic text-gray-800 text-[12pt]"></p></td>
+                <td><p id="v-nar-pembinaan" class="text-justify text-gray-800 text-[12pt]"></p></td>
               </tr>
             </tbody>
           </table>
@@ -1041,7 +1047,7 @@
         <!-- XV. PERNYATAAN DAN PENGESAHAN (POINT 1,2,3) -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">XV. PERNYATAAN DAN PENGESAHAN</p>
-          <div class="text-[12pt] leading-relaxed text-justify italic font-medium bg-slate-50 p-2.5 rounded border border-black">
+          <div class="text-[12pt] leading-relaxed text-justify font-medium bg-slate-50 p-2.5 rounded border border-black">
             <ol class="list-decimal pl-5 space-y-1">
               <li class="text-[12pt]">Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan yang ada di <span id="v-legal-perusahaan" class="font-bold text-[12pt]"></span>.</li>
               <li class="text-[12pt]">Semua kelengkapan dokumen pada butir II adalah sah dan sesuai dengan aslinya.</li>
@@ -1225,6 +1231,7 @@
       ruangTgl: "08 Mei 2025",
       ruangPenerbit: "OSS",
       npwp: "02.467.679.3-7222.000",
+      spaceEmptyPlaceholder: "",
       paktaTgl: "08 Mei 2026",
       dasarRules: [...defaultRules],
       sarpras: JSON.parse(JSON.stringify(defaultSarpras)),
@@ -1802,7 +1809,7 @@
       // Render Inspectors Grid (adaptive columns)
       renderInspectorsGrid();
 
-      // Render Dynamic Photo Grid in exact 9.14cm x 12.15cm format in landscape sheets
+      // Render Dynamic Photo Grid in exact 12.15cm x 9.14cm landscape format with single page header logic
       renderPhotoAttachmentGrid();
     }
 
@@ -1988,6 +1995,7 @@
       bab8Table.innerHTML = "";
       let bab8HeaderMap = {};
       listBab8.forEach((item, idx) => {
+        // Clean label match without the redundant prepended wordings in DOM
         const key = item.sub ? `Bagian ${item.main.includes('satwa') ? 'satwa' : 'tumbuhan'}: ${item.sub}` : item.main;
         const isChecked = bapData.specBentukSelected.includes(key);
         
@@ -2076,16 +2084,22 @@
         return;
       }
       
-      // STRICT PAGINATION: Group 2 photos per landscape sheet to maximize layout space
+      // Group exactly 2 photos horizontally on landscape sheets to fit nicely
       const chunkSize = 2;
       for (let i = 0; i < pictures.length; i += chunkSize) {
         const chunk = pictures.slice(i, i + chunkSize);
         const pageNum = 7 + Math.floor(i / chunkSize);
+        const isFirstAttachmentPage = (i === 0);
         
         let pageHtml = `
           <div class="a4-page landscape shadow-2xl relative" data-page-label="Halaman ${pageNum} (Lampiran)" id="page-${pageNum}">
             <div class="text-[12pt] leading-normal h-full flex flex-col justify-between">
               <div>
+        `;
+
+        // REQUIREMENT SATISFIED: Only display header table on the FIRST landscape photo page!
+        if (isFirstAttachmentPage) {
+          pageHtml += `
                 <table class="w-full border-b border-gray-300 pb-2 mb-2" style="font-size: 12pt !important;">
                   <tbody>
                     <tr>
@@ -2096,7 +2110,7 @@
                     <tr>
                       <td class="font-bold text-[12pt]">Nomor BAP</td>
                       <td class="text-[12pt]">:</td>
-                      <td class="font-bold text-emerald-600 text-[12pt]">${bapData.nomor || "[Nomor BAP]"}</td>
+                      <td class="font-bold text-[12pt]">${bapData.nomor || "[Nomor BAP]"}</td>
                     </tr>
                     <tr>
                       <td class="font-bold text-[12pt]">Tanggal</td>
@@ -2105,12 +2119,17 @@
                     </tr>
                   </tbody>
                 </table>
+          `;
+        } else {
+          pageHtml += `<div class="h-4"></div>`;
+        }
 
+        pageHtml += `
                 <h4 class="text-center font-bold text-[12pt] uppercase tracking-wider mb-2 border-b pb-1">PHOTO ATAU GAMBAR-GAMBAR PEMERIKSAAN</h4>
               </div>
               
-              <!-- STRICT LAYOUT: Flex container placing exactly 2 specified portrait photo cards horizontally side by side -->
-              <div class="flex gap-16 justify-center items-center flex-1">
+              <!-- Flexible landscape layout side-by-side using exact specified size targets -->
+              <div class="flex gap-12 justify-center items-center flex-1">
         `;
         
         chunk.forEach(pic => {
@@ -2125,7 +2144,7 @@
                   </div>
                 `}
               </div>
-              <!-- STRICT REQUIREMENT: Caption is dynamically styled to use exactly 12pt size -->
+              <!-- Keterangan is forced to exactly 12pt size as instructed -->
               <p class="text-[12pt] font-bold text-center text-slate-800 line-clamp-2 mt-2" style="font-family: inherit;">${pic.caption}</p>
             </div>
           `;
