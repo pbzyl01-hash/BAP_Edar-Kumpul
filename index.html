@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,18 +13,18 @@
   
   <style>
     :root {
-      --bg-primary: #090d16; /* Dark slate obsidian */
-      --bg-secondary: #111827; /* Gray 900 */
-      --bg-card: rgba(17, 24, 39, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-strong: rgba(255, 255, 255, 0.15);
-      --accent: #10b981; /* High Emerald */
-      --accent-glow: rgba(16, 185, 129, 0.2);
-      --text-primary: #f9fafb;
-      --text-secondary: #9ca3af;
-      --text-muted: #4b5563;
+      --bg-primary: #f8fafc; /* Light slate clean background */
+      --bg-secondary: #ffffff; /* Pure white */
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --border: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.15);
+      --accent: #059669; /* Rich Emerald */
+      --accent-glow: rgba(5, 150, 105, 0.15);
+      --text-primary: #0f172a; /* Slate 900 */
+      --text-secondary: #475569; /* Slate 600 */
+      --text-muted: #94a3b8; /* Slate 400 */
       --glass-blur: 16px;
-      --shadow-lux: 0 10px 40px rgba(0, 0, 0, 0.5);
+      --shadow-lux: 0 10px 40px rgba(15, 23, 42, 0.05);
     }
 
     body {
@@ -33,7 +33,7 @@
       color: var(--text-primary);
     }
 
-    /* Glassmorphism panel style */
+    /* Glassmorphism panel style adapted for premium Light Mode */
     .glass-panel {
       background: var(--bg-card);
       backdrop-filter: blur(var(--glass-blur));
@@ -47,10 +47,10 @@
       border-color: var(--border-strong);
     }
 
-    /* Glowing Title Animation */
+    /* Glowing Title Animation - Light Emerald Morphing */
     .glowing-title {
       font-family: 'Sora', sans-serif;
-      background: linear-gradient(135deg, var(--accent) 0%, #34d399 100%);
+      background: linear-gradient(135deg, var(--accent) 0%, #10b981 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 15px var(--accent-glow);
@@ -74,7 +74,7 @@
       margin: 0 auto 25px auto;
       background: #ffffff !important;
       color: #000000 !important;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
       position: relative;
       box-sizing: border-box;
     }
@@ -220,7 +220,7 @@
 <body class="min-h-screen flex flex-col antialiased">
 
   <!-- NAVBAR -->
-  <header class="glass-panel text-white shadow-md z-10 no-print border-b border-slate-800">
+  <header class="glass-panel text-slate-800 shadow-md z-10 no-print border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="p-2 bg-emerald-600 rounded-lg text-white">
@@ -228,21 +228,21 @@
         </div>
         <div>
           <h1 class="text-base font-extrabold tracking-tight glowing-title">E-BAP Teknis</h1>
-          <p class="text-[10px] text-emerald-400 font-semibold tracking-wider uppercase">Seksi KSDA Wilayah II Tenggarong</p>
+          <p class="text-[10px] text-emerald-600 font-semibold tracking-wider uppercase">Seksi KSDA Wilayah II Tenggarong</p>
         </div>
       </div>
 
       <!-- Live Clock Widget -->
       <div class="hidden md:flex items-center space-x-4">
-        <div class="flex items-center space-x-2 bg-slate-900 px-4 py-1.5 rounded-lg border border-slate-800">
-          <i class="fa-regular fa-calendar text-emerald-500 text-sm animate-bounce"></i>
-          <span id="live-datetime" class="text-xs font-mono font-semibold tracking-wide text-slate-200">Memuat Waktu...</span>
+        <div class="flex items-center space-x-2 bg-slate-100 px-4 py-1.5 rounded-lg border border-slate-200">
+          <i class="fa-regular fa-calendar text-emerald-600 text-sm animate-bounce"></i>
+          <span id="live-datetime" class="text-xs font-mono font-semibold tracking-wide text-slate-700">Memuat Waktu...</span>
         </div>
       </div>
       
       <div class="flex items-center space-x-3">
         <!-- Template Load Button (CV Karisma Alam) -->
-        <button onclick="loadSampleKarisma()" class="px-4 py-2 border border-emerald-500/50 hover:border-emerald-400 bg-[#0e1726] hover:bg-[#15233a] text-emerald-400 hover:text-emerald-500 text-xs font-bold rounded-xl transition flex items-center gap-2">
+        <button onclick="loadSampleKarisma()" class="px-4 py-2 border border-emerald-500/50 hover:border-emerald-650 bg-white hover:bg-slate-50 text-emerald-600 hover:text-emerald-700 text-xs font-bold rounded-xl transition flex items-center gap-2">
           <i class="fa-solid fa-cloud-arrow-down"></i> Muat Karisma Alam
         </button>
 
@@ -258,175 +258,175 @@
   <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
     
     <!-- LEFT PANEL: FORM & HISTORY EDITOR -->
-    <aside class="w-full lg:w-5/12 bg-slate-950 border-r border-slate-900 flex flex-col h-full overflow-hidden no-print">
+    <aside class="w-full lg:w-5/12 bg-white border-r border-slate-200 flex flex-col h-full overflow-hidden no-print">
       
       <!-- SUB TABS NAVIGATION -->
-      <div class="bg-slate-900 border-b border-slate-900 flex">
-        <button id="tab-input-btn" onclick="switchTab('input')" class="flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-400 transition flex items-center justify-center gap-2">
+      <div class="bg-slate-50 border-b border-slate-200 flex">
+        <button id="tab-input-btn" onclick="switchTab('input')" class="flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-650 transition flex items-center justify-center gap-2">
           <i class="fa-solid fa-pen-to-square"></i> INPUT DATA FORMULIR BAP
         </button>
-        <button id="tab-history-btn" onclick="switchTab('history')" class="flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-emerald-500 transition flex items-center justify-center gap-2">
+        <button id="tab-history-btn" onclick="switchTab('history')" class="flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-emerald-600 transition flex items-center justify-center gap-2">
           <i class="fa-solid fa-history"></i> ARSIP RIWAYAT (<span id="history-count">0</span>)
         </button>
       </div>
 
       <!-- TAB 1: FORM INPUTS WITH ACCORDION SECTIONS -->
-      <div id="tab-input-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-950">
+      <div id="tab-input-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50">
         
         <!-- SECTION 1: HEADER & METADATA -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-info')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-circle-info mr-2"></i>INFORMASI UTAMA & NOMOR DOKUMEN</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-info')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-circle-info mr-2 text-emerald-600"></i>INFORMASI UTAMA & NOMOR DOKUMEN</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-info" class="p-4 space-y-3">
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nomor BAP</label>
-                <input type="text" id="bap-nomor" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Nomor BAP</label>
+                <input type="text" id="bap-nomor" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nama Perusahaan</label>
-                <input type="text" id="bap-perusahaan" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Nama Perusahaan</label>
+                <input type="text" id="bap-perusahaan" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Status Permohonan</label>
-                <input type="text" id="bap-status" oninput="updateLivePreview()" placeholder="Baru" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Status Permohonan</label>
+                <input type="text" id="bap-status" oninput="updateLivePreview()" placeholder="Baru" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Taksa Utama</label>
-                <input type="text" id="bap-taksa" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Taksa Utama</label>
+                <input type="text" id="bap-taksa" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Lokasi Pemeriksaan</label>
-                <input type="text" id="bap-lokasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Lokasi Pemeriksaan</label>
+                <input type="text" id="bap-lokasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Tanggal Pemeriksaan</label>
-                <input type="text" id="bap-tanggal" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Tanggal Pemeriksaan</label>
+                <input type="text" id="bap-tanggal" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
             </div>
           </div>
         </div>
 
         <!-- SECTION 2: DASAR PELAKSANAAN -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-dasar')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-gavel mr-2"></i>DASAR PELAKSANAAN</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-dasar')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-gavel mr-2 text-emerald-600"></i>DASAR PELAKSANAAN</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-dasar" class="p-4 space-y-3 hidden">
             <div id="dasar-list" class="space-y-2"></div>
-            <button onclick="addDasarRule()" class="w-full py-1.5 text-xs text-emerald-400 bg-emerald-950/40 rounded border border-emerald-800 font-semibold transition">
+            <button onclick="addDasarRule()" class="w-full py-1.5 text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-300 font-semibold transition">
               <i class="fa-solid fa-plus mr-1"></i> Tambah Dasar Pelaksanaan
             </button>
           </div>
         </div>
 
         <!-- SECTION 3: DATA PERUSAHAAN (BAB I) -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-perusahaan')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-building mr-2"></i>BAB I. DATA PERUSAHAAN & IDENTITAS</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-perusahaan')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-building mr-2 text-emerald-600"></i>BAB I. DATA PERUSAHAAN & IDENTITAS</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-perusahaan" class="p-4 space-y-3 hidden">
             <div class="grid grid-cols-2 gap-3">
               <div class="col-span-2">
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nama Pemilik</label>
-                <input type="text" id="pi-pemilik" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Nama Pemilik</label>
+                <input type="text" id="pi-pemilik" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Tanggal Pendirian</label>
-                <input type="text" id="pi-tgl-pendirian" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Tanggal Pendirian</label>
+                <input type="text" id="pi-tgl-pendirian" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nomor Telp/Fax</label>
-                <input type="text" id="pi-telp" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Nomor Telp/Fax</label>
+                <input type="text" id="pi-telp" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div class="col-span-2">
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Email</label>
-                <input type="email" id="pi-email" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Email</label>
+                <input type="email" id="pi-email" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none">
               </div>
               <div class="col-span-2">
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Alamat Kantor</label>
-                <textarea id="pi-alamat-kantor" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white"></textarea>
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Alamat Kantor</label>
+                <textarea id="pi-alamat-kantor" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"></textarea>
               </div>
               <div class="col-span-2">
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Alamat Penampungan</label>
-                <textarea id="pi-alamat-gudang" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white"></textarea>
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Alamat Penampungan</label>
+                <textarea id="pi-alamat-gudang" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"></textarea>
               </div>
             </div>
           </div>
         </div>
 
         <!-- SECTION 4: KELENGKAPAN DOKUMEN (BAB II) -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-dokumen')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-folder-open mr-2"></i>BAB II. DOKUMEN ADMINISTRASI</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-dokumen')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-folder-open mr-2 text-emerald-600"></i>BAB II. DOKUMEN ADMINISTRASI</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-dokumen" class="p-4 space-y-4 hidden">
-            <div class="p-3 bg-slate-955 rounded-lg space-y-2 border border-slate-800">
-              <h4 class="text-[10px] font-bold text-emerald-400">Akta Pendirian Perusahaan</h4>
+            <div class="p-3 bg-slate-50 rounded-lg space-y-2 border border-slate-200">
+              <h4 class="text-[10px] font-bold text-emerald-700">Akta Pendirian Perusahaan</h4>
               <div class="grid grid-cols-2 gap-2">
-                <input type="text" id="dok-akta-no" oninput="updateLivePreview()" placeholder="No. Akta" class="px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
-                <input type="text" id="dok-akta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Akta" class="px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
-                <input type="text" id="dok-akta-notaris" oninput="updateLivePreview()" placeholder="Nama Notaris" class="col-span-2 px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
+                <input type="text" id="dok-akta-no" oninput="updateLivePreview()" placeholder="No. Akta" class="px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
+                <input type="text" id="dok-akta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Akta" class="px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
+                <input type="text" id="dok-akta-notaris" oninput="updateLivePreview()" placeholder="Nama Notaris" class="col-span-2 px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
             </div>
 
-            <div class="p-3 bg-slate-955 rounded-lg space-y-2 border border-slate-800">
-              <h4 class="text-[10px] font-bold text-emerald-400">Nomor Induk Berusaha (NIB)</h4>
+            <div class="p-3 bg-slate-50 rounded-lg space-y-2 border border-slate-200">
+              <h4 class="text-[10px] font-bold text-emerald-700">Nomor Induk Berusaha (NIB)</h4>
               <div class="grid grid-cols-3 gap-2">
-                <input type="text" id="dok-nib-no" oninput="updateLivePreview()" placeholder="No. NIB" class="col-span-2 px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
-                <input type="text" id="dok-nib-kbli" oninput="updateLivePreview()" placeholder="Kode KBLI" class="px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
-                <input type="text" id="dok-nib-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit" class="col-span-3 px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
+                <input type="text" id="dok-nib-no" oninput="updateLivePreview()" placeholder="No. NIB" class="col-span-2 px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
+                <input type="text" id="dok-nib-kbli" oninput="updateLivePreview()" placeholder="Kode KBLI" class="px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
+                <input type="text" id="dok-nib-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit" class="col-span-3 px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
             </div>
 
-            <div class="p-3 bg-slate-955 rounded-lg space-y-2 border border-slate-800">
-              <h4 class="text-[10px] font-bold text-emerald-400">Tata Ruang & NPWP</h4>
+            <div class="p-3 bg-slate-50 rounded-lg space-y-2 border border-slate-200">
+              <h4 class="text-[10px] font-bold text-emerald-700">Tata Ruang & NPWP</h4>
               <div class="grid grid-cols-2 gap-2">
-                <input type="text" id="dok-ruang-tgl" oninput="updateLivePreview()" placeholder="Tgl Kesesuaian Ruang" class="px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
-                <input type="text" id="dok-ruang-penerbit" oninput="updateLivePreview()" placeholder="Penerbit" class="px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
-                <input type="text" id="dok-npwp" oninput="updateLivePreview()" placeholder="No. NPWP" class="col-span-2 px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
+                <input type="text" id="dok-ruang-tgl" oninput="updateLivePreview()" placeholder="Tgl Kesesuaian Ruang" class="px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
+                <input type="text" id="dok-ruang-penerbit" oninput="updateLivePreview()" placeholder="Penerbit" class="px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
+                <input type="text" id="dok-npwp" oninput="updateLivePreview()" placeholder="No. NPWP" class="col-span-2 px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
             </div>
 
-            <div class="p-3 bg-slate-955 rounded-lg space-y-2 border border-slate-800">
-              <h4 class="text-[10px] font-bold text-emerald-400">Pakta Integritas</h4>
-              <input type="text" id="dok-pakta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit Pakta" class="w-full px-2.5 py-1 text-xs bg-slate-900 border border-slate-800 rounded text-white">
+            <div class="p-3 bg-slate-50 rounded-lg space-y-2 border border-slate-200">
+              <h4 class="text-[10px] font-bold text-emerald-700">Pakta Integritas</h4>
+              <input type="text" id="dok-pakta-tgl" oninput="updateLivePreview()" placeholder="Tanggal Terbit Pakta" class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
             </div>
           </div>
         </div>
 
         <!-- SECTION 5: SARANA PRASARANA (BAB III) -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-sarpras')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-boxes-packing mr-2"></i>BAB III. SARANA & PRASARANA</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-sarpras')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-boxes-packing mr-2 text-emerald-600"></i>BAB III. SARANA & PRASARANA</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-sarpras" class="p-4 space-y-3 hidden">
             <div id="sarpras-inputs-container" class="space-y-2 max-h-80 overflow-y-auto"></div>
-            <button onclick="addSarprasItem()" class="w-full py-1.5 text-xs text-emerald-400 bg-emerald-950/40 rounded border border-emerald-800 font-semibold transition">
+            <button onclick="addSarprasItem()" class="w-full py-1.5 text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-300 font-semibold transition">
               <i class="fa-solid fa-plus mr-1"></i> Tambah Inventaris Baru
             </button>
           </div>
         </div>
 
         <!-- SECTION 6: SPESIMEN & STATUS CITES (BAB IV - VIII) -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-specimen')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-seedling mr-2"></i>BAB IV - VIII. SPESIMEN & CITES</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-specimen')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-seedling mr-2 text-emerald-600"></i>BAB IV - VIII. SPESIMEN & CITES</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-specimen" class="p-4 space-y-4 hidden">
             <!-- BAB IV Taksa & Rincian Jenis -->
-            <div class="p-3 bg-slate-955 rounded-lg space-y-3 border border-slate-800">
-              <h4 class="text-[10px] font-bold text-emerald-400 uppercase">IV. Taksa & Rincian Jenis</h4>
+            <div class="p-3 bg-slate-50 rounded-lg space-y-3 border border-slate-200">
+              <h4 class="text-[10px] font-bold text-emerald-700 uppercase">IV. Taksa & Rincian Jenis</h4>
               <div>
-                <label class="block text-[9px] font-bold text-slate-400 mb-1">Taksa Terpilih</label>
-                <select id="spec-taksa-select" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-900 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[9px] font-bold text-slate-500 mb-1">Taksa Terpilih</label>
+                <select id="spec-taksa-select" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
                   <option value="Reptilia">Reptilia</option>
                   <option value="Mamalia">Mamalia</option>
                   <option value="Amphibia">Amphibia</option>
@@ -438,22 +438,22 @@
                 </select>
               </div>
               <div>
-                <label class="block text-[9px] font-bold text-slate-400 mb-1">Rincian Detail Jenis (Keterangan)</label>
-                <input type="text" id="spec-taksa-rincian" oninput="updateLivePreview()" placeholder="Contoh: Aquilaria microcarpa" class="w-full px-3 py-1.5 text-xs bg-slate-900 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[9px] font-bold text-slate-500 mb-1">Rincian Detail Jenis (Keterangan)</label>
+                <input type="text" id="spec-taksa-rincian" oninput="updateLivePreview()" placeholder="Contoh: Aquilaria microcarpa" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">V. Status Lindungan</label>
-                <select id="spec-lindung" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">V. Status Lindungan</label>
+                <select id="spec-lindung" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
                   <option value="Dilindungi">Dilindungi</option>
                   <option value="Tidak dilindungi">Tidak dilindungi</option>
                 </select>
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">VI. Status CITES</label>
-                <select id="spec-cites" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">VI. Status CITES</label>
+                <select id="spec-cites" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
                   <option value="Appendiks I">Appendiks I</option>
                   <option value="Appendiks II">Appendiks II</option>
                   <option value="Appendiks III">Appendiks III</option>
@@ -461,8 +461,8 @@
                 </select>
               </div>
               <div class="col-span-2">
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">VII. Sumber Spesimen</label>
-                <select id="spec-sumber" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">VII. Sumber Spesimen</label>
+                <select id="spec-sumber" onchange="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
                   <option value="Tangkapan alam">Tangkapan alam</option>
                   <option value="Hasil penangkaran/budidaya/transplantasi">Hasil penangkaran/budidaya/transplantasi</option>
                   <option value="Luar negeri (impor)">Luar negeri (impor)</option>
@@ -470,48 +470,48 @@
               </div>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-400 mb-1">Keterangan Sumber (VII)</label>
-              <input type="text" id="spec-sumber-ket" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+              <label class="block text-[10px] font-bold text-slate-500 mb-1">Keterangan Sumber (VII)</label>
+              <input type="text" id="spec-sumber-ket" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
             </div>
 
             <!-- VIII. Bentuk Spesimen (Multi-Select Checklist) -->
-            <div class="p-3 bg-slate-955 rounded-lg border border-slate-800 space-y-1.5">
-              <h4 class="text-[10px] font-bold text-emerald-400 uppercase">VIII. Bentuk Spesimen</h4>
-              <div id="bentuk-spesimen-checklist" class="space-y-1.5 max-h-48 overflow-y-auto text-xs text-white"></div>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5">
+              <h4 class="text-[10px] font-bold text-emerald-700 uppercase">VIII. Bentuk Spesimen</h4>
+              <div id="bentuk-spesimen-checklist" class="space-y-1.5 max-h-48 overflow-y-auto text-xs text-slate-800"></div>
             </div>
           </div>
         </div>
 
         <!-- SECTION 7: ORGANISASI & TENAGA KERJA (BAB XII) -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-organisasi')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-sitemap mr-2"></i>BAB XII. STRUKTUR & TENAGA KERJA</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-organisasi')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-sitemap mr-2 text-emerald-600"></i>BAB XII. STRUKTUR & TENAGA KERJA</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-organisasi" class="p-4 space-y-3 hidden">
-            <p class="text-[9px] text-slate-400 font-semibold mb-2">Tentukan jabatan dan jumlah tenaga kerja. Urutan pertama akan diposisikan sebagai pimpinan struktur.</p>
+            <p class="text-[9px] text-slate-550 font-semibold mb-2">Tentukan jabatan dan jumlah tenaga kerja. Urutan pertama akan diposisikan sebagai pimpinan struktur.</p>
             <div id="karyawan-inputs-container" class="space-y-2"></div>
-            <button onclick="addKaryawanRow()" class="w-full py-1.5 text-xs text-emerald-400 bg-emerald-950/40 rounded border border-emerald-800 font-semibold transition">
+            <button onclick="addKaryawanRow()" class="w-full py-1.5 text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-300 font-semibold transition">
               <i class="fa-solid fa-plus mr-1"></i> Tambah Jabatan Baru
             </button>
           </div>
         </div>
 
         <!-- SECTION 8: INVESTASI & PEMEGANG SAHAM (BAB XIII) -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-saham')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-coins mr-2"></i>BAB XIII. INVESTASI & SAHAM</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-saham')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-coins mr-2 text-emerald-600"></i>BAB XIII. INVESTASI & SAHAM</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-saham" class="p-4 space-y-3 hidden">
             <div>
-              <label class="block text-[10px] font-bold text-slate-400 mb-1">Total Investasi (Rupiah)</label>
-              <input type="text" id="nar-investasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+              <label class="block text-[10px] font-bold text-slate-500 mb-1">Total Investasi (Rupiah)</label>
+              <input type="text" id="nar-investasi" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
             </div>
-            <div class="p-3 bg-slate-955 rounded-lg border border-slate-800 space-y-2">
-              <h4 class="text-[10px] font-bold text-emerald-400 uppercase">Pemegang Saham</h4>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
+              <h4 class="text-[10px] font-bold text-emerald-700 uppercase">Pemegang Saham</h4>
               <div id="saham-inputs-container" class="space-y-2"></div>
-              <button onclick="addSahamRow()" class="w-full py-1 text-[10px] text-emerald-400 bg-emerald-500/10 rounded border border-emerald-800 font-semibold transition">
+              <button onclick="addSahamRow()" class="w-full py-1 text-[10px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-300 font-semibold transition">
                 <i class="fa-solid fa-plus mr-1"></i> Tambah Pemegang Saham
               </button>
             </div>
@@ -519,43 +519,43 @@
         </div>
 
         <!-- SECTION 9: TEKNIS & PEMBINAAN (BAB IX - XIV) -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-teknis')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-gears mr-2"></i>BAB IX - XIV. NARASI TEKNIS & PEMBINAAN</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-teknis')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-gears mr-2 text-emerald-600"></i>BAB IX - XIV. NARASI TEKNIS & PEMBINAAN</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-teknis" class="p-4 space-y-3 hidden">
             <div>
-              <label class="block text-[10px] font-bold text-slate-400 mb-1">IX. Teknis Pelaksanaan Penampungan</label>
-              <textarea id="nar-penampungan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white"></textarea>
+              <label class="block text-[10px] font-bold text-slate-500 mb-1">IX. Teknis Pelaksanaan Penampungan</label>
+              <textarea id="nar-penampungan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500"></textarea>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-400 mb-1">X. Teknis Pelaksanaan Pengangkutan</label>
-              <textarea id="nar-pengangkutan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white"></textarea>
+              <label class="block text-[10px] font-bold text-slate-500 mb-1">X. Teknis Pelaksanaan Pengangkutan</label>
+              <textarea id="nar-pengangkutan" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500"></textarea>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-400 mb-1">XI. Sistem Pembuangan Limbah</label>
-              <textarea id="nar-limbah" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white"></textarea>
+              <label class="block text-[10px] font-bold text-slate-500 mb-1">XI. Sistem Pembuangan Limbah</label>
+              <textarea id="nar-limbah" oninput="updateLivePreview()" rows="2" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500"></textarea>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-400 mb-1">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</label>
-              <textarea id="nar-pembinaan" oninput="updateLivePreview()" rows="3" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white"></textarea>
+              <label class="block text-[10px] font-bold text-slate-500 mb-1">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</label>
+              <textarea id="nar-pembinaan" oninput="updateLivePreview()" rows="3" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500"></textarea>
             </div>
           </div>
         </div>
 
         <!-- SECTION 10: PETUGAS PEMERIKSA & PENGESAH (BAB XV & SIGNATURES) -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-pemeriksa')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-signature mr-2"></i>BAB XV. PETUGAS & PENGESAHAN</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-pemeriksa')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-signature mr-2 text-emerald-600"></i>BAB XV. PETUGAS & PENGESAHAN</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-pemeriksa" class="p-4 space-y-4 hidden">
             <!-- Dynamic Inspectors List -->
-            <div class="p-3 bg-slate-955 rounded-lg border border-slate-800 space-y-3">
-              <h4 class="text-[10px] font-bold text-emerald-400 uppercase">Petugas Pemeriksa</h4>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-3">
+              <h4 class="text-[10px] font-bold text-emerald-700 uppercase">Petugas Pemeriksa</h4>
               <div id="inspectors-inputs-container" class="space-y-2"></div>
-              <button onclick="addInspectorRow()" class="w-full py-1 text-[10px] text-emerald-400 bg-emerald-500/10 rounded border border-emerald-800 font-semibold transition">
+              <button onclick="addInspectorRow()" class="w-full py-1 text-[10px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-300 font-semibold transition">
                 <i class="fa-solid fa-plus mr-1"></i> Tambah Petugas Pemeriksa
               </button>
             </div>
@@ -563,39 +563,39 @@
             <!-- Kasi and Director Fields -->
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nama Kasi</label>
-                <input type="text" id="kasi-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Nama Kasi</label>
+                <input type="text" id="kasi-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">NIP Kasi</label>
-                <input type="text" id="kasi-nip" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">NIP Kasi</label>
+                <input type="text" id="kasi-nip" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
               <div class="col-span-2">
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Jabatan Mengetahui (Kiri)</label>
-                <input type="text" id="kasi-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Jabatan Mengetahui (Kiri)</label>
+                <input type="text" id="kasi-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Nama Direktur (Kanan)</label>
-                <input type="text" id="dir-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Nama Direktur (Kanan)</label>
+                <input type="text" id="dir-nama" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
               <div>
-                <label class="block text-[10px] font-bold text-slate-400 mb-1">Jabatan Direktur</label>
-                <input type="text" id="dir-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-slate-955 border border-slate-800 rounded-lg text-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Jabatan Direktur</label>
+                <input type="text" id="dir-jab" oninput="updateLivePreview()" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800 outline-none focus:ring-1 focus:ring-emerald-500">
               </div>
             </div>
           </div>
         </div>
 
         <!-- SECTION 11: LAMPIRAN GAMBAR -->
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
-          <button onclick="toggleAccordion('acc-images')" class="w-full px-4 py-3 bg-slate-850 text-left font-bold text-xs flex justify-between items-center text-emerald-400">
-            <span><i class="fa-solid fa-images mr-2"></i>LAMPIRAN GAMBAR (KONTROL PENUH)</span>
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleAccordion('acc-images')" class="w-full px-4 py-3 bg-slate-100 text-left font-bold text-xs flex justify-between items-center text-slate-800 hover:bg-slate-200/50 transition">
+            <span><i class="fa-solid fa-images mr-2 text-emerald-600"></i>LAMPIRAN GAMBAR (KONTROL PENUH)</span>
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-images" class="p-4 space-y-3 hidden">
-            <p class="text-[9px] text-slate-400 font-semibold mb-2">Anda dapat menambah, mengedit, mengunggah file, atau menghapus item gambar untuk pratinjau lampiran.</p>
+            <p class="text-[9px] text-slate-550 font-semibold mb-2">Anda dapat menambah, mengedit, mengunggah file, atau menghapus item gambar untuk pratinjau lampiran.</p>
             <div id="images-inputs-container" class="space-y-3 max-h-96 overflow-y-auto"></div>
-            <button onclick="addNewImageSlot()" class="w-full py-1.5 text-xs text-emerald-400 bg-emerald-955/40 rounded border border-emerald-800 font-semibold transition">
+            <button onclick="addNewImageSlot()" class="w-full py-1.5 text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-300 font-semibold transition">
               <i class="fa-solid fa-plus mr-1"></i> Tambah Lampiran Foto Baru
             </button>
           </div>
@@ -606,7 +606,7 @@
           <button onclick="saveBapToHistory()" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-1.5">
             <i class="fa-solid fa-bookmark"></i> SIMPAN DRAF LOKAL
           </button>
-          <button onclick="resetBapForm()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition">
+          <button onclick="resetBapForm()" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
             RESET
           </button>
         </div>
@@ -614,10 +614,10 @@
       </div>
 
       <!-- TAB 2: RIWAYAT BAP -->
-      <div id="tab-history-container" class="hidden flex-1 overflow-y-auto p-4 space-y-3 bg-slate-955">
-        <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-          <h3 class="font-bold text-sm text-slate-200">Riwayat BAP Tersimpan</h3>
-          <button onclick="clearAllHistory()" class="text-xs text-rose-500 hover:text-rose-600 font-semibold">
+      <div id="tab-history-container" class="hidden flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50">
+        <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+          <h3 class="font-bold text-sm text-slate-800">Riwayat BAP Tersimpan</h3>
+          <button onclick="clearAllHistory()" class="text-xs text-rose-600 hover:text-rose-700 font-semibold">
             Hapus Semua
           </button>
         </div>
@@ -627,10 +627,10 @@
     </aside>
 
     <!-- RIGHT PANEL: IMMERSIVE LIVE PREVIEW (A4 MULTI-PAGE VIEWPORT) -->
-    <main class="flex-1 preview-container p-4 lg:p-8 bg-slate-900 transition-colors duration-300 flex flex-col items-center">
+    <main class="flex-1 preview-container p-4 lg:p-8 bg-slate-100 transition-colors duration-300 flex flex-col items-center">
       
-      <div class="no-print mb-4 text-xs font-semibold text-slate-400 bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 shadow-sm">
-        <i class="fa-solid fa-circle-info text-emerald-500 mr-1.5"></i>
+      <div class="no-print mb-4 text-xs font-semibold text-slate-700 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm">
+        <i class="fa-solid fa-circle-info text-emerald-600 mr-1.5"></i>
         Dokumen di bawah terbagi menjadi halaman A4 visual untuk menunjukkan batas pemotongan lembar cetak secara akurat.
       </div>
 
@@ -1066,7 +1066,7 @@
   </div>
 
   <!-- TOAST MODAL -->
-  <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-lg shadow-2xl flex items-center space-x-2 transition-transform transform translate-y-20 duration-300 z-50">
+  <div id="toast" class="fixed bottom-5 right-5 bg-white text-slate-800 text-xs font-semibold px-4 py-3 rounded-lg shadow-2xl border border-slate-200 flex items-center space-x-2 transition-transform transform translate-y-20 duration-300 z-50">
     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
     <span id="toast-text">Draf BAP Tersimpan</span>
   </div>
@@ -1216,13 +1216,13 @@
       const historyCont = document.getElementById("tab-history-container");
 
       if (target === 'input') {
-        inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-400 transition flex items-center justify-center gap-2";
-        historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-emerald-500 transition flex items-center justify-center gap-2";
+        inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-650 transition flex items-center justify-center gap-2";
+        historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-emerald-600 transition flex items-center justify-center gap-2";
         inputCont.classList.remove("hidden");
         historyCont.classList.add("hidden");
       } else {
-        historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-400 transition flex items-center justify-center gap-2";
-        inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-emerald-500 transition flex items-center justify-center gap-2";
+        historyBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-emerald-600 text-emerald-650 transition flex items-center justify-center gap-2";
+        inputBtn.className = "flex-1 py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-emerald-600 transition flex items-center justify-center gap-2";
         historyCont.classList.remove("hidden");
         inputCont.classList.add("hidden");
         renderHistoryList();
@@ -1354,10 +1354,10 @@
       container.innerHTML = "";
       bapData.dasarRules.forEach((rule, idx) => {
         container.innerHTML += `
-          <div class="flex items-start gap-2 bg-slate-900 p-2 rounded border border-slate-800">
+          <div class="flex items-start gap-2 bg-slate-50 p-2 rounded border border-slate-200">
             <span class="text-xs font-bold text-slate-500 mt-2">${idx + 1}.</span>
-            <textarea oninput="editDasarRule(${idx}, this.value)" class="flex-1 px-2 py-1 text-xs border border-slate-800 rounded bg-slate-955 outline-none resize-none text-white" rows="2">${rule}</textarea>
-            <button onclick="deleteDasarRule(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
+            <textarea oninput="editDasarRule(${idx}, this.value)" class="flex-1 px-2 py-1 text-xs border border-slate-200 rounded bg-white outline-none resize-none text-slate-850" rows="2">${rule}</textarea>
+            <button onclick="deleteDasarRule(${idx})" class="p-1 text-rose-500 hover:bg-rose-50 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
           </div>
@@ -1370,12 +1370,12 @@
       container.innerHTML = "";
       bapData.sarpras.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="flex items-center gap-2 bg-slate-900 p-2 rounded-lg border border-slate-850 text-xs">
-            <input type="text" value="${item.name}" oninput="editSarpras(${idx}, 'name', this.value)" placeholder="Nama Alat" class="flex-1 min-w-[80px] px-1.5 py-0.5 border border-slate-800 bg-slate-955 rounded text-[10px] text-white">
-            <input type="text" value="${item.size}" oninput="editSarpras(${idx}, 'size', this.value)" placeholder="Ukuran" class="w-16 px-1.5 py-0.5 border border-slate-800 bg-slate-955 rounded text-center text-[10px] text-white">
-            <input type="text" value="${item.qty}" oninput="editSarpras(${idx}, 'qty', this.value)" placeholder="Qty" class="w-12 px-1.5 py-0.5 border border-slate-800 bg-slate-955 rounded text-center text-[10px] text-white">
-            <input type="text" value="${item.unit}" oninput="editSarpras(${idx}, 'unit', this.value)" placeholder="Satuan" class="w-14 px-1.5 py-0.5 border border-slate-800 bg-slate-955 rounded text-center text-[10px] text-white">
-            <button onclick="deleteSarpras(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
+          <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-200 text-xs">
+            <input type="text" value="${item.name}" oninput="editSarpras(${idx}, 'name', this.value)" placeholder="Nama Alat" class="flex-1 min-w-[80px] px-1.5 py-0.5 border border-slate-200 bg-white rounded text-[10px] text-slate-800">
+            <input type="text" value="${item.size}" oninput="editSarpras(${idx}, 'size', this.value)" placeholder="Ukuran" class="w-16 px-1.5 py-0.5 border border-slate-200 bg-white rounded text-center text-[10px] text-slate-800">
+            <input type="text" value="${item.qty}" oninput="editSarpras(${idx}, 'qty', this.value)" placeholder="Qty" class="w-12 px-1.5 py-0.5 border border-slate-200 bg-white rounded text-center text-[10px] text-slate-800">
+            <input type="text" value="${item.unit}" oninput="editSarpras(${idx}, 'unit', this.value)" placeholder="Satuan" class="w-14 px-1.5 py-0.5 border border-slate-200 bg-white rounded text-center text-[10px] text-slate-800">
+            <button onclick="deleteSarpras(${idx})" class="p-1 text-rose-500 hover:bg-rose-50 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
           </div>
@@ -1390,8 +1390,8 @@
         const isChecked = bapData.specBentukSelected.includes(bentuk) ? "checked" : "";
         container.innerHTML += `
           <div class="flex items-center gap-2">
-            <input type="checkbox" value="${bentuk}" ${isChecked} onchange="updateLivePreview()" class="bentuk-specimen-chk w-4 h-4 text-emerald-600 bg-slate-800 border-slate-750 rounded focus:ring-emerald-500">
-            <label class="select-none text-[11px] text-slate-200">${bentuk}</label>
+            <input type="checkbox" value="${bentuk}" ${isChecked} onchange="updateLivePreview()" class="bentuk-specimen-chk w-4 h-4 text-emerald-600 bg-white border-slate-300 rounded focus:ring-emerald-500">
+            <label class="select-none text-[11px] text-slate-700">${bentuk}</label>
           </div>
         `;
       });
@@ -1402,11 +1402,11 @@
       container.innerHTML = "";
       bapData.karyawan.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="flex items-center gap-2 bg-slate-900 p-2 rounded-lg border border-slate-850 text-xs">
-            <input type="text" value="${item.role}" oninput="editKaryawan(${idx}, 'role', this.value)" placeholder="Jabatan" class="flex-1 px-1.5 py-0.5 border border-slate-800 bg-slate-955 rounded text-[10px] text-white">
-            <input type="text" value="${item.count}" oninput="editKaryawan(${idx}, 'count', this.value)" placeholder="Jumlah" class="w-16 px-1.5 py-0.5 border border-slate-800 bg-slate-955 rounded text-center text-[10px] text-white">
-            <span class="text-slate-400 text-[10px] font-semibold">Orang</span>
-            <button onclick="deleteKaryawan(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
+          <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-200 text-xs">
+            <input type="text" value="${item.role}" oninput="editKaryawan(${idx}, 'role', this.value)" placeholder="Jabatan" class="flex-1 px-1.5 py-0.5 border border-slate-200 bg-white rounded text-[10px] text-slate-800">
+            <input type="text" value="${item.count}" oninput="editKaryawan(${idx}, 'count', this.value)" placeholder="Jumlah" class="w-16 px-1.5 py-0.5 border border-slate-200 bg-white rounded text-center text-[10px] text-slate-800">
+            <span class="text-slate-500 text-[10px] font-semibold">Orang</span>
+            <button onclick="deleteKaryawan(${idx})" class="p-1 text-rose-500 hover:bg-rose-50 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
           </div>
@@ -1419,11 +1419,11 @@
       container.innerHTML = "";
       bapData.saham.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="flex items-center gap-2 bg-slate-900 p-2 rounded-lg border border-slate-850 text-xs">
-            <input type="text" value="${item.name}" oninput="editSaham(${idx}, 'name', this.value)" placeholder="Pemilik Saham" class="flex-1 px-1.5 py-0.5 border border-slate-800 bg-slate-955 rounded text-[10px] text-white">
-            <input type="text" value="${item.percentage}" oninput="editSaham(${idx}, 'percentage', this.value)" placeholder="%" class="w-14 px-1.5 py-0.5 border border-slate-800 bg-slate-955 rounded text-center text-[10px] text-white">
-            <span class="text-slate-400 text-[10px] font-semibold">%</span>
-            <button onclick="deleteSaham(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
+          <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-200 text-xs">
+            <input type="text" value="${item.name}" oninput="editSaham(${idx}, 'name', this.value)" placeholder="Pemilik Saham" class="flex-1 px-1.5 py-0.5 border border-slate-200 bg-white rounded text-[10px] text-slate-800">
+            <input type="text" value="${item.percentage}" oninput="editSaham(${idx}, 'percentage', this.value)" placeholder="%" class="w-14 px-1.5 py-0.5 border border-slate-200 bg-white rounded text-center text-[10px] text-slate-800">
+            <span class="text-slate-550 text-[10px] font-semibold">%</span>
+            <button onclick="deleteSaham(${idx})" class="p-1 text-rose-500 hover:bg-rose-50 rounded">
               <i class="fa-solid fa-trash text-xs"></i>
             </button>
           </div>
@@ -1436,16 +1436,16 @@
       container.innerHTML = "";
       bapData.inspectors.forEach((item, idx) => {
         container.innerHTML += `
-          <div class="p-2 border border-slate-800 rounded bg-slate-900 space-y-1.5">
+          <div class="p-2 border border-slate-200 rounded bg-slate-50 space-y-1.5">
             <div class="flex justify-between items-center">
-              <span class="text-[9px] font-bold text-slate-400">Pemeriksa ${idx + 1}</span>
-              <button onclick="deleteInspector(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
+              <span class="text-[9px] font-bold text-slate-500">Pemeriksa ${idx + 1}</span>
+              <button onclick="deleteInspector(${idx})" class="p-1 text-rose-500 hover:bg-rose-50 rounded">
                 <i class="fa-solid fa-trash text-xs"></i>
               </button>
             </div>
             <div class="grid grid-cols-2 gap-1.5">
-              <input type="text" value="${item.name}" oninput="editInspector(${idx}, 'name', this.value)" placeholder="Nama Pemeriksa" class="px-2 py-1 text-xs bg-slate-955 border border-slate-800 rounded text-[10px] text-white">
-              <input type="text" value="${item.nip}" oninput="editInspector(${idx}, 'nip', this.value)" placeholder="NIP" class="px-2 py-1 text-xs bg-slate-955 border border-slate-800 rounded text-[10px] text-white">
+              <input type="text" value="${item.name}" oninput="editInspector(${idx}, 'name', this.value)" placeholder="Nama Pemeriksa" class="px-2 py-1 text-xs bg-white border border-slate-200 rounded text-[10px] text-slate-850">
+              <input type="text" value="${item.nip}" oninput="editInspector(${idx}, 'nip', this.value)" placeholder="NIP" class="px-2 py-1 text-xs bg-white border border-slate-200 rounded text-[10px] text-slate-850">
             </div>
           </div>
         `;
@@ -1457,18 +1457,18 @@
       container.innerHTML = "";
       bapData.pictures.forEach((pic, idx) => {
         container.innerHTML += `
-          <div class="p-2 border border-slate-800 rounded-lg bg-slate-900 flex flex-col gap-1.5">
+          <div class="p-2 border border-slate-200 rounded-lg bg-slate-50 flex flex-col gap-1.5">
             <div class="flex justify-between items-center">
-              <input type="text" value="${pic.name}" oninput="editPictureName(${idx}, this.value)" placeholder="Label Gambar" class="text-[9px] font-bold text-emerald-400 bg-transparent border-b border-dashed border-slate-700 outline-none">
+              <input type="text" value="${pic.name}" oninput="editPictureName(${idx}, this.value)" placeholder="Label Gambar" class="text-[9px] font-bold text-emerald-700 bg-transparent border-b border-dashed border-slate-300 outline-none">
               <div class="flex items-center gap-1">
-                ${pic.img ? '<span class="text-[7px] bg-emerald-900 text-emerald-300 font-bold px-1 rounded">ADA GAMBAR</span>' : ''}
-                <button onclick="deletePictureSlot(${idx})" class="p-1 text-rose-500 hover:bg-rose-950 rounded">
+                ${pic.img ? '<span class="text-[7px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">ADA GAMBAR</span>' : ''}
+                <button onclick="deletePictureSlot(${idx})" class="p-1 text-rose-500 hover:bg-rose-50 rounded">
                   <i class="fa-solid fa-trash text-xs"></i>
                 </button>
               </div>
             </div>
-            <input type="file" onchange="handlePicUpload(event, ${idx})" class="w-full text-[10px] text-slate-400">
-            <input type="text" value="${pic.caption}" oninput="editPicCaption(${idx}, this.value)" placeholder="Caption di cetakan" class="w-full px-2 py-0.5 text-[10px] border border-slate-800 bg-slate-955 rounded text-white">
+            <input type="file" onchange="handlePicUpload(event, ${idx})" class="w-full text-[10px] text-slate-500">
+            <input type="text" value="${pic.caption}" oninput="editPicCaption(${idx}, this.value)" placeholder="Caption di cetakan" class="w-full px-2 py-0.5 text-[10px] border border-slate-200 bg-white rounded text-slate-800">
           </div>
         `;
       });
@@ -2033,7 +2033,7 @@
       if (historyBaps.length === 0) {
         container.innerHTML = `
           <div class="text-center py-8 text-slate-400 text-xs">
-            <i class="fa-solid fa-folder-open text-3xl mb-2 block animate-bounce"></i>
+            <i class="fa-solid fa-folder-open text-3xl mb-2 block animate-bounce text-emerald-600"></i>
             Belum ada berkas terarsip.
           </div>
         `;
@@ -2041,17 +2041,17 @@
       }
       historyBaps.forEach(item => {
         container.innerHTML += `
-          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 shadow-sm space-y-1 text-xs transition hover:border-emerald-500">
+          <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm space-y-1 text-xs transition hover:border-emerald-500">
             <div class="flex justify-between font-bold">
-              <span class="text-slate-200">${item.perusahaan}</span>
-              <span class="text-emerald-450">${item.status}</span>
+              <span class="text-slate-800">${item.perusahaan}</span>
+              <span class="text-emerald-700">${item.status}</span>
             </div>
-            <p class="text-[10px] text-slate-400">No BAP: ${item.nomor}</p>
-            <div class="flex justify-between items-center pt-2 border-t border-slate-800 mt-2">
-              <span class="text-[9px] text-slate-550">${item.savedAt}</span>
+            <p class="text-[10px] text-slate-500">No BAP: ${item.nomor}</p>
+            <div class="flex justify-between items-center pt-2 border-t border-slate-100 mt-2">
+              <span class="text-[9px] text-slate-450">${item.savedAt}</span>
               <div class="flex gap-1.5">
-                <button onclick="loadBapFromHistory('${item.id}')" class="px-2 py-1 bg-emerald-950/50 hover:bg-emerald-900 text-emerald-400 font-semibold rounded text-[10px]">Muat</button>
-                <button onclick="deleteBapFromHistory('${item.id}')" class="text-rose-500 hover:bg-rose-950/40 p-1 rounded"><i class="fa-solid fa-trash"></i></button>
+                <button onclick="loadBapFromHistory('${item.id}')" class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded text-[10px]">Muat</button>
+                <button onclick="deleteBapFromHistory('${item.id}')" class="text-rose-600 hover:bg-rose-50 p-1 rounded"><i class="fa-solid fa-trash"></i></button>
               </div>
             </div>
           </div>
