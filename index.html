@@ -118,25 +118,26 @@
       scroll-behavior: smooth;
     }
 
-    /* Hierarchy Tree style for BAB XII */
+    /* Hierarchy Tree style for BAB XII - REDESIGNED & SPACIOUS */
     .tree-node {
       border: 1.5px solid #000000;
-      padding: 4px 8px;
-      border-radius: 4px;
+      padding: 6px 12px;
+      border-radius: 6px;
       background: #ffffff;
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: bold;
       text-align: center;
       display: inline-block;
-      min-width: 110px;
+      min-width: 130px;
       font-family: 'Gentium Book Plus', serif;
       color: #000000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     .tree-connector {
-      width: 1.5px;
+      width: 2px;
       background-color: #000000;
-      height: 12px;
+      height: 18px;
       margin: 0 auto;
     }
 
@@ -939,10 +940,10 @@
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">XII. ORGANISASI DAN TENAGA KERJA</p>
           
-          <!-- Visual Hierarchy Tree Diagram (Pro Clean Design) -->
-          <div class="p-2 border border-black bg-slate-50 text-center mb-2">
-            <p class="text-[9px] font-bold uppercase text-slate-800 tracking-wider mb-2 border-b pb-1">Bagan Struktur Organisasi Perusahaan</p>
-            <div id="hierarchy-chart-container" class="flex flex-col items-center gap-1"></div>
+          <!-- Visual Hierarchy Tree Diagram (Pro Clean Design - REDESIGNED & SPACED) -->
+          <div class="p-4 border border-black bg-slate-50 text-center mb-3 rounded shadow-inner">
+            <p class="text-[9.5px] font-bold uppercase text-slate-800 tracking-wider mb-3 border-b pb-1.5">Bagan Struktur Organisasi Perusahaan</p>
+            <div id="hierarchy-chart-container" class="flex flex-col items-center gap-1.5 w-full"></div>
           </div>
 
           <table class="gov-table text-[9pt]">
@@ -995,22 +996,22 @@
           </div>
         </div>
 
-        <!-- SIGNATURES BLOCK (DYNAMIC INSPECTORS SUPPORT - EXACT baselines aligned) -->
-        <div class="mt-4 text-[10pt] leading-tight">
+        <!-- SIGNATURES BLOCK (DYNAMIC INSPECTORS SUPPORT - EXACT baselines aligned and SPACIOUS) -->
+        <div class="mt-6 text-[10.5pt] leading-snug">
           <!-- Center Date Element -->
-          <div class="text-center mb-3">
-            <span class="font-bold text-slate-900 text-[11pt]" id="view-tempat-tgl">Tenggarong, 13 Mei 2026</span>
+          <div class="text-center mb-4">
+            <span class="font-bold text-slate-900 text-[11.5pt]" id="view-tempat-tgl">Tenggarong, 13 Mei 2026</span>
           </div>
 
-          <div class="text-center font-bold mb-3 text-slate-800">Dibuat dengan sebenarnya oleh:</div>
+          <div class="text-center font-bold mb-4 text-slate-800">Dibuat dengan sebenarnya oleh:</div>
           
-          <!-- Dynamic Inspectors Grid Layout -->
-          <div id="view-inspectors-grid" class="grid gap-3 text-center mb-4"></div>
+          <!-- Dynamic Inspectors Grid Layout with comfortable vertical heights -->
+          <div id="view-inspectors-grid" class="grid gap-4 text-center mb-6"></div>
 
-          <!-- Bottom Row: a.n. Kepala Balai & Mengetahui (Director) aligned structurally to the same Y-baseline -->
-          <div class="grid grid-cols-2 gap-4 text-center mt-4 pt-3 border-t border-gray-300">
+          <!-- Bottom Row: a.n. Kepala Balai & Mengetahui (Director) aligned structurally to the same Y-baseline with clear vertical safety clearance -->
+          <div class="grid grid-cols-2 gap-6 text-center mt-6 pt-4 border-t border-gray-300">
             <!-- Left Signature block -->
-            <div class="flex flex-col justify-between h-44 text-center">
+            <div class="flex flex-col justify-between h-48 text-center">
               <div>
                 <p class="font-bold text-slate-800">Disahkan oleh:</p>
                 <div class="text-[9.5pt] text-gray-800 font-bold leading-normal">
@@ -1018,7 +1019,7 @@
                   <span id="view-kasi-jab"></span>
                 </div>
               </div>
-              <div class="flex-grow"></div>
+              <div class="flex-grow min-h-[75px]"></div>
               <div>
                 <p class="font-bold underline text-[10.5pt]" id="view-kasi-nama"></p>
                 <p class="text-gray-700 text-[9.5pt]" id="view-kasi-nip"></p>
@@ -1026,7 +1027,7 @@
             </div>
 
             <!-- Right Signature block -->
-            <div class="flex flex-col justify-between h-44 text-center">
+            <div class="flex flex-col justify-between h-48 text-center">
               <div>
                 <p class="font-bold text-slate-800">Mengetahui:</p>
                 <div class="text-[9.5pt] text-gray-800 font-bold leading-normal">
@@ -1035,7 +1036,7 @@
                   <div class="text-transparent select-none">&nbsp;</div>
                 </div>
               </div>
-              <div class="flex-grow"></div>
+              <div class="flex-grow min-h-[75px]"></div>
               <div>
                 <p class="font-bold underline text-[10.5pt]" id="view-dir-nama"></p>
                 <p class="text-gray-700 text-[9.5pt]" id="view-dir-jab"></p>
@@ -1071,7 +1072,7 @@
           <h4 class="text-center font-bold text-[11pt] uppercase tracking-wider mb-2 border-b pb-1">PHOTO ATAU GAMBAR-GAMBAR PEMERIKSAAN</h4>
           
           <!-- Photos visual representation with precise 9.14cm x 12.15cm sizing -->
-          <div class="flex flex-wrap gap-3 mt-2 justify-center" id="view-images-grid"></div>
+          <div class="flex flex-wrap gap-4 mt-3 justify-center" id="view-images-grid"></div>
         </div>
       </div>
 
@@ -1211,7 +1212,7 @@
       narPengangkutan: "Teknis pengangkutan gaharu sebelum dilakukan pengangkutan terlebih dahulu di packing (dikemas) sebelum diangkut ke daerah tujuan pengiriman menggunakan pesawat udara. Daerah tujuan penjualan gaharu yaitu : Jakarta dan daerah lainnya sesuai permintaan pasar.",
       narLimbah: "Limbah yang dihasilkan berupa limbah padat and cair yang tidak berbahaya. Sistem Pembuangan Limbah yaitu dengan menyapu dan mengumpulkan limbah yang dihasilkan untuk kemudian di buang ke tempat pembuangan sampah sedangkan limbah cair dibuang melalui parit/selokan yang telah disiapkan.",
       narInvestasi: "RP. 250.000.000",
-      narPembinaan: "To realize the gaharu business so that it can be sustainable and continuous, conservation development activities are needed so that there is no scarcity of gaharu species in the future. CV. Karisma Alam's conservation development program includes sorting/selecting the purchase of gaharu and kemedangan, and also the company provides extension services to gaharu searchers to not cut down trees that do not contain gaharu so that the preservation of other tree species is maintained.",
+      narPembinaan: "Untuk mewujudkan bisnis gaharu agar dapat berkesinambungan dan terus menerus maka diperlukan adanya kegiatan pembinaan konservasi agar tidak terjadi kelangkaan jenis gaharu di masa akan datang. Program pembinaan konservasi yang dilakukan oleh CV. Karisma Alam di antaranya adalah dengan melakukan penyortiran/menyeleksi pembelian gaharu dan kemedangan dan juga pihak perusahaan memberikan penyuluhan kepada para pencari gaharu untuk tidak menebang pohon yang tidak mempunyai kandungan gaharu agar kelestarian jenis pohon yang lain tetap terjaga.",
       inspectors: JSON.parse(JSON.stringify(defaultInspectors)),
       kasiName: "Suriawati Halim, S.Hut., M.P.",
       kasiNip: "19751127 200003 2 001",
@@ -1791,50 +1792,50 @@
       // Root Node (First employee on the list, e.g., Direktur)
       const rootNode = bapData.karyawan[0];
       let html = `
-        <!-- Root node -->
-        <div class="flex flex-col items-center">
+        <!-- Root node with elevated margins -->
+        <div class="flex flex-col items-center mb-1">
           <div class="tree-node">
-            <div class="text-[9.5px] text-slate-800 uppercase tracking-wide border-b border-black pb-0.5 mb-1">${rootNode.role}</div>
+            <div class="text-[10px] text-slate-800 uppercase tracking-wide border-b border-black pb-0.5 mb-1">${rootNode.role}</div>
             <div class="text-[8px] font-normal text-slate-500">Jumlah: ${rootNode.count} org</div>
           </div>
         </div>
       `;
 
-      // Subordinate Nodes in structured table lines
+      // Subordinate Nodes in structured table lines with comfortable margins
       const children = bapData.karyawan.slice(1);
       if (children.length > 0) {
         html += `
-          <!-- Vertical down line from Root -->
-          <div class="tree-connector"></div>
+          <!-- Elevated vertical down line from Root for spacious structure -->
+          <div class="tree-connector" style="height: 18px;"></div>
           
-          <div class="flex justify-center w-full">
-            <table class="border-collapse">
+          <div class="flex justify-center w-full px-2">
+            <table class="border-collapse mx-auto">
               <tbody>
                 <!-- Horizontal connector line row -->
                 <tr>
                   ${children.map((child, idx) => {
-                    let borderClass = "border-t border-black";
+                    let borderClass = "border-t-2 border-black";
                     if (idx === 0) {
-                      borderClass = "border-t border-l border-black";
+                      borderClass = "border-t-2 border-l-2 border-black";
                     }
                     if (idx === children.length - 1) {
-                      borderClass = "border-t border-r border-black";
+                      borderClass = "border-t-2 border-r-2 border-black";
                     }
                     if (children.length === 1) {
-                      borderClass = "border-t border-l border-r border-black";
+                      borderClass = "border-t-2 border-l-2 border-r-2 border-black";
                     }
-                    return `<td class="${borderClass} w-24 h-4"></td>`;
+                    return `<td class="${borderClass} h-4" style="width: 105px;"></td>`;
                   }).join('')}
                 </tr>
-                <!-- Subordinate node cards row -->
+                <!-- Subordinate node cards row with expansive horizontal gaps -->
                 <tr class="align-top">
                   ${children.map((child) => {
                     return `
-                      <td class="px-1 text-center" style="width: 96px;">
+                      <td class="px-2 text-center" style="width: 105px;">
                         <!-- Vertical line down to child node card -->
-                        <div class="tree-connector h-3"></div>
-                        <div class="tree-node" style="min-width: 90px;">
-                          <div class="text-[8.5px] text-slate-800 uppercase border-b border-gray-300 pb-0.5 mb-1 leading-tight">${child.role}</div>
+                        <div class="tree-connector" style="height: 15px;"></div>
+                        <div class="tree-node" style="min-width: 115px; margin: 0 4px;">
+                          <div class="text-[9px] text-slate-800 uppercase border-b border-gray-300 pb-0.5 mb-1 leading-tight">${child.role}</div>
                           <div class="text-[7.5px] font-normal text-slate-500">Jumlah: ${child.count} org</div>
                         </div>
                       </td>
@@ -1950,7 +1951,7 @@
         `;
       });
 
-      // BAB VIII
+      // BAB VIII (No "satwa:" / "tumbuhan:" label column, completely cleaned)
       const bab8Table = document.getElementById("view-table-bab8");
       const listBab8 = [
         { main: "Hidup (live speciment)", sub: "" },
@@ -1978,8 +1979,8 @@
             rowHtml += `
               <tr class="align-top">
                 <td class="text-center font-bold">${idx + 1}</td>
-                <td class="font-bold">${item.main}</td>
-                <td>${item.sub}</td>
+                <td class="font-bold border-r-0">${item.main}</td>
+                <td class="border-l-0">${item.sub}</td>
                 <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
                 <td>${isChecked ? "Sesuai rincian fisik" : "-"}</td>
               </tr>
@@ -1989,8 +1990,8 @@
             rowHtml += `
               <tr class="align-top">
                 <td></td>
-                <td class="pl-4 text-gray-700">${item.main.replace('Bagian-bagian ', '')}</td>
-                <td>${item.sub}</td>
+                <td class="border-r-0"></td> <!-- Cleaned - No "satwa:" or "tumbuhan:" label prefix -->
+                <td class="border-l-0">${item.sub}</td>
                 <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
                 <td>${isChecked ? "Sesuai rincian fisik" : "-"}</td>
               </tr>
@@ -2024,13 +2025,13 @@
       if (count === 2) colClass = "grid-cols-2";
       if (count >= 3) colClass = "grid-cols-3";
 
-      grid.className = `grid gap-4 text-center mb-4 ${colClass}`;
+      grid.className = `grid gap-6 text-center mb-4 ${colClass}`;
 
       bapData.inspectors.forEach((item, idx) => {
         grid.innerHTML += `
-          <div class="flex flex-col justify-between min-h-[90px]">
+          <div class="flex flex-col justify-between min-h-[140px]">
             <p class="font-bold text-slate-800">Pemeriksa ${idx + 1}</p>
-            <div class="flex-grow min-h-[30px]"></div>
+            <div class="flex-grow min-h-[70px]"></div> <!-- Expanded height for spacious signature clearance -->
             <div>
               <p class="font-bold underline text-[10.5pt]">${item.name}</p>
               <p class="text-gray-700 text-[9.5pt]">${item.nip ? 'NIP. ' + item.nip : ''}</p>
@@ -2102,7 +2103,7 @@
               <span class="text-slate-800">${item.perusahaan}</span>
               <span class="text-emerald-700">${item.status}</span>
             </div>
-            <p class="text-[10px] text-slate-500">No BAP: ${item.nomor}</p>
+            <p class="text-[10px] text-slate-550">No BAP: ${item.nomor}</p>
             <div class="flex justify-between items-center pt-2 border-t border-slate-100 mt-2">
               <span class="text-[9px] text-slate-450">${item.savedAt}</span>
               <div class="flex gap-1.5">
@@ -2176,11 +2177,6 @@
       bapData.specBentukSelected = [];
       bapData.karyawan = [];
       bapData.saham = [];
-      bapData.narPenampungan = "";
-      bapData.narPengangkutan = "";
-      bapData.narLimbah = "";
-      bapData.narInvestasi = "";
-      bapData.narPembinaan = "";
       bapData.inspectors = [];
       bapData.pictures = [];
 
