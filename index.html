@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>E-BAP Teknis - Seksi KSDA Wilayah II Tenggarong</title>
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -63,8 +63,6 @@
     /* A4 Visual Page System - FIXED HEIGHT ISSUES RESOLVED */
     .a4-page {
       font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
-      font-size: 11pt;
-      line-height: 1.5;
       width: 210mm;
       min-height: 297mm; /* Set as min-height for UI view */
       height: 297mm;     /* Lock height strictly during rendering of static structure */
@@ -76,6 +74,17 @@
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
       position: relative;
       box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    /* A4 Landscape Visual Page System for Photo Attachments */
+    .a4-page.landscape {
+      width: 297mm !important;
+      min-height: 210mm !important;
+      height: 210mm !important;
+      /* MARGIN SETTING FOR LANDSCAPE: Left: 3cm, Right: 2cm, Top: 2.5cm, Bottom: 2.5cm */
+      padding: 25mm 20mm 25mm 30mm !important;
+      margin: 0 auto 25px auto;
       overflow: hidden;
     }
 
@@ -94,7 +103,7 @@
       width: 100%;
       border-collapse: collapse;
       font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
-      font-size: 10.5pt;
+      font-size: 12pt !important; /* STRICT REQUIREMENT: Font size 12 inside tables */
       color: #000000 !important;
       margin-bottom: 10px;
     }
@@ -103,6 +112,7 @@
       border: 1.5px solid #000000 !important;
       padding: 5px 8px; /* Slightly more padded for full professional appearance */
       vertical-align: top;
+      font-size: 12pt !important; /* Ensure table cell values are strictly 12pt */
     }
 
     .gov-table th {
@@ -141,7 +151,7 @@
       margin: 0 auto;
     }
 
-    /* EXACT PHOTO COLUMN DIMENSIONS FOR DOCUMENT & PRINT */
+    /* EXACT PHOTO COLUMN DIMENSIONS FOR DOCUMENT & PRINT: 9.14cm x 12.15cm */
     .photo-column-wrapper {
       width: 9.14cm !important;
       height: 12.15cm !important;
@@ -154,6 +164,12 @@
       box-sizing: border-box !important;
       background-color: #ffffff !important;
       page-break-inside: avoid;
+    }
+
+    .photo-column-wrapper p {
+      font-size: 12pt !important; /* STRICT REQUIREMENT: Caption size is 12pt */
+      font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
+      line-height: 1.3;
     }
 
     .photo-image-container {
@@ -174,8 +190,20 @@
     }
 
     @media print {
-      /* Reset standard document properties */
-      html, body {
+      /* Force Portrait for Page Setup but allow landscape declarations */
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      
+      /* Explicit Landscape page configuration */
+      @page landscape-page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      /* STRICT FIX: Absolute hide of ALL non-document elements */
+      body {
         background: #ffffff !important;
         color: #000000 !important;
         margin: 0 !important;
@@ -184,34 +212,48 @@
         overflow: visible !important;
       }
 
-      /* Hide Navigation/Sidebar entirely */
-      .no-print, header, aside {
-        display: none !important;
+      body * {
+        visibility: hidden !important;
       }
 
-      /* Bypass intermediate layouts to prevent blank pages or clipping */
-      .flex-1, .flex, .flex-col, .lg\:flex-row, .preview-container {
+      /* Make only pages and their children visible */
+      .preview-container, .preview-container * {
+        visibility: visible !important;
+      }
+
+      /* Completely destroy UI footprint in print engine */
+      .no-print, header, aside, button, #toast, #confirm-modal {
+        display: none !important;
+        height: 0 !important;
+        width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+
+      .preview-container {
         display: block !important;
-        position: static !important;
-        height: auto !important;
-        min-height: 0 !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
         width: 100% !important;
-        overflow: visible !important;
+        height: auto !important;
         margin: 0 !important;
         padding: 0 !important;
         background: none !important;
-        box-shadow: none !important;
+        overflow: visible !important;
       }
 
-      /* Standardized A4 Page Printing Specifications */
+      /* Normal Portrait Pages */
       .a4-page {
+        visibility: visible !important;
         margin: 0 !important;
         box-shadow: none !important;
         border: none !important;
-        /* Force margins Top: 2.5cm, Bottom: 2.5cm, Left: 3cm, Right: 2cm inside canvas space */
         padding: 25mm 20mm 25mm 30mm !important;
         width: 210mm !important;
-        height: 297mm !important; /* Force exact physical height */
+        height: 297mm !important; 
         page-break-after: always !important;
         break-after: page !important;
         page-break-inside: avoid !important;
@@ -221,14 +263,26 @@
         background: #ffffff !important;
       }
 
-      /* Prevent trailing blank page */
+      /* Landscape Pages Specific Printing Configuration */
+      .a4-page.landscape {
+        visibility: visible !important;
+        page: landscape-page !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        padding: 25mm 20mm 25mm 30mm !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
       .a4-page:last-of-type {
         page-break-after: avoid !important;
         break-after: avoid !important;
       }
 
       .a4-page::after {
-        display: none !important; /* Hide label identifiers during printing */
+        display: none !important; /* Hide labels during printer output */
       }
     }
 
@@ -711,7 +765,7 @@
         <!-- DASAR PELAKSANAAN -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">DASAR PELAKSANAAN :</p>
-          <table class="gov-table text-[10pt]">
+          <table class="gov-table text-[12pt]">
             <tbody id="view-table-dasar"></tbody>
           </table>
         </div>
@@ -719,42 +773,42 @@
         <!-- I. DATA PERUSAHAAN -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">I. DATA PERUSAHAAN</p>
-          <table class="gov-table text-[10pt]">
+          <table class="gov-table text-[12pt]">
             <tbody>
               <tr>
                 <td class="w-6 text-center">1</td>
                 <td class="w-1/3">Nama Pemilik</td>
-                <td>: <span id="v-pemilik" class="font-semibold"></span></td>
+                <td>: <span id="v-pemilik" class="font-semibold text-[12pt]"></span></td>
               </tr>
               <tr>
                 <td class="text-center">2</td>
                 <td>Nama Perusahaan</td>
-                <td>: <span id="v-perusahaan" class="font-bold"></span></td>
+                <td>: <span id="v-perusahaan" class="font-bold text-[12pt]"></span></td>
               </tr>
               <tr>
                 <td class="text-center">3</td>
                 <td>Tanggal Pendirian</td>
-                <td>: <span id="v-tgl-pendirian"></span></td>
+                <td>: <span id="v-tgl-pendirian" class="text-[12pt]"></span></td>
               </tr>
               <tr>
                 <td class="text-center">4</td>
                 <td>Alamat Kantor</td>
-                <td>: <span id="v-alamat-kantor"></span></td>
+                <td>: <span id="v-alamat-kantor" class="text-[12pt]"></span></td>
               </tr>
               <tr>
                 <td class="text-center">5</td>
                 <td>Alamat Penampungan</td>
-                <td>: <span id="v-alamat-gudang"></span></td>
+                <td>: <span id="v-alamat-gudang" class="text-[12pt]"></span></td>
               </tr>
               <tr>
                 <td class="text-center">6</td>
                 <td>Nomor Telp/Fax</td>
-                <td>: <span id="v-telp"></span></td>
+                <td>: <span id="v-telp" class="text-[12pt]"></span></td>
               </tr>
               <tr>
                 <td class="text-center">7</td>
                 <td>Email</td>
-                <td>: <span id="v-email" class="italic"></span></td>
+                <td>: <span id="v-email" class="italic text-[12pt]"></span></td>
               </tr>
             </tbody>
           </table>
@@ -763,7 +817,7 @@
         <!-- II. PEMERIKSAAN KELENGKAPAN DOKUMEN -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">II. PEMERIKSAAN KELENGKAPAN DOKUMEN PERSYARATAN</p>
-          <table class="gov-table text-[9.5pt]">
+          <table class="gov-table text-[12pt]">
             <thead>
               <tr>
                 <th class="w-8">No.</th>
@@ -775,38 +829,38 @@
               <tr>
                 <td class="text-center">1</td>
                 <td>Akta Pendirian Perusahaan</td>
-                <td>
-                  Nomor: <span id="v-akta-no" class="font-semibold"></span> | 
-                  Tanggal: <span id="v-akta-tgl"></span><br>
-                  Notaris: <span id="v-akta-notaris"></span>
+                <td class="text-[12pt]">
+                  Nomor: <span id="v-akta-no" class="font-semibold text-[12pt]"></span> | 
+                  Tanggal: <span id="v-akta-tgl" class="text-[12pt]"></span><br>
+                  Notaris: <span id="v-akta-notaris" class="text-[12pt]"></span>
                 </td>
               </tr>
               <tr>
                 <td class="text-center">2</td>
                 <td>Nomor Induk Berusaha (NIB)</td>
-                <td>
-                  Nomor: <span id="v-nib-no" class="font-semibold"></span> | 
-                  Tanggal: <span id="v-nib-tgl"></span> | 
-                  KBLI: <span id="v-nib-kbli"></span>
+                <td class="text-[12pt]">
+                  Nomor: <span id="v-nib-no" class="font-semibold text-[12pt]"></span> | 
+                  Tanggal: <span id="v-nib-tgl" class="text-[12pt]"></span> | 
+                  KBLI: <span id="v-nib-kbli" class="text-[12pt]"></span>
                 </td>
               </tr>
               <tr>
                 <td class="text-center">3</td>
                 <td>Kesesuaian Kegiatan Pemanfaatan Ruang</td>
-                <td>
-                  Tanggal: <span id="v-ruang-tgl"></span> | 
-                  Penerbit: <span id="v-ruang-penerbit"></span>
+                <td class="text-[12pt]">
+                  Tanggal: <span id="v-ruang-tgl" class="text-[12pt]"></span> | 
+                  Penerbit: <span id="v-ruang-penerbit" class="text-[12pt]"></span>
                 </td>
               </tr>
               <tr>
                 <td class="text-center">4</td>
                 <td>Nomor Pokok Wajib Pajak (NPWP)</td>
-                <td>Nomor: <span id="v-npwp" class="font-semibold"></span></td>
+                <td class="text-[12pt]">Nomor: <span id="v-npwp" class="font-semibold text-[12pt]"></span></td>
               </tr>
               <tr>
                 <td class="text-center">5</td>
                 <td>Pakta Integritas</td>
-                <td>Tanggal: <span id="v-pakta-tgl"></span></td>
+                <td class="text-[12pt]">Tanggal: <span id="v-pakta-tgl" class="text-[12pt]"></span></td>
               </tr>
             </tbody>
           </table>
@@ -818,7 +872,7 @@
         <!-- III. PEMERIKSAAN SARANA DAN PRASARANA -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">III. PEMERIKSAAN SARANA DAN PRASARANA</p>
-          <table class="gov-table text-[9pt]">
+          <table class="gov-table text-[12pt]">
             <thead>
               <tr>
                 <th class="w-8">No.</th>
@@ -835,7 +889,7 @@
         <!-- IV. SPESIMEN YANG AKAN DIEDARKAN -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">IV. SPESIMEN TUMBUHAN DAN SATWA LIAR YANG AKAN DIEDARKAN</p>
-          <table class="gov-table text-[8.5pt]">
+          <table class="gov-table text-[12pt]">
             <thead>
               <tr>
                 <th class="w-8">No.</th>
@@ -851,7 +905,7 @@
         <!-- V. STATUS LINDUNGAN -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">V. STATUS LINDUNGAN</p>
-          <table class="gov-table text-[9pt]">
+          <table class="gov-table text-[12pt]">
             <thead>
               <tr>
                 <th class="w-8">No.</th>
@@ -870,7 +924,7 @@
         <!-- VI. STATUS APPENDIKS CITES -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">VI. STATUS APPENDIKS DALAM CITES</p>
-          <table class="gov-table text-[9pt]">
+          <table class="gov-table text-[12pt]">
             <thead>
               <tr>
                 <th class="w-8">No.</th>
@@ -886,7 +940,7 @@
         <!-- VII. ASAL USUL SPESIMEN -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">VII. PEROLEHAN ASAL USUL SPESIMEN YANG AKAN DIEDARKAN</p>
-          <table class="gov-table text-[9pt]">
+          <table class="gov-table text-[12pt]">
             <thead>
               <tr>
                 <th class="w-8">No.</th>
@@ -902,7 +956,7 @@
         <!-- VIII. BENTUK SPESIMEN -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">VIII. BENTUK SPESIMEN YANG DIEDARKAN</p>
-          <table class="gov-table text-[8.5pt]">
+          <table class="gov-table text-[12pt]">
             <thead>
               <tr>
                 <th class="w-8">No.</th>
@@ -918,20 +972,20 @@
 
       <!-- ================= PAGE 5: NARRATIVE BLOCKS & XII. ORGANISASI (Bab IX - XII) ================= -->
       <div class="a4-page shadow-2xl relative" data-page-label="Halaman 5" id="page-5">
-        <!-- NARRATIVE BLOCKS (Titles IX - XI removed based on request) -->
+        <!-- NARRATIVE BLOCKS -->
         <div class="mb-3">
-          <div class="space-y-2 text-[10pt] leading-relaxed">
+          <div class="space-y-2 text-[12pt] leading-relaxed">
             <div class="p-2 border border-black bg-slate-50">
-              <p class="font-bold">IX. TEKNIS PELAKSANAAN PENAMPUNGAN:</p>
-              <p id="v-nar-penampungan" class="text-justify text-gray-800 italic"></p>
+              <p class="font-bold text-[12pt]">IX. TEKNIS PELAKSANAAN PENAMPUNGAN:</p>
+              <p id="v-nar-penampungan" class="text-justify text-gray-800 italic text-[12pt]"></p>
             </div>
             <div class="p-2 border border-black bg-slate-50">
-              <p class="font-bold">X. TEKNIS PELAKSANAAN PENGANGKUTAN:</p>
-              <p id="v-nar-pengangkutan" class="text-justify text-gray-800 italic"></p>
+              <p class="font-bold text-[12pt]">X. TEKNIS PELAKSANAAN PENGANGKUTAN:</p>
+              <p id="v-nar-pengangkutan" class="text-justify text-gray-800 italic text-[12pt]"></p>
             </div>
             <div class="p-2 border border-black bg-slate-50">
-              <p class="font-bold">XI. SISTEM PEMBUANGAN LIMBAH:</p>
-              <p id="v-nar-limbah" class="text-justify text-gray-800 italic"></p>
+              <p class="font-bold text-[12pt]">XI. SISTEM PEMBUANGAN LIMBAH:</p>
+              <p id="v-nar-limbah" class="text-justify text-gray-800 italic text-[12pt]"></p>
             </div>
           </div>
         </div>
@@ -940,13 +994,13 @@
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">XII. ORGANISASI DAN TENAGA KERJA</p>
           
-          <!-- Visual Hierarchy Tree Diagram (Pro Clean Design - REDESIGNED & SPACED) -->
+          <!-- Visual Hierarchy Tree Diagram -->
           <div class="p-4 border border-black bg-slate-50 text-center mb-3 rounded shadow-inner">
             <p class="text-[9.5px] font-bold uppercase text-slate-800 tracking-wider mb-3 border-b pb-1.5">Bagan Struktur Organisasi Perusahaan</p>
             <div id="hierarchy-chart-container" class="flex flex-col items-center gap-1.5 w-full"></div>
           </div>
 
-          <table class="gov-table text-[9pt]">
+          <table class="gov-table text-[12pt]">
             <thead>
               <tr>
                 <th class="w-8">No.</th>
@@ -961,24 +1015,24 @@
 
       <!-- ================= PAGE 6: INVESTASI, PENUTUP & SIGNATURES (Bab XIII - XV) ================= -->
       <div class="a4-page shadow-2xl relative" data-page-label="Halaman 6" id="page-6">
-        <!-- XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI (Header Title "XIII - XIV..." Removed) -->
+        <!-- XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI -->
         <div class="mb-3">
-          <table class="gov-table text-[10pt]">
+          <table class="gov-table text-[12pt]">
             <tbody>
               <tr>
-                <td class="w-1/3 font-bold">XIII. INVESTASI</td>
-                <td>: <span id="v-nar-investasi" class="font-bold"></span></td>
+                <td class="w-1/3 font-bold text-[12pt]">XIII. INVESTASI</td>
+                <td>: <span id="v-nar-investasi" class="font-bold text-[12pt]"></span></td>
               </tr>
               <!-- Pemegang Saham Table -->
               <tr>
-                <td class="font-bold">PEMEGANG SAHAM</td>
+                <td class="font-bold text-[12pt]">PEMEGANG SAHAM</td>
                 <td>
-                  <table class="w-full text-[9.5pt] text-left border-collapse" id="view-table-saham"></table>
+                  <table class="w-full text-[12pt] text-left border-collapse" id="view-table-saham"></table>
                 </td>
               </tr>
               <tr>
-                <td class="font-bold">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</td>
-                <td><p id="v-nar-pembinaan" class="text-justify italic text-gray-800"></p></td>
+                <td class="font-bold text-[12pt]">XIV. PROGRAM PEMBINAAN KONSERVASI JENIS YANG DIEDARKAN</td>
+                <td><p id="v-nar-pembinaan" class="text-justify italic text-gray-800 text-[12pt]"></p></td>
               </tr>
             </tbody>
           </table>
@@ -987,23 +1041,23 @@
         <!-- XV. PERNYATAAN DAN PENGESAHAN (POINT 1,2,3) -->
         <div class="mb-3">
           <p class="text-[11pt] font-bold uppercase mb-1">XV. PERNYATAAN DAN PENGESAHAN</p>
-          <div class="text-[10pt] leading-relaxed text-justify italic font-medium bg-slate-50 p-2.5 rounded border border-black">
+          <div class="text-[12pt] leading-relaxed text-justify italic font-medium bg-slate-50 p-2.5 rounded border border-black">
             <ol class="list-decimal pl-5 space-y-1">
-              <li>Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan yang ada di <span id="v-legal-perusahaan" class="font-bold"></span>.</li>
-              <li>Semua kelengkapan dokumen pada butir II adalah sah dan sesuai dengan aslinya.</li>
-              <li>Apabila data, dokumen, dan keterangan tersebut tidak benar, maka kami yang bertanda tangan di bawah ini bersedia dikenakan sanksi dan atau dituntut sesuai dengan peraturan yang berlaku.</li>
+              <li class="text-[12pt]">Data dan keterangan hasil pemeriksaan tersebut di atas adalah benar-benar merupakan data dan keterangan dari hasil pemeriksaan yang ada di <span id="v-legal-perusahaan" class="font-bold text-[12pt]"></span>.</li>
+              <li class="text-[12pt]">Semua kelengkapan dokumen pada butir II adalah sah dan sesuai dengan aslinya.</li>
+              <li class="text-[12pt]">Apabila data, dokumen, dan keterangan tersebut tidak benar, maka kami yang bertanda tangan di bawah ini bersedia dikenakan sanksi dan atau dituntut sesuai dengan peraturan yang berlaku.</li>
             </ol>
           </div>
         </div>
 
-        <!-- SIGNATURES BLOCK (DYNAMIC INSPECTORS SUPPORT - EXACT baselines aligned and SPACIOUS) -->
-        <div class="mt-6 text-[10.5pt] leading-snug">
+        <!-- SIGNATURES BLOCK -->
+        <div class="mt-6 text-[12pt] leading-snug">
           <!-- Center Date Element -->
           <div class="text-center mb-4">
-            <span class="font-bold text-slate-900 text-[11.5pt]" id="view-tempat-tgl">Tenggarong, 13 Mei 2026</span>
+            <span class="font-bold text-slate-900 text-[12pt]" id="view-tempat-tgl">Tenggarong, 13 Mei 2026</span>
           </div>
 
-          <div class="text-center font-bold mb-4 text-slate-800">Dibuat dengan sebenarnya oleh:</div>
+          <div class="text-center font-bold mb-4 text-slate-800 text-[12pt]">Dibuat dengan sebenarnya oleh:</div>
           
           <!-- Dynamic Inspectors Grid Layout with comfortable vertical heights -->
           <div id="view-inspectors-grid" class="grid gap-4 text-center mb-6"></div>
@@ -1013,67 +1067,42 @@
             <!-- Left Signature block -->
             <div class="flex flex-col justify-between h-48 text-center">
               <div>
-                <p class="font-bold text-slate-800">Disahkan oleh:</p>
-                <div class="text-[9.5pt] text-gray-800 font-bold leading-normal">
+                <p class="font-bold text-slate-800 text-[12pt]">Disahkan oleh:</p>
+                <div class="text-[12pt] text-gray-800 font-bold leading-normal">
                   a.n. Kepala Balai,<br>
-                  <span id="view-kasi-jab"></span>
+                  <span id="view-kasi-jab" class="text-[12pt]"></span>
                 </div>
               </div>
               <div class="flex-grow min-h-[75px]"></div>
               <div>
-                <p class="font-bold underline text-[10.5pt]" id="view-kasi-nama"></p>
-                <p class="text-gray-700 text-[9.5pt]" id="view-kasi-nip"></p>
+                <p class="font-bold underline text-[12pt]" id="view-kasi-nama"></p>
+                <p class="text-gray-700 text-[12pt]" id="view-kasi-nip"></p>
               </div>
             </div>
 
             <!-- Right Signature block -->
             <div class="flex flex-col justify-between h-48 text-center">
               <div>
-                <p class="font-bold text-slate-800">Mengetahui:</p>
-                <div class="text-[9.5pt] text-gray-800 font-bold leading-normal">
-                  <span id="view-dir-perusahaan-sig"></span>
+                <p class="font-bold text-slate-800 text-[12pt]">Mengetahui:</p>
+                <div class="text-[12pt] text-gray-800 font-bold leading-normal">
+                  <span id="view-dir-perusahaan-sig" class="text-[12pt]"></span>
                   <!-- Empty spacer block to make headers exactly 3 lines high -->
                   <div class="text-transparent select-none">&nbsp;</div>
                 </div>
               </div>
               <div class="flex-grow min-h-[75px]"></div>
               <div>
-                <p class="font-bold underline text-[10.5pt]" id="view-dir-nama"></p>
-                <p class="text-gray-700 text-[9.5pt]" id="view-dir-jab"></p>
+                <p class="font-bold underline text-[12pt]" id="view-dir-nama"></p>
+                <p class="text-gray-700 text-[12pt]" id="view-dir-jab"></p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ================= PAGE 7: PHOTO ATTACHMENT SECTION ================= -->
-      <div class="a4-page shadow-2xl relative" data-page-label="Halaman 7 (Lampiran)" id="page-7">
-        <div class="text-[10pt] leading-normal">
-          <table class="w-full border-b border-gray-300 pb-2 mb-2">
-            <tbody>
-              <tr>
-                <td class="font-bold w-1/4">Lampiran</td>
-                <td class="w-4">:</td>
-                <td>Berita Acara Pemeriksaan (BAP) Persiapan Teknis</td>
-              </tr>
-              <tr>
-                <td class="font-bold">Nomor BAP</td>
-                <td>:</td>
-                <td id="view-lampiran-nomor" class="font-bold text-emerald-600"></td>
-              </tr>
-              <tr>
-                <td class="font-bold">Tanggal</td>
-                <td>:</td>
-                <td id="view-lampiran-tgl"></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h4 class="text-center font-bold text-[11pt] uppercase tracking-wider mb-2 border-b pb-1">PHOTO ATAU GAMBAR-GAMBAR PEMERIKSAAN</h4>
-          
-          <!-- Photos visual representation with precise 9.14cm x 12.15cm sizing -->
-          <div class="flex flex-wrap gap-4 mt-3 justify-center" id="view-images-grid"></div>
-        </div>
+      <!-- ================= LANDSCAPE PHOTO ATTACHMENT PAGES (Page 7+) ================= -->
+      <div id="landscape-photos-pages-container" class="w-full flex flex-col items-center">
+        <!-- Rendered dynamically by javascript to allow multiple clean pages if count exceeds limits -->
       </div>
 
     </main>
@@ -1703,18 +1732,14 @@
       document.getElementById("view-dir-nama").innerText = bapData.dirName;
       document.getElementById("view-dir-jab").innerText = bapData.dirJab;
 
-      // Lampiran metadata sync
-      document.getElementById("view-lampiran-nomor").innerText = bapData.nomor || "[Nomor BAP]";
-      document.getElementById("view-lampiran-tgl").innerText = bapData.tanggal || "[Tanggal]";
-
       // Render Dasar Pelaksanaan Table
       const dasarTable = document.getElementById("view-table-dasar");
       dasarTable.innerHTML = "";
       bapData.dasarRules.forEach((rule, idx) => {
         dasarTable.innerHTML += `
           <tr class="align-top">
-            <td class="w-8 text-center font-bold">${idx + 1}</td>
-            <td>${rule}</td>
+            <td class="w-8 text-center font-bold text-[12pt]">${idx + 1}</td>
+            <td class="text-[12pt]">${rule}</td>
           </tr>
         `;
       });
@@ -1725,11 +1750,11 @@
       bapData.sarpras.forEach((item, idx) => {
         sarprasTable.innerHTML += `
           <tr>
-            <td class="text-center font-bold">${idx + 1}</td>
-            <td>${item.name}</td>
-            <td class="text-center">${item.unit}</td>
-            <td class="text-center">${item.size}</td>
-            <td class="text-center font-bold">${item.qty}</td>
+            <td class="text-center font-bold text-[12pt]">${idx + 1}</td>
+            <td class="text-[12pt]">${item.name}</td>
+            <td class="text-center text-[12pt]">${item.unit}</td>
+            <td class="text-center text-[12pt]">${item.size}</td>
+            <td class="text-center font-bold text-[12pt]">${item.qty}</td>
           </tr>
         `;
       });
@@ -1740,9 +1765,9 @@
       bapData.karyawan.forEach((item, idx) => {
         karyawanTable.innerHTML += `
           <tr>
-            <td class="text-center font-bold">${idx + 1}</td>
-            <td>${item.role}</td>
-            <td class="text-center font-bold">${item.count}</td>
+            <td class="text-center font-bold text-[12pt]">${idx + 1}</td>
+            <td class="text-[12pt]">${item.role}</td>
+            <td class="text-center font-bold text-[12pt]">${item.count}</td>
           </tr>
         `;
       });
@@ -1755,8 +1780,8 @@
       sahamTable.innerHTML = `
         <thead>
           <tr class="border-b border-black">
-            <th class="py-1 font-bold">Nama Pemegang Saham</th>
-            <th class="py-1 text-center w-24 font-bold">Persentase (%)</th>
+            <th class="py-1 font-bold text-[12pt]">Nama Pemegang Saham</th>
+            <th class="py-1 text-center w-24 font-bold text-[12pt]">Persentase (%)</th>
           </tr>
         </thead>
         <tbody>
@@ -1764,8 +1789,8 @@
       bapData.saham.forEach(item => {
         sahamTable.innerHTML += `
           <tr class="border-b border-slate-300">
-            <td class="py-1 font-semibold">${item.name}</td>
-            <td class="py-1 text-center font-bold">${item.percentage}%</td>
+            <td class="py-1 font-semibold text-[12pt]">${item.name}</td>
+            <td class="py-1 text-center font-bold text-[12pt]">${item.percentage}%</td>
           </tr>
         `;
       });
@@ -1777,7 +1802,7 @@
       // Render Inspectors Grid (adaptive columns)
       renderInspectorsGrid();
 
-      // Render Dynamic Photo Grid in exact 9.14cm x 12.15cm format
+      // Render Dynamic Photo Grid in exact 9.14cm x 12.15cm format in landscape sheets
       renderPhotoAttachmentGrid();
     }
 
@@ -1789,10 +1814,8 @@
         return;
       }
 
-      // Root Node (First employee on the list, e.g., Direktur)
       const rootNode = bapData.karyawan[0];
       let html = `
-        <!-- Root node with elevated margins -->
         <div class="flex flex-col items-center mb-1">
           <div class="tree-node">
             <div class="text-[10px] text-slate-800 uppercase tracking-wide border-b border-black pb-0.5 mb-1">${rootNode.role}</div>
@@ -1801,17 +1824,14 @@
         </div>
       `;
 
-      // Subordinate Nodes in structured table lines with comfortable margins
       const children = bapData.karyawan.slice(1);
       if (children.length > 0) {
         html += `
-          <!-- Elevated vertical down line from Root for spacious structure -->
           <div class="tree-connector" style="height: 18px;"></div>
           
           <div class="flex justify-center w-full px-2">
             <table class="border-collapse mx-auto">
               <tbody>
-                <!-- Horizontal connector line row -->
                 <tr>
                   ${children.map((child, idx) => {
                     let borderClass = "border-t-2 border-black";
@@ -1827,12 +1847,10 @@
                     return `<td class="${borderClass} h-4" style="width: 105px;"></td>`;
                   }).join('')}
                 </tr>
-                <!-- Subordinate node cards row with expansive horizontal gaps -->
                 <tr class="align-top">
                   ${children.map((child) => {
                     return `
                       <td class="px-2 text-center" style="width: 105px;">
-                        <!-- Vertical line down to child node card -->
                         <div class="tree-connector" style="height: 15px;"></div>
                         <div class="tree-node" style="min-width: 115px; margin: 0 4px;">
                           <div class="text-[9px] text-slate-800 uppercase border-b border-gray-300 pb-0.5 mb-1 leading-tight">${child.role}</div>
@@ -1860,10 +1878,10 @@
         const isChecked = bapData.specTaksa === taxaItem;
         bab4Table.innerHTML += `
           <tr>
-            <td class="text-center font-bold">${idx + 1}</td>
-            <td>${taxaItem}</td>
-            <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-            <td>${isChecked ? bapData.specTaksaRincian : "-"}</td>
+            <td class="text-center font-bold text-[12pt]">${idx + 1}</td>
+            <td class="text-[12pt]">${taxaItem}</td>
+            <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+            <td class="text-[12pt]">${isChecked ? bapData.specTaksaRincian : "-"}</td>
           </tr>
         `;
       });
@@ -1876,10 +1894,10 @@
         const isChecked = bapData.specLindung === item;
         bab5Table.innerHTML += `
           <tr>
-            <td class="text-center font-bold">${idx + 1}</td>
-            <td>${item}</td>
-            <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-            <td>${isChecked ? bapData.specTaksaRincian : "-"}</td>
+            <td class="text-center font-bold text-[12pt]">${idx + 1}</td>
+            <td class="text-[12pt]">${item}</td>
+            <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+            <td class="text-[12pt]">${isChecked ? bapData.specTaksaRincian : "-"}</td>
           </tr>
         `;
       });
@@ -1904,11 +1922,11 @@
           if (isMainHeaderNeeded) {
             rowHtml += `
               <tr class="align-top">
-                <td class="text-center font-bold" rowspan="3">${idx + 1}</td>
-                <td class="font-bold">${item.main}</td>
-                <td>${item.sub}</td>
-                <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-                <td>${isChecked ? bapData.specTaksaRincian : "-"}</td>
+                <td class="text-center font-bold text-[12pt]" rowspan="3">${idx + 1}</td>
+                <td class="font-bold text-[12pt]">${item.main}</td>
+                <td class="text-[12pt]">${item.sub}</td>
+                <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+                <td class="text-[12pt]">${isChecked ? bapData.specTaksaRincian : "-"}</td>
               </tr>
             `;
             groupMap[item.main] = true;
@@ -1916,19 +1934,19 @@
             rowHtml += `
               <tr class="align-top">
                 <td></td>
-                <td>${item.sub}</td>
-                <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-                <td>${isChecked ? bapData.specTaksaRincian : "-"}</td>
+                <td class="text-[12pt]">${item.sub}</td>
+                <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+                <td class="text-[12pt]">${isChecked ? bapData.specTaksaRincian : "-"}</td>
               </tr>
             `;
           }
         } else {
           rowHtml += `
             <tr class="align-top">
-              <td class="text-center font-bold">${idx + 1}</td>
-              <td colspan="2">${item.main}</td>
-              <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-              <td>${isChecked ? "-" : "-"}</td>
+              <td class="text-center font-bold text-[12pt]">${idx + 1}</td>
+              <td colspan="2" class="text-[12pt]">${item.main}</td>
+              <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+              <td class="text-[12pt]">${isChecked ? "-" : "-"}</td>
             </tr>
           `;
         }
@@ -1943,15 +1961,15 @@
         const isChecked = bapData.specSumber === item;
         bab7Table.innerHTML += `
           <tr class="align-top">
-            <td class="text-center font-bold">${idx + 1}</td>
-            <td>${item}</td>
-            <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-            <td>${isChecked ? bapData.specSumberKet : "-"}</td>
+            <td class="text-center font-bold text-[12pt]">${idx + 1}</td>
+            <td class="text-[12pt]">${item}</td>
+            <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+            <td class="text-[12pt]">${isChecked ? bapData.specSumberKet : "-"}</td>
           </tr>
         `;
       });
 
-      // BAB VIII (No "satwa:" / "tumbuhan:" label column, completely cleaned)
+      // BAB VIII
       const bab8Table = document.getElementById("view-table-bab8");
       const listBab8 = [
         { main: "Hidup (live speciment)", sub: "" },
@@ -1978,11 +1996,11 @@
           if (!bab8HeaderMap[item.main]) {
             rowHtml += `
               <tr class="align-top">
-                <td class="text-center font-bold">${idx + 1}</td>
-                <td class="font-bold border-r-0">${item.main}</td>
-                <td class="border-l-0">${item.sub}</td>
-                <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-                <td>${isChecked ? "Sesuai rincian fisik" : "-"}</td>
+                <td class="text-center font-bold text-[12pt]">${idx + 1}</td>
+                <td class="font-bold border-r-0 text-[12pt]">${item.main}</td>
+                <td class="border-l-0 text-[12pt]">${item.sub}</td>
+                <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+                <td class="text-[12pt]">${isChecked ? "Sesuai rincian fisik" : "-"}</td>
               </tr>
             `;
             bab8HeaderMap[item.main] = true;
@@ -1990,20 +2008,20 @@
             rowHtml += `
               <tr class="align-top">
                 <td></td>
-                <td class="border-r-0"></td> <!-- Cleaned - No "satwa:" or "tumbuhan:" label prefix -->
-                <td class="border-l-0">${item.sub}</td>
-                <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-                <td>${isChecked ? "Sesuai rincian fisik" : "-"}</td>
+                <td class="border-r-0"></td> 
+                <td class="border-l-0 text-[12pt]">${item.sub}</td>
+                <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+                <td class="text-[12pt]">${isChecked ? "Sesuai rincian fisik" : "-"}</td>
               </tr>
             `;
           }
         } else {
           rowHtml += `
             <tr class="align-top">
-              <td class="text-center font-bold">${idx + 1}</td>
-              <td colspan="2">${item.main}</td>
-              <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
-              <td>${isChecked ? "Sesuai rincian fisik" : "-"}</td>
+              <td class="text-center font-bold text-[12pt]">${idx + 1}</td>
+              <td colspan="2" class="text-[12pt]">${item.main}</td>
+              <td class="text-center font-bold text-[12pt]">${isChecked ? "✔" : "-"}</td>
+              <td class="text-[12pt]">${isChecked ? "Sesuai rincian fisik" : "-"}</td>
             </tr>
           `;
         }
@@ -2030,11 +2048,11 @@
       bapData.inspectors.forEach((item, idx) => {
         grid.innerHTML += `
           <div class="flex flex-col justify-between min-h-[140px]">
-            <p class="font-bold text-slate-800">Pemeriksa ${idx + 1}</p>
-            <div class="flex-grow min-h-[70px]"></div> <!-- Expanded height for spacious signature clearance -->
+            <p class="font-bold text-slate-800 text-[12pt]">Pemeriksa ${idx + 1}</p>
+            <div class="flex-grow min-h-[70px]"></div> 
             <div>
-              <p class="font-bold underline text-[10.5pt]">${item.name}</p>
-              <p class="text-gray-700 text-[9.5pt]">${item.nip ? 'NIP. ' + item.nip : ''}</p>
+              <p class="font-bold underline text-[12pt]">${item.name}</p>
+              <p class="text-gray-700 text-[12pt]">${item.nip ? 'NIP. ' + item.nip : ''}</p>
             </div>
           </div>
         `;
@@ -2042,24 +2060,84 @@
     }
 
     function renderPhotoAttachmentGrid() {
-      const grid = document.getElementById("view-images-grid");
-      grid.innerHTML = "";
-      bapData.pictures.forEach(pic => {
-        const hasImg = pic.img !== "";
-        grid.innerHTML += `
-          <div class="photo-column-wrapper">
-            <div class="photo-image-container">
-              ${hasImg ? `<img src="${pic.img}">` : `
-                <div class="text-gray-400 text-center px-1">
-                  <i class="fa-regular fa-image text-2xl block mb-1"></i>
-                  <span class="text-[7px] leading-tight block">[Belum ada ${pic.name}]</span>
-                </div>
-              `}
+      const container = document.getElementById("landscape-photos-pages-container");
+      container.innerHTML = "";
+      
+      const pictures = bapData.pictures;
+      if (pictures.length === 0) {
+        container.innerHTML = `
+          <div class="a4-page landscape shadow-2xl relative" data-page-label="Halaman Lampiran">
+            <div class="text-[12pt] leading-normal">
+              <h4 class="text-center font-bold text-[12pt] uppercase tracking-wider mb-4 border-b pb-1">DOKUMENTASI FOTO PEMERIKSAAN</h4>
+              <p class="text-center text-gray-400 py-12 text-[12pt]">[Tidak ada lampiran foto]</p>
             </div>
-            <p class="text-[8px] font-bold text-center text-slate-800 line-clamp-2 mt-1" style="font-family: inherit;">${pic.caption}</p>
           </div>
         `;
-      });
+        return;
+      }
+      
+      // STRICT PAGINATION: Group 2 photos per landscape sheet to maximize layout space
+      const chunkSize = 2;
+      for (let i = 0; i < pictures.length; i += chunkSize) {
+        const chunk = pictures.slice(i, i + chunkSize);
+        const pageNum = 7 + Math.floor(i / chunkSize);
+        
+        let pageHtml = `
+          <div class="a4-page landscape shadow-2xl relative" data-page-label="Halaman ${pageNum} (Lampiran)" id="page-${pageNum}">
+            <div class="text-[12pt] leading-normal h-full flex flex-col justify-between">
+              <div>
+                <table class="w-full border-b border-gray-300 pb-2 mb-2" style="font-size: 12pt !important;">
+                  <tbody>
+                    <tr>
+                      <td class="font-bold w-1/4 text-[12pt]">Lampiran</td>
+                      <td class="w-4 text-[12pt]">:</td>
+                      <td class="text-[12pt]">Berita Acara Pemeriksaan (BAP) Persiapan Teknis</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-[12pt]">Nomor BAP</td>
+                      <td class="text-[12pt]">:</td>
+                      <td class="font-bold text-emerald-600 text-[12pt]">${bapData.nomor || "[Nomor BAP]"}</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-[12pt]">Tanggal</td>
+                      <td class="text-[12pt]">:</td>
+                      <td class="text-[12pt]">${bapData.tanggal || "[Tanggal]"}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4 class="text-center font-bold text-[12pt] uppercase tracking-wider mb-2 border-b pb-1">PHOTO ATAU GAMBAR-GAMBAR PEMERIKSAAN</h4>
+              </div>
+              
+              <!-- STRICT LAYOUT: Flex container placing exactly 2 specified portrait photo cards horizontally side by side -->
+              <div class="flex gap-16 justify-center items-center flex-1">
+        `;
+        
+        chunk.forEach(pic => {
+          const hasImg = pic.img !== "";
+          pageHtml += `
+            <div class="photo-column-wrapper">
+              <div class="photo-image-container">
+                ${hasImg ? `<img src="${pic.img}">` : `
+                  <div class="text-gray-400 text-center px-2">
+                    <i class="fa-regular fa-image text-3xl block mb-2"></i>
+                    <span class="text-[10pt] leading-tight block">[Belum ada ${pic.name}]</span>
+                  </div>
+                `}
+              </div>
+              <!-- STRICT REQUIREMENT: Caption is dynamically styled to use exactly 12pt size -->
+              <p class="text-[12pt] font-bold text-center text-slate-800 line-clamp-2 mt-2" style="font-family: inherit;">${pic.caption}</p>
+            </div>
+          `;
+        });
+        
+        pageHtml += `
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += pageHtml;
+      }
     }
 
     function triggerPrint() {
@@ -2103,7 +2181,7 @@
               <span class="text-slate-800">${item.perusahaan}</span>
               <span class="text-emerald-700">${item.status}</span>
             </div>
-            <p class="text-[10px] text-slate-550">No BAP: ${item.nomor}</p>
+            <p class="text-[10px] text-slate-555">No BAP: ${item.nomor}</p>
             <div class="flex justify-between items-center pt-2 border-t border-slate-100 mt-2">
               <span class="text-[9px] text-slate-450">${item.savedAt}</span>
               <div class="flex gap-1.5">
