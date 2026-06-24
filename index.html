@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Gentium Book Plus (for official serif look), Inter, and Sora -->
+  <!-- Google Fonts: Gentium Book Plus, Inter, and Sora -->
   <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   
   <style>
@@ -33,7 +33,6 @@
       color: var(--text-primary);
     }
 
-    /* Glassmorphism panel style adapted for premium Light Mode */
     .glass-panel {
       background: var(--bg-card);
       backdrop-filter: blur(var(--glass-blur));
@@ -47,7 +46,6 @@
       border-color: var(--border-strong);
     }
 
-    /* Glowing Title Animation - Light Emerald Morphing */
     .glowing-title {
       font-family: 'Sora', sans-serif;
       background: linear-gradient(135deg, var(--accent) 0%, #10b981 100%);
@@ -80,7 +78,6 @@
       overflow: hidden;
     }
 
-    /* PDF Page Badge helper - Hidden during printing */
     .a4-page::after {
       content: attr(data-page-label);
       position: absolute;
@@ -92,7 +89,6 @@
       color: #94a3b8;
     }
 
-    /* Official Government Styled Table */
     .gov-table {
       width: 100%;
       border-collapse: collapse;
@@ -175,52 +171,61 @@
       object-fit: cover;
     }
 
-    /* Printing styles to prevent empty pages */
     @media print {
+      /* Reset standard document properties */
       html, body {
         background: #ffffff !important;
         color: #000000 !important;
         margin: 0 !important;
         padding: 0 !important;
         height: auto !important;
+        overflow: visible !important;
       }
-      body > *:not(.preview-container) {
+
+      /* Hide Navigation/Sidebar entirely */
+      .no-print, header, aside {
         display: none !important;
       }
-      .preview-container {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
-        width: 100% !important;
+
+      /* Bypass intermediate layouts to prevent blank pages or clipping */
+      .flex-1, .flex, .flex-col, .lg\:flex-row, .preview-container {
+        display: block !important;
+        position: static !important;
         height: auto !important;
+        min-height: 0 !important;
+        width: 100% !important;
         overflow: visible !important;
         margin: 0 !important;
         padding: 0 !important;
+        background: none !important;
+        box-shadow: none !important;
       }
+
+      /* Standardized A4 Page Printing Specifications */
       .a4-page {
         margin: 0 !important;
         box-shadow: none !important;
         border: none !important;
         padding: 18mm 15mm 15mm 15mm !important;
         width: 210mm !important;
-        height: 297mm !important; /* Forces strict page sizes on physical printing */
+        height: 297mm !important; /* Force exact physical height */
         page-break-after: always !important;
         break-after: page !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
         position: relative !important;
         box-sizing: border-box !important;
+        background: #ffffff !important;
       }
-      /* Prevent empty page at the end of PDF */
+
+      /* Prevent trailing blank page */
       .a4-page:last-of-type {
         page-break-after: avoid !important;
         break-after: avoid !important;
       }
-      .no-print {
-        display: none !important;
-      }
+
       .a4-page::after {
-        display: none !important; /* Hide page labels during printing */
+        display: none !important; /* Hide label identifiers during printing */
       }
     }
 
@@ -600,7 +605,7 @@
             <i class="fa-solid fa-chevron-down text-[10px]"></i>
           </button>
           <div id="acc-images" class="p-4 space-y-3 hidden">
-            <p class="text-[9px] text-slate-550 font-semibold mb-2">Anda dapat menambah, mengedit, mengunggah file, atau menghapus item gambar untuk pratinjau lampiran.</p>
+            <p class="text-[9px] text-slate-555 font-semibold mb-2">Anda dapat menambah, mengedit, mengunggah file, atau menghapus item gambar untuk pratinjau lampiran.</p>
             <div id="images-inputs-container" class="space-y-3 max-h-96 overflow-y-auto"></div>
             <button onclick="addNewImageSlot()" class="w-full py-1.5 text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded border border-emerald-300 font-semibold transition">
               <i class="fa-solid fa-plus mr-1"></i> Tambah Lampiran Foto Baru
@@ -693,7 +698,7 @@
         </div>
       </div>
 
-      <!-- ================= PAGE 2: MAIN DOCK CONTENT (Bab I, II, III) ================= -->
+      <!-- ================= PAGE 2: MAIN DOCK CONTENT (Bab I, II) ================= -->
       <div class="a4-page shadow-2xl relative" data-page-label="Halaman 2" id="page-2">
         <!-- HEADER SUB-BAR -->
         <div class="border-t border-b border-black py-1 mb-3 text-center">
@@ -805,7 +810,7 @@
         </div>
       </div>
 
-      <!-- ================= PAGE 3: CORE CONTENT (Bab III, IV, V, VI) ================= -->
+      <!-- ================= PAGE 3: CORE CONTENT (Bab III, IV, V) ================= -->
       <div class="a4-page shadow-2xl relative" data-page-label="Halaman 3" id="page-3">
         <!-- III. PEMERIKSAAN SARANA DAN PRASARANA -->
         <div class="mb-3">
@@ -908,9 +913,9 @@
         </div>
       </div>
 
-      <!-- ================= PAGE 5: NARRATIVE BLOCKS & XII. ORGANISASI (Bab IX - XIV) ================= -->
+      <!-- ================= PAGE 5: NARRATIVE BLOCKS & XII. ORGANISASI (Bab IX - XII) ================= -->
       <div class="a4-page shadow-2xl relative" data-page-label="Halaman 5" id="page-5">
-        <!-- NARRATIVE BLOCKS -->
+        <!-- NARRATIVE BLOCKS (Titles IX - XI removed based on request) -->
         <div class="mb-3">
           <div class="space-y-2 text-[10pt] leading-relaxed">
             <div class="p-2 border border-black bg-slate-50">
@@ -953,7 +958,7 @@
 
       <!-- ================= PAGE 6: INVESTASI, PENUTUP & SIGNATURES (Bab XIII - XV) ================= -->
       <div class="a4-page shadow-2xl relative" data-page-label="Halaman 6" id="page-6">
-        <!-- XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI -->
+        <!-- XIII - XIV. INVESTASI DAN PEMBINAAN KONSERVASI (Header Title "XIII - XIV..." Removed) -->
         <div class="mb-3">
           <table class="gov-table text-[10pt]">
             <tbody>
@@ -1202,7 +1207,7 @@
       saham: JSON.parse(JSON.stringify(defaultSaham)),
       narPenampungan: "Kegiatan penampungan dilakukan setelah pihak perusahaan mendapatkan barang dari hasil pembelian pihak pencari dan juga masyarakat yang langsung mengantarkan barang berupa gaharu kepada pihak perusahaan. Penampungan dimaksudkan untuk mengumpulkan gaharu yang didapat perusahaan dari pencari sebelum dilakukan perlakuan.",
       narPengangkutan: "Teknis pengangkutan gaharu sebelum dilakukan pengangkutan terlebih dahulu di packing (dikemas) sebelum diangkut ke daerah tujuan pengiriman menggunakan pesawat udara. Daerah tujuan penjualan gaharu yaitu : Jakarta dan daerah lainnya sesuai permintaan pasar.",
-      narLimbah: "Limbah yang dihasilkan berupa limbah padat dan cair yang tidak berbahaya. Sistem Pembuangan Limbah yaitu dengan menyapu dan mengumpulkan limbah yang dihasilkan untuk kemudian di buang ke tempat pembuangan sampah sedangkan limbah cair dibuang melalui parit/selokan yang telah disiapkan.",
+      narLimbah: "Limbah yang dihasilkan berupa limbah padat and cair yang tidak berbahaya. Sistem Pembuangan Limbah yaitu dengan menyapu dan mengumpulkan limbah yang dihasilkan untuk kemudian di buang ke tempat pembuangan sampah sedangkan limbah cair dibuang melalui parit/selokan yang telah disiapkan.",
       narInvestasi: "RP. 250.000.000",
       narPembinaan: "Untuk mewujudkan bisnis gaharu agar dapat berkesinambungan dan terus menerus maka diperlukan adanya kegiatan pembinaan konservasi agar tidak terjadi kelangkaan jenis gaharu di masa akan datang. Program pembinaan konservasi yang dilakukan oleh CV. Karisma Alam di antaranya adalah dengan melakukan penyortiran/menyeleksi pembelian gaharu dan kemedangan dan juga pihak perusahaan memberikan penyuluhan kepada para pencari gaharu untuk tidak menebang pohon yang tidak mempunyai kandungan gaharu agar kelestarian jenis pohon yang lain tetap terjaga.",
       inspectors: JSON.parse(JSON.stringify(defaultInspectors)),
@@ -1493,8 +1498,8 @@
               </button>
             </div>
             <div class="grid grid-cols-2 gap-1.5">
-              <input type="text" value="${item.name}" oninput="editInspector(${idx}, 'name', this.value)" placeholder="Nama Pemeriksa" class="px-2 py-1 text-xs bg-white border border-slate-200 rounded text-[10px] text-slate-850">
-              <input type="text" value="${item.nip}" oninput="editInspector(${idx}, 'nip', this.value)" placeholder="NIP" class="px-2 py-1 text-xs bg-white border border-slate-200 rounded text-[10px] text-slate-850">
+              <input type="text" value="${item.name}" oninput="editInspector(${idx}, 'name', this.value)" placeholder="Nama Pemeriksa" class="px-2 py-1 text-xs bg-white border border-slate-200 rounded text-[10px] text-slate-855">
+              <input type="text" value="${item.nip}" oninput="editInspector(${idx}, 'nip', this.value)" placeholder="NIP" class="px-2 py-1 text-xs bg-white border border-slate-200 rounded text-[10px] text-slate-855">
             </div>
           </div>
         `;
@@ -1848,12 +1853,12 @@
       const bab4Table = document.getElementById("view-table-bab4");
       const listBab4 = ["Reptilia", "Mamalia", "Amphibia", "Aves/Burung", "Karang Hias", "Gaharu", "Insekta", "Tumbuhan"];
       bab4Table.innerHTML = "";
-      listBab4.forEach((taksaItem, idx) => {
-        const isChecked = bapData.specTaksa === taksaItem;
+      listBab4.forEach((taxaItem, idx) => {
+        const isChecked = bapData.specTaksa === taxaItem;
         bab4Table.innerHTML += `
           <tr>
             <td class="text-center font-bold">${idx + 1}</td>
-            <td>${taksaItem}</td>
+            <td>${taxaItem}</td>
             <td class="text-center font-bold">${isChecked ? "✔" : "-"}</td>
             <td>${isChecked ? bapData.specTaksaRincian : "-"}</td>
           </tr>
