@@ -12,6 +12,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   
   <style>
+    /* Global box-sizing rule to prevent layout shifts */
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+    }
+
     :root {
       --bg-primary: #f8fafc; /* Luxury bright silk background */
       --bg-secondary: #ffffff; /* Pure white */
@@ -106,7 +111,7 @@
     }
 
     .gov-table {
-      width: 100%;
+      width: 100% !important;
       border-collapse: collapse;
       font-family: 'Bookman Old Style', 'Bookman', 'Gentium Book Plus', Georgia, Garamond, serif;
       font-size: 12pt !important; /* STRICT REQUIREMENT: Font size 12 inside tables */
@@ -267,6 +272,12 @@
         position: relative !important;
         box-sizing: border-box !important;
         background: #ffffff !important;
+      }
+
+      /* Tighten cell paddings on print to guarantee no vertical overflow */
+      .gov-table th, .gov-table td {
+        padding: 3px 6px !important;
+        line-height: 1.2 !important;
       }
 
       /* Landscape Pages Specific Printing Configuration */
