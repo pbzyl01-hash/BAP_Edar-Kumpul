@@ -68,7 +68,8 @@
       width: 210mm;
       min-height: 297mm; /* Set as min-height for UI view */
       height: 297mm;     /* Lock height strictly during rendering of static structure */
-      padding: 18mm 15mm 15mm 15mm;
+      /* MARGIN SETTING: Top: 2.5cm, Bottom: 2.5cm, Left: 3cm, Right: 2cm */
+      padding: 25mm 20mm 25mm 30mm;
       margin: 0 auto 25px auto;
       background: #ffffff !important;
       color: #000000 !important;
@@ -206,7 +207,8 @@
         margin: 0 !important;
         box-shadow: none !important;
         border: none !important;
-        padding: 18mm 15mm 15mm 15mm !important;
+        /* Force margins Top: 2.5cm, Bottom: 2.5cm, Left: 3cm, Right: 2cm inside canvas space */
+        padding: 25mm 20mm 25mm 30mm !important;
         width: 210mm !important;
         height: 297mm !important; /* Force exact physical height */
         page-break-after: always !important;
